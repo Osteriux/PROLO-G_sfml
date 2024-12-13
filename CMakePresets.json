@@ -1,0 +1,24 @@
+{
+    "version": 8,
+    "configurePresets": [
+        {
+            "name": "prolo-g",
+            "displayName": "PROLO-G_preset",
+            "description": "Using compilers: CXX = C:\\ProgramData\\mingw64\\bin\\g++.exe",
+            "generator": "MinGW Makefiles",
+            "binaryDir": "${sourceDir}/out/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
+                "CMAKE_CXX_COMPILER": "C:/ProgramData/mingw64/bin/g++.exe",
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        }
+    ],
+    "packagePresets": [
+        {
+            "name": "prolog",
+            "description": "",
+            "displayName": ""
+        }
+    ]
+}
