@@ -26,13 +26,36 @@ void EventManager::handleEvents(sf::Event event)
 
 void EventManager::handleKeyboardPressed(sf::Event::KeyEvent event)
 {
+    switch (event.code)
+    {
+    case sf::Keyboard::Add:
+        std::cout << "Zoom in" << std::endl;
+        gameManager->getCarte()->scaleUp();
+        break;
+    case sf::Keyboard::Subtract:
+        std::cout << "Zoom out" << std::endl;
+        gameManager->getCarte()->scaleDown();
+        break;
+    default:
+        break;
+    }
 }
 
 void EventManager::handleKeyboardReleased(sf::Event::KeyEvent event)
 {
+    switch (event.code)
+    {
+    default:
+        break;
+    }
 }
 
 void EventManager::handleMousePressed(sf::Event::MouseButtonEvent event)
 {
+    switch (event.button)
+    {
+    default:
+        break;
+    }
 }
 

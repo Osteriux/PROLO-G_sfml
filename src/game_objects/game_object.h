@@ -14,6 +14,7 @@ protected:
 public:
     GameObject(std::unique_ptr<MultiTexture> animation, Carte* carte, int x, int y);
     Case* getCase();
+    void setSpritePosition(sf::Vector2f position);
     virtual void update(float dt);
     virtual void draw(sf::RenderWindow &window);
     ~GameObject() = default;

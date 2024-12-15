@@ -5,10 +5,11 @@
 Case::Case(int x, int y, int room, sf::Vector2f position)
     : x(x), y(y), room(room), position(position)
 {
-    this->texture.loadFromFile("assets/case_beta.png");
+    this->texture.loadFromFile("assets/case_beta2.png");
     this->setTexture(texture);
     this->entity = std::move(entity);
     this->items = std::move(items);
+    this->setPosition(position);
 }
 
 int Case::getRoom()
@@ -35,11 +36,13 @@ void Case::transferEntity(Case *nextCase)
 void Case::setEntity(std::unique_ptr<DynamicGameObject> entity)
 {
     this->entity = std::move(entity);
+    this->entity->setSpritePosition(position);
 }
 
 void Case::addItem(std::unique_ptr<StaticGameObject> item)
 {
     items.push_back(std::move(item));
+    this->entity->setSpritePosition(position);
 }
 
 void Case::removeItem(int index)

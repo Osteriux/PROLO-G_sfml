@@ -12,6 +12,11 @@ Case* GameObject::getCase()
     return currCase;
 }
 
+void GameObject::setSpritePosition(sf::Vector2f position)
+{
+    animation->setPosition(position);
+}
+
 void GameObject::update(float dt)
 {
     animation->update(dt);

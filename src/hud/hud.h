@@ -4,11 +4,13 @@
 
 class HUD {
 private:
+    sf::RectangleShape outline;
     Joueur* joueur;
-    sf::Vector2f origin;
+    sf::Vector2u origin;
+    sf::Vector2u size;
     sf::Font font;
 public:
-    HUD(sf::Vector2f origin, Joueur* joueur);
+    HUD(sf::Vector2u origin, sf::Vector2u size, Joueur* joueur);
     void update(float dt);
     void draw(sf::RenderWindow &window);
     ~HUD() = default;

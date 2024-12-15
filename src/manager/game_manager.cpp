@@ -1,16 +1,22 @@
 #include "game_manager.h"
 
-GameManager::GameManager()
+GameManager::GameManager(sf::Vector2u windowSize)
+    : windowSize(windowSize)
 {
-    carte = std::make_unique<Carte>(4, 6, sf::Vector2f(160, 0), 5);
+    carte = std::make_unique<Carte>(4, 6, sf::Vector2f((windowSize.x / 3) + 5, 5), 5, sf::Vector2u((windowSize.x * 2/3) - 10, (windowSize.y* 2/3) - 10));
     joueur = new Joueur(carte.get(), 0, 0, 5, 1);
-    hud = std::make_unique<HUD>(sf::Vector2f(0, 0), joueur);
-    log = std::make_unique<Log>(50, sf::Vector2f(160, 180), sf::Vector2f(320, 90));
+    hud = std::make_unique<HUD>(sf::Vector2u(5, 5), sf::Vector2u((windowSize.x / 3) - 5, windowSize.y - 10), joueur);
+    log = std::make_unique<Log>(50, sf::Vector2u((windowSize.x / 3) + 5, (windowSize.y * 2/3)), sf::Vector2u((windowSize.x * 2/3) - 10, (windowSize.y / 3) - 5));
 }
 
 Joueur *GameManager::getJoueur()
 {
     return joueur;
+}
+
+Carte *GameManager::getCarte()
+{
+    return carte.get();
 }
 
 void GameManager::update(float dt)

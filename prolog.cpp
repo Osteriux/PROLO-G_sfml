@@ -5,9 +5,12 @@
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(800, 600), "PROLO-G");
+    sf::Vector2u baseSize(480, 270);
+    sf::Vector2u scale(2, 2);
+    sf::Vector2u windowSize = sf::Vector2u(baseSize.x * scale.x, baseSize.y * scale.y);
+    sf::RenderWindow window(sf::VideoMode(windowSize.x, windowSize.y), "PROLO-G");
 
-    GameManager gameManager;
+    GameManager gameManager(windowSize);
     EventManager eventManager(&gameManager);
 
     sf::Clock clock;
