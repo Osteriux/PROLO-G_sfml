@@ -2,13 +2,10 @@
 #include "../game_objects/dynamic/dynamic_game_object.h"
 #include "../game_objects/static/static_game_object.h"
 
-Case::Case(int x, int y, int room)
-    : x(x), y(y), room(room)
+Case::Case(int x, int y, int room, sf::Vector2f position)
+    : x(x), y(y), room(room), position(position)
 {
-    sf::RectangleShape rec(sf::Vector2f(32, 32));
-    rec.setFillColor(sf::Color::Transparent);
-    rec.setOutlineColor(sf::Color::White);
-    this->texture = *rec.getTexture();
+    this->texture.loadFromFile("assets/case_beta.png");
     this->setTexture(texture);
     this->entity = std::move(entity);
     this->items = std::move(items);

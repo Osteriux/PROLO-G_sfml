@@ -5,14 +5,11 @@
 Carte::Carte(int nbLines, int nbColumns, sf::Vector2f origin, float offset)
     : nbLines(nbLines), nbColumns(nbColumns), origin(origin), offset(offset)
 {
-    cases = new std::unique_ptr<Case>*[nbLines];
-    for (int i = 0; i < nbLines; i++)
-    {
-        cases[i] = new std::unique_ptr<Case>[nbColumns];
-        for (int j = 0; j < nbColumns; j++)
-        {
-            cases[i][j] = std::make_unique<Case>(j, i, 0);
-            cases[i][j]->setPosition(sf::Vector2f((origin.x + offset) * j, (origin.y + offset) * i));
+    cases.resize(nbLines);
+    for(int i = 0; i < nbLines; i++){
+        cases[i].resize(nbColumns);
+        for(int j = 0; j < nbColumns; j++){
+            cases[i][j] = std::make_unique<Case>(i, j, 0, sf::Vector2f(j * (offset + Case::SIZE), i * (offset + Case::SIZE)));
         }
     }
 }

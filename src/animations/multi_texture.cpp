@@ -1,6 +1,6 @@
 #include "multi_texture.h"
 
-MultiTexture::MultiTexture(std::string texture_path, int nbLines, int nbColumns, int* columnsSize)
+MultiTexture::MultiTexture(std::string texture_path, int nbLines, int nbColumns, std::vector<int>)
     : nbLines(nbLines), nbColumns(nbColumns), columnsSize(columnsSize)
 {
     if (!texture.loadFromFile(texture_path))
@@ -21,8 +21,7 @@ MultiTexture::MultiTexture(std::string texturePath, int nbImages)
         std::cerr << "Error loading texture : " << texturePath << std::endl;
     }
     setTexture(texture);
-    columnsSize = new int[nbColumns];
-    columnsSize[0] = nbImages;
+    columnsSize = std::vector<int>(1, nbImages);
     currLine = 0;
     currColumn = 0;
     rect = sf::IntRect(0, 0, texture.getSize().x / nbImages, texture.getSize().y);
@@ -33,12 +32,17 @@ MultiTexture::MultiTexture(sf::Color color, int width, int height)
 {
     sf::RectangleShape r(sf::Vector2f(width, height));
     r.setFillColor(color);
-    texture = *r.getTexture();
-    columnsSize = new int[nbColumns];
-    columnsSize[0] = 1;
+    sf::RenderTexture renderTexture;
+    renderTexture.create(width, height);
+    renderTexture.clear();
+    renderTexture.draw(r);
+    renderTexture.display();
+    texture = renderTexture.getTexture();
+    columnsSize = std::vector<int>(1, 1);
     currLine = 0;
     currColumn = 0;
     rect = sf::IntRect(0, 0, width, height);
+    setTexture(texture);
 }
 
 void MultiTexture::setLine(int line){

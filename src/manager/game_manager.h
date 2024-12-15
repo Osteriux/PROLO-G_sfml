@@ -4,6 +4,7 @@
 #include "../carte/carte.h"
 #include "../hud/hud.h"
 #include "../hud/log.h"
+#include "../game_objects/dynamic/joueur/joueur.h"
 
 class GameManager
 {
@@ -11,7 +12,7 @@ private:
     std::unique_ptr<Carte> carte;
     std::unique_ptr<HUD> hud;
     std::unique_ptr<Log> log;
-    Joueur joueur;
+    Joueur* joueur;
 public:
     GameManager();
     Joueur* getJoueur();

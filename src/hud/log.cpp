@@ -4,7 +4,7 @@ Log::Log(int maxMessages, sf::Vector2f origin, sf::Vector2f size)
     : maxMessages(maxMessages), origin(origin), rect(sf::FloatRect(origin.x, origin.y, size.x, size.y))
 {
     if(!font.loadFromFile("assets/fonts/arial.ttf")){
-        std::cerr << "Error loading font" << std::endl;
+        std::cerr << "Error loading assets/fonts/arial.ttf" << std::endl;
     }
 }
 

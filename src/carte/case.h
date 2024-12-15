@@ -11,10 +11,12 @@ private:
     sf::Texture texture;
     std::unique_ptr<DynamicGameObject> entity;
     std::vector<std::unique_ptr<StaticGameObject>> items;
+    sf::Vector2f position;
     int x, y;
     int room;
 public:
-    Case(int x, int y, int room);
+    static const int SIZE = 32;
+    Case(int x, int y, int room, sf::Vector2f position);
     int getRoom();
     int getX();
     int getY();

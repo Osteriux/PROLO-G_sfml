@@ -3,9 +3,9 @@
 HUD::HUD(sf::Vector2f origin, Joueur* joueur)
     : joueur(joueur), origin(origin)
 {
-    if (!font.loadFromFile("res/fonts/arial.ttf"))
+    if (!font.loadFromFile("assets/fonts/arial.ttf"))
     {
-        std::cerr << "Error loading font : res/fonts/arial.ttf" << std::endl;
+        std::cerr << "Error loading font : assets/fonts/arial.ttf" << std::endl;
     }
 }
 

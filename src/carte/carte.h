@@ -1,13 +1,14 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include <tuple>
+#include <memory>
+#include <vector>
 #include "case.h"
 
 class Carte
 {
 private:
     int nbLines, nbColumns;
-    std::unique_ptr<Case>** cases;
+    std::vector<std::vector<std::unique_ptr<Case>>> cases;
     sf::Vector2f origin;
     std::vector<int> seenRooms;
     std::vector<int> openedDoors;

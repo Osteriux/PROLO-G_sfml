@@ -1,6 +1,6 @@
 #include "matrix_animation.h"
 
-MatrixAnimation::MatrixAnimation(std::string texture_path, int nbLines, int nbColumns, int* columnsSize, float switchTime)
+MatrixAnimation::MatrixAnimation(std::string texture_path, int nbLines, int nbColumns, std::vector<int> columnsSize, float switchTime)
     : MultiTexture(texture_path, nbLines, nbColumns, columnsSize), switchTime(switchTime)
 {
     if (!texture.loadFromFile(texture_path))

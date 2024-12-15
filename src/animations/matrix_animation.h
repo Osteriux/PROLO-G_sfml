@@ -6,7 +6,7 @@ class MatrixAnimation : public MultiTexture
 protected:
     float switchTime, currentTime;
 public:
-    MatrixAnimation(std::string texture_path, int nbLines, int nbColumns, int* columnsSize, float switchTime);
+    MatrixAnimation(std::string texture_path, int nbLines, int nbColumns, std::vector<int> columnsSize, float switchTime);
     bool update(float dt) override;
     ~MatrixAnimation() = default;
 };
