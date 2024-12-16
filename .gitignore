@@ -13,6 +13,6 @@ CMakeUserPresets.json
 CMakePresets.json
 .vscode
 out
+build
 doc
 *.zip
-*.png
