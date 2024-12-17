@@ -3,10 +3,10 @@
 #include "../game_objects/static/static_game_object.h"
 
 Case::Case(int x, int y, int room, sf::Vector2f position, std::vector<Direction::Dir> passages, std::map<Direction::Dir, sf::Color> portes)
-    : x(x), y(y), room(room), position(position), passages(passages), portes()
+    : x(x), y(y), room(room), position(position), passages(passages)
 {
     for(auto& porte : portes){
-        this->portes[porte.first] = std::make_unique<Porte>(porte.second, porte.first);
+        this->portes[porte.first] = std::make_unique<Porte>(porte.second, porte.first, position);
     }
     this->texture.loadFromFile(texturePath(passages, portes));
     this->setTexture(texture);
@@ -28,6 +28,35 @@ int Case::getX()
 int Case::getY()
 {
     return y;
+}
+
+void Case::setPosition(sf::Vector2f position)
+{
+    this->position = position;
+    sf::Sprite::setPosition(position);
+    for(auto& porte : portes){
+        porte.second->setPosition(position);
+    }
+    for(auto& item : items){
+        item->setSpritePosition(position);
+    }
+    if(entity){
+        entity->setSpritePosition(position);
+    }
+}
+
+void Case::setScale(sf::Vector2f scale)
+{
+    sf::Sprite::setScale(scale);
+    for(auto& porte : portes){
+        porte.second->setScale(scale);
+    }
+    for(auto& item : items){
+        item->setSpriteScale(scale);
+    }
+    if(entity){
+        entity->setSpriteScale(scale);
+    }
 }
 
 void Case::transferEntity(Case *nextCase)

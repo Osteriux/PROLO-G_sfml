@@ -16,4 +16,7 @@ public:
     static const Dir RIGHT = Dir::RIGHT;
     static const Dir UP = Dir::UP;
     static std::string directionToString(Dir direction);
+    static Dir stringToDirection(std::string direction);
+    static int dirToInt(Dir direction);
+    static Dir intToDir(int direction);
 };

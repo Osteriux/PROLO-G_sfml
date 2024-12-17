@@ -14,7 +14,7 @@ MultiTexture::MultiTexture(std::string texture_path, int nbLines, int nbColumns,
 }
 
 MultiTexture::MultiTexture(std::string texturePath, int nbImages)
-    : nbLines(nbImages), nbColumns(1)
+    : nbLines(1), nbColumns(nbImages)
 {
     if (!texture.loadFromFile(texturePath))
     {

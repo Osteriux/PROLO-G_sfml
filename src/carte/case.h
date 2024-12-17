@@ -28,6 +28,8 @@ public:
     int getRoom();
     int getX();
     int getY();
+    void setPosition(sf::Vector2f position);
+    void setScale(sf::Vector2f scale);
     void transferEntity(Case* nextCase);
     void setEntity(std::unique_ptr<DynamicGameObject> entity);
     void addItem(std::unique_ptr<StaticGameObject> item);
