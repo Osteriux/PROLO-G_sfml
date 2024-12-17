@@ -14,7 +14,10 @@ public:
     MultiTexture(std::string texture_path, int nbLines, int nbColumns, std::vector<int> columnsSize);
     MultiTexture(std::string texturePath, int nbImages);
     MultiTexture(sf::Color color, int width, int height);
-    void setLine(int line);
+    MultiTexture();
+    sf::Vector2f getSize() const;
+    virtual void setLine(int line);
+    virtual void setColumn(int column);
     virtual bool update(float dt);
     ~MultiTexture() = default;
 };

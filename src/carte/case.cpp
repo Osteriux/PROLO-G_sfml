@@ -2,9 +2,12 @@
 #include "../game_objects/dynamic/dynamic_game_object.h"
 #include "../game_objects/static/static_game_object.h"
 
-Case::Case(int x, int y, int room, sf::Vector2f position)
-    : x(x), y(y), room(room), position(position)
+Case::Case(int x, int y, int room, sf::Vector2f position, std::vector<Direction::Dir> passages, std::map<Direction::Dir, sf::Color> portes)
+    : x(x), y(y), room(room), position(position), passages(passages), portes()
 {
+    for(auto& porte : portes){
+        this->portes[porte.first] = std::make_unique<Porte>(porte.second, porte.first);
+    }
     this->texture.loadFromFile("assets/case_beta2.png");
     this->setTexture(texture);
     this->entity = std::move(entity);
@@ -64,11 +67,18 @@ void Case::update(float dt)
 
 void Case::draw(sf::RenderWindow &window)
 {
+    // dessin du fond de la case
     window.draw(*this);
+    // dessin des portes
+    for(auto& porte : portes){ 
+        porte.second->draw(window);
+    }
+    // dessin de l'entité si elle existe
     if (entity)
     {
         entity->draw(window);
     }
+    // dessin des items
     for (auto &item : items)
     {
         item->draw(window);

@@ -9,7 +9,7 @@ Carte::Carte(int nbLines, int nbColumns, sf::Vector2f origin, float offset, sf::
     for(int i = 0; i < nbLines; i++){
         cases[i].resize(nbColumns);
         for(int j = 0; j < nbColumns; j++){
-            cases[i][j] = std::make_unique<Case>(i, j, 0, origin + sf::Vector2f(j * (offset + Case::SIZE), i * (offset + Case::SIZE)));
+            cases[i][j] = std::make_unique<Case>(i, j, 0, origin + sf::Vector2f(j * (offset + Case::SIZE), i * (offset + Case::SIZE)), std::vector<Direction::Dir>(), std::map<Direction::Dir, sf::Color>());
         }
     }
     seenRooms.push_back(0);

@@ -5,7 +5,7 @@ DynamicGameObject::DynamicGameObject(int health, int speed ,std::unique_ptr<Mult
 {
 }
 
-void DynamicGameObject::move(Direction direction)
+void DynamicGameObject::move(Direction::Dir direction)
 {
     int x = currCase->getX();
     int y = currCase->getY();

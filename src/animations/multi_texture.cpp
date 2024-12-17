@@ -45,10 +45,23 @@ MultiTexture::MultiTexture(sf::Color color, int width, int height)
     setTexture(texture);
 }
 
+MultiTexture::MultiTexture(){
+    MultiTexture(sf::Color::Yellow, 1, 1);
+}
+
+sf::Vector2f MultiTexture::getSize() const{
+    return sf::Vector2f(rect.width, rect.height);
+}
+
 void MultiTexture::setLine(int line){
     currLine = line;
     rect.top = currLine * rect.height;
-    rect.left = 0;
+    setTextureRect(rect);
+}
+
+void MultiTexture::setColumn(int column){
+    currColumn = column;
+    rect.left = currColumn * rect.width;
     setTextureRect(rect);
 }
 

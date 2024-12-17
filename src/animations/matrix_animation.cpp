@@ -14,6 +14,14 @@ MatrixAnimation::MatrixAnimation(std::string texture_path, int nbLines, int nbCo
     setTextureRect(rect);
 }
 
+void MatrixAnimation::setLine(int line)
+{
+    currLine = line;
+    rect.top = currLine * rect.height;
+    rect.left = 0;
+    setTextureRect(rect);
+}
+
 bool MatrixAnimation::update(float dt)
 {
     bool warped = false;
