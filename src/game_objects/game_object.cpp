@@ -22,7 +22,7 @@ void GameObject::update(float dt)
     animation->update(dt);
 }
 
-void GameObject::draw(sf::RenderWindow &window)
+void GameObject::draw(sf::RenderTarget &target)
 {
-    window.draw(*animation);
+    target.draw(*animation);
 }

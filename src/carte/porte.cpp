@@ -32,7 +32,7 @@ sf::Color Porte::getColor()
     return color;
 }
 
-void Porte::draw(sf::RenderWindow &window)
+void Porte::draw(sf::RenderTarget &target)
 {
-    window.draw(texture);
+    target.draw(texture);
 }

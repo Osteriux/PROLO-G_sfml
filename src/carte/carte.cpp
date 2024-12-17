@@ -12,6 +12,10 @@ Carte::Carte(int nbLines, int nbColumns, sf::Vector2f origin, float offset, sf::
             cases[i][j] = std::make_unique<Case>(i, j, 0, origin + sf::Vector2f(j * (offset + Case::SIZE), i * (offset + Case::SIZE)), std::vector<Direction::Dir>(), std::map<Direction::Dir, sf::Color>());
         }
     }
+    renderTexture.create(regionSize.x, regionSize.y);
+    texture = renderTexture.getTexture();
+    sprite.setTexture(texture);
+    sprite.setPosition(origin);
     seenRooms.push_back(0);
     outline.setFillColor(sf::Color::Transparent);
     outline.setOutlineColor(sf::Color::White);
@@ -85,29 +89,38 @@ void Carte::update(float dt)
 
 void Carte::draw(sf::RenderWindow &window)
 {
-    // Save the original view
-    sf::View originalView = window.getView();
+    // Clear the render texture
+    renderTexture.clear(sf::Color::Transparent);
 
-    // Create a view that matches the outline's position and size
-    sf::View view(sf::FloatRect(origin.x, origin.y, outline.getSize().x, outline.getSize().y));
-    view.setCenter(origin.x + outline.getSize().x / 2, origin.y + outline.getSize().y / 2);
-    window.setView(view);
+    // Set the view of the render texture to match the region
+    sf::View view(sf::FloatRect(origin.x, origin.y, regionSize.x, regionSize.y));
+    renderTexture.setView(view);
 
-    // Draw the outline
-    window.draw(outline);
+    // Draw the outline to the render texture
+    renderTexture.draw(outline);
 
-    // Draw the cases within the outline
+    // Draw the cases within the outline to the render texture
     for (int i = 0; i < nbLines; i++)
     {
         for (int j = 0; j < nbColumns; j++)
         {
             if (std::find(seenRooms.begin(), seenRooms.end(), cases[i][j]->getRoom()) != seenRooms.end())
             {
-                cases[i][j]->draw(window);
+                cases[i][j]->draw(renderTexture);
             }
         }
     }
 
-    // Restore the original view
-    window.setView(originalView);
+    // Display the render texture
+    renderTexture.display();
+
+    // Create a sprite from the render texture
+    texture = renderTexture.getTexture();
+    sprite.setTexture(texture);
+
+    // Draw the sprite to the window
+    window.draw(sprite);
+
+    // Draw the outline to the window
+    window.draw(outline);
 }

@@ -8,7 +8,7 @@ Case::Case(int x, int y, int room, sf::Vector2f position, std::vector<Direction:
     for(auto& porte : portes){
         this->portes[porte.first] = std::make_unique<Porte>(porte.second, porte.first);
     }
-    this->texture.loadFromFile("assets/case_beta2.png");
+    this->texture.loadFromFile(texturePath(passages, portes));
     this->setTexture(texture);
     this->entity = std::move(entity);
     this->items = std::move(items);
@@ -65,22 +65,37 @@ void Case::update(float dt)
     }
 }
 
-void Case::draw(sf::RenderWindow &window)
+void Case::draw(sf::RenderTarget &target)
 {
     // dessin du fond de la case
-    window.draw(*this);
+    target.draw(*this);
     // dessin des portes
     for(auto& porte : portes){ 
-        porte.second->draw(window);
+        porte.second->draw(target);
     }
     // dessin de l'entité si elle existe
     if (entity)
     {
-        entity->draw(window);
+        entity->draw(target);
     }
     // dessin des items
     for (auto &item : items)
     {
-        item->draw(window);
+        item->draw(target);
     }
+}
+
+std::string Case::texturePath(std::vector<Direction::Dir> passages, std::map<Direction::Dir, sf::Color> portes){
+    std::string path = "assets/cases/";
+    for(auto& passage : passages){
+        path += Direction::directionToString(passage);
+        path += "-";
+    }
+    path += "case";
+    for(auto& porte : portes){
+        path += "_";
+        path += Direction::directionToString(porte.first);
+    }
+    path += ".png";
+    return path;
 }

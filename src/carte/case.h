@@ -3,6 +3,7 @@
 #include <memory>
 #include <vector>
 #include <map>
+#include <string>
 #include "direction.h"
 #include "porte.h"
 
@@ -20,6 +21,7 @@ private:
     sf::Vector2f position;
     int x, y;
     int room;
+    std::string texturePath(std::vector<Direction::Dir> passages, std::map<Direction::Dir, sf::Color> portes);
 public:
     static const int SIZE = 32;
     Case(int x, int y, int room, sf::Vector2f position, std::vector<Direction::Dir> passages, std::map<Direction::Dir, sf::Color> portes);
@@ -31,6 +33,6 @@ public:
     void addItem(std::unique_ptr<StaticGameObject> item);
     void removeItem(int index);
     void update(float dt);
-    void draw(sf::RenderWindow &window);
+    void draw(sf::RenderTarget &target);
     ~Case() = default;
 };

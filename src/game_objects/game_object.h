@@ -16,6 +16,6 @@ public:
     Case* getCase();
     void setSpritePosition(sf::Vector2f position);
     virtual void update(float dt);
-    virtual void draw(sf::RenderWindow &window);
+    virtual void draw(sf::RenderTarget &target);
     ~GameObject() = default;
 };

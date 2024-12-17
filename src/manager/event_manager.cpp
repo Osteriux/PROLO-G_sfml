@@ -28,10 +28,12 @@ void EventManager::handleKeyboardPressed(sf::Event::KeyEvent event)
 {
     switch (event.code)
     {
+    case sf::Keyboard::PageUp:
     case sf::Keyboard::Add:
         std::cout << "Zoom in" << std::endl;
         gameManager->getCarte()->scaleUp();
         break;
+    case sf::Keyboard::PageDown:
     case sf::Keyboard::Subtract:
         std::cout << "Zoom out" << std::endl;
         gameManager->getCarte()->scaleDown();

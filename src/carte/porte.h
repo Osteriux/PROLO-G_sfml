@@ -18,6 +18,6 @@ public:
     void ouvrir();
     void fermer();
     sf::Color getColor();
-    void draw(sf::RenderWindow &window);
+    void draw(sf::RenderTarget &target);
     ~Porte() = default;
 };

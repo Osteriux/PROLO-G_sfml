@@ -7,6 +7,9 @@
 class Carte
 {
 private:
+    sf::RenderTexture renderTexture;
+    sf::Texture texture;
+    sf::Sprite sprite;
     sf::Vector2u regionSize;
     sf::Vector2f scale;
     sf::RectangleShape outline;
