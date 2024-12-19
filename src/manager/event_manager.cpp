@@ -54,6 +54,7 @@ void EventManager::handleKeyboardReleased(sf::Event::KeyEvent event)
 
 void EventManager::handleMousePressed(sf::Event::MouseButtonEvent event)
 {
+    gameManager->getHUD().onClic(sf::Vector2f(event.x, event.y));
     switch (event.button)
     {
     default:

@@ -29,6 +29,11 @@ Carte *GameManager::getCarte()
     return carte.get();
 }
 
+HUD &GameManager::getHUD()
+{
+    return *hud;
+}
+
 void GameManager::update(float dt)
 {
     carte->update(dt);

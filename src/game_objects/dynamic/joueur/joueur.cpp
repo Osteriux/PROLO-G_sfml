@@ -5,3 +5,13 @@ Joueur::Joueur(Carte* carte, int x, int y, int health, float speed)
 {
     currCase->setEntity(std::unique_ptr<Joueur>(this));
 }
+
+Inventaire& Joueur::getInventaire()
+{
+    return inventaire;
+}
+
+void Joueur::move(Direction::Dir direction)
+{
+    DynamicGameObject::move(direction);
+}

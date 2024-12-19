@@ -8,5 +8,7 @@ private:
     Inventaire inventaire;
 public:
     Joueur(Carte* carte, int x, int y, int health, float speed);
+    Inventaire& getInventaire();
+    void move(Direction::Dir direction);
     ~Joueur() = default;
 };

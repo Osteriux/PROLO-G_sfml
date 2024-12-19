@@ -20,6 +20,7 @@ public:
     GameManager(sf::Vector2u windowSize, std::string filePath);
     Joueur* getJoueur();
     Carte* getCarte();
+    HUD& getHUD();
     void update(float dt);
     void draw(sf::RenderWindow &window);
     ~GameManager() = default;
