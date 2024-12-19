@@ -18,7 +18,7 @@ private:
     sf::RectangleShape outline;
     std::vector<std::vector<std::unique_ptr<Case>>> cases;
     sf::Vector2f origin;
-    std::vector<int> seenRooms;
+    std::map<int, bool> seenRooms;
     std::vector<int> openedDoors;
     int nbLines, nbColumns;
 public:

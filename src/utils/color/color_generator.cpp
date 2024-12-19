@@ -1,45 +1,88 @@
 #include "color_generator.h"
 
-std::vector<sf::Color> ColorGenerator::generateColors(int num) {
+sf::Color ColorGenerator::hexToColor(const std::string &hex)
+{
+    unsigned int r, g, b;
+    if (sscanf(hex.c_str(), "#%02x%02x%02x", &r, &g, &b) == 3) {
+        return sf::Color(r, g, b);
+    }
+    throw std::invalid_argument("Invalid hex color string");
+}
+
+std::vector<sf::Color> ColorGenerator::generateColors(int num)
+{
+    if(num > COLORS.size()) {
+        throw std::invalid_argument("Number of colors requested is greater than the number of colors available");
+    }
     std::vector<sf::Color> colors = std::vector<sf::Color>();
-    if (num < 2)
-        return colors;
-    float dx = 1.0f / (float) (num - 1);
-    for (int i = 0; i < num; i++) {
-        colors.push_back(makeColor(i * dx));
+    for(int i = 0; i < num; i++) {
+        colors.push_back(hexToColor(COLORS[i]));
     }
     return colors;
 }
 
-sf::Color ColorGenerator::makeColor(float x) {
-    float r = 0.0f;
-    float g = 0.0f;
-    float b = 1.0f;
-    if (x >= 0.0f && x < 0.2f) {
-        x = x / 0.2f;
-        r = 0.0f;
-        g = x;
-        b = 1.0f;
-    } else if (x >= 0.2f && x < 0.4f) {
-        x = (x - 0.2f) / 0.2f;
-        r = 0.0f;
-        g = 1.0f;
-        b = 1.0f - x;
-    } else if (x >= 0.4f && x < 0.6f) {
-        x = (x - 0.4f) / 0.2f;
-        r = x;
-        g = 1.0f;
-        b = 0.0f;
-    } else if (x >= 0.6f && x < 0.8f) {
-        x = (x - 0.6f) / 0.2f;
-        r = 1.0f;
-        g = 1.0f - x;
-        b = 0.0f;
-    } else if (x >= 0.8f && x <= 1.0f) {
-        x = (x - 0.8f) / 0.2f;
-        r = 1.0f;
-        g = 0.0f;
-        b = x;
-    }
-    return sf::Color(r, g, b);
-}
+const std::vector<std::string> ColorGenerator::COLORS = {
+    "#00FF00",
+    "#0000FF",
+    "#FF0000",
+    "#01FFFE",
+    "#FFA6FE",
+    "#FFDB66",
+    "#006401",
+    "#010067",
+    "#95003A",
+    "#007DB5",
+    "#FF00F6",
+    "#FFEEE8",
+    "#774D00",
+    "#90FB92",
+    "#0076FF",
+    "#D5FF00",
+    "#FF937E",
+    "#6A826C",
+    "#FF029D",
+    "#FE8900",
+    "#7A4782",
+    "#7E2DD2",
+    "#85A900",
+    "#FF0056",
+    "#A42400",
+    "#00AE7E",
+    "#683D3B",
+    "#BDC6FF",
+    "#263400",
+    "#BDD393",
+    "#00B917",
+    "#9E008E",
+    "#001544",
+    "#C28C9F",
+    "#FF74A3",
+    "#01D0FF",
+    "#004754",
+    "#E56FFE",
+    "#788231",
+    "#0E4CA1",
+    "#91D0CB",
+    "#BE9970",
+    "#968AE8",
+    "#BB8800",
+    "#43002C",
+    "#DEFF74",
+    "#00FFC6",
+    "#FFE502",
+    "#620E00",
+    "#008F9C",
+    "#98FF52",
+    "#7544B1",
+    "#B500FF",
+    "#00FF78",
+    "#FF6E41",
+    "#005F39",
+    "#6B6882",
+    "#5FAD4E",
+    "#A75740",
+    "#A5FFD2",
+    "#FFB167",
+    "#009BFF",
+    "#E85EBE",
+};

@@ -4,7 +4,8 @@
 
 class ColorGenerator {
 private:
-    static sf::Color makeColor(float gen);
+    static const std::vector<std::string> COLORS;
+    static sf::Color hexToColor(const std::string& hex);
 public:
     static std::vector<sf::Color> generateColors(int count);
 };

@@ -16,7 +16,7 @@ Carte::Carte(int nbLines, int nbColumns, sf::Vector2f origin, sf::Vector2u regio
     texture = renderTexture.getTexture();
     sprite.setTexture(texture);
     sprite.setPosition(origin);
-    seenRooms.push_back(0);
+    seenRooms[0] = true;
     outline.setFillColor(sf::Color::Transparent);
     outline.setOutlineColor(sf::Color::White);
     outline.setOutlineThickness(2);
@@ -42,13 +42,13 @@ Carte::Carte(int nbLines, int nbColumns, sf::Vector2f origin, sf::Vector2u regio
                 portes[Direction::intToDir(std::get<0>(p))] = doorColors[std::get<1>(p)];
             }
             cases[i][j] = std::make_unique<Case>(i, j, std::get<0>(data), origin + sf::Vector2f(j * Case::SIZE, i * Case::SIZE), voisins, portes);
+            seenRooms[std::get<0>(data)] = true;
         }
     }
     renderTexture.create(regionSize.x, regionSize.y);
     texture = renderTexture.getTexture();
     sprite.setTexture(texture);
     sprite.setPosition(origin);
-    seenRooms.push_back(0);
     outline.setFillColor(sf::Color::Transparent);
     outline.setOutlineColor(sf::Color::White);
     outline.setOutlineThickness(2);
@@ -67,7 +67,7 @@ Case* Carte::getCase(int x, int y)
 
 void Carte::addSeenRoom(int room)
 {
-    seenRooms.push_back(room);
+    seenRooms[room] = true;
 }
 
 void Carte::addOpenedDoor(int doorId)
@@ -142,7 +142,7 @@ void Carte::draw(sf::RenderWindow &window)
     {
         for (int j = 0; j < nbColumns; j++)
         {
-            if (std::find(seenRooms.begin(), seenRooms.end(), cases[i][j]->getRoom()) != seenRooms.end())
+            if (seenRooms[cases[i][j]->getRoom()])
             {
                 cases[i][j]->draw(renderTexture);
             }

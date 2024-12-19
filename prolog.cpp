@@ -10,7 +10,7 @@ int main()
     sf::Vector2u windowSize = sf::Vector2u(baseSize.x * scale.x, baseSize.y * scale.y);
     sf::RenderWindow window(sf::VideoMode(windowSize.x, windowSize.y), "PROLO-G");
 
-    GameManager gameManager(windowSize, "assets/levels/test.txt");
+    GameManager gameManager(windowSize, "assets/levels/test2.txt");
     EventManager eventManager(&gameManager);
 
     sf::Clock clock;

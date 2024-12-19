@@ -116,14 +116,14 @@ void Case::draw(sf::RenderTarget &target)
 
 std::string Case::texturePath(std::vector<Direction::Dir> passages, std::map<Direction::Dir, sf::Color> portes){
     std::string path = "assets/cases/";
-    for(auto& passage : passages){
-        path += Direction::directionToString(passage);
+    for(auto& porte : portes){
+        path += Direction::directionToString(porte.first);
         path += "-";
     }
     path += "case";
-    for(auto& porte : portes){
+    for(auto& passage : passages){
         path += "_";
-        path += Direction::directionToString(porte.first);
+        path += Direction::directionToString(passage);
     }
     path += ".png";
     return path;

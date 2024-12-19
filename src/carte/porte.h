@@ -9,10 +9,12 @@ class Porte {
 private:
     MultiTexture texture;
     sf::RectangleShape bg;
+    sf::Vector2f bgOffset;
     bool ouverte;
     Direction::Dir dir;
     sf::Color color;
     std::string texturePath(Direction::Dir dir);
+    sf::RectangleShape createColorRect(Direction::Dir dir, sf::Vector2f position);
 public:
     Porte(sf::Color color, Direction::Dir dir, sf::Vector2f position);
     bool estOuverte();
