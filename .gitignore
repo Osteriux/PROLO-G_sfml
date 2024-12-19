@@ -16,3 +16,4 @@ out
 build
 doc
 *.zip
+test_data.md
