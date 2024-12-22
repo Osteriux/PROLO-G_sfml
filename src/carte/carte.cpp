@@ -4,8 +4,10 @@
 #include "carte.h"
 
 Carte::Carte(int nbLines, int nbColumns, sf::Vector2f origin, sf::Vector2u regionSize, LevelFileData levelData)
-    : nbLines(nbLines), nbColumns(nbColumns), origin(origin), regionSize(regionSize), scale(1, 1)
+    : origin(origin), regionSize(regionSize), scale(1, 1)
 {
+    this->nbLines = nbLines;
+    this->nbColumns = nbColumns;
     std::vector<sf::Color> doorColors = ColorGenerator::generateColors(levelData.nbDoorColor);
     cases.resize(nbLines);
     for(int i = 0; i < nbLines; i++){
@@ -37,25 +39,31 @@ Carte::Carte(int nbLines, int nbColumns, sf::Vector2f origin, sf::Vector2u regio
     outline.setPosition(origin);
     outline.setSize(sf::Vector2f(regionSize.x, regionSize.y));
     std::cout << "Carte created" << std::endl;
+    std::cout << "Carte size : " << this->nbLines << " " << this->nbColumns << std::endl;
 }
 
-void Carte::populate(LevelFileData levelData, std::unique_ptr<Joueur> j, GameManager* gameManager)
+void Carte::populate(LevelFileData levelData, GameManager* gameManager)
 {
     std::cout << "Populating carte" << std::endl;
-    cases[levelData.joueurX][levelData.joueurY]->setEntity(std::move(j));
     for(auto itemData : levelData.itemsData){
         for(int itemTypeId : itemData.second){
             cases[itemData.first.first][itemData.first.second]->addItem(ItemFactory::createItem(itemData.first.first, itemData.first.second, itemTypeId, gameManager));
         }
     }
     std::cout << "Carte populated" << std::endl;
+    std::cout << "Carte size : " << this->nbLines << " " << this->nbColumns << std::endl;
 }
 
 Case* Carte::getCase(int x, int y)
 {
+    std::cout << "Carte size : " << this->nbLines << " " << this->nbColumns << std::endl;
     if (x >= 0 && x < nbLines && y >= 0 && y < nbColumns)
     {
-        return cases[x][y].get();
+        Case* c = cases[x][y].get();
+        if(c == nullptr){
+            std::cerr << "Error: getCase returned null" << std::endl;
+        }
+        return c;
     }
     throw std::runtime_error("Error: getCase out of bounds : " + std::to_string(x) + " " + std::to_string(y) + " / " + std::to_string(nbLines) + " " + std::to_string(nbColumns));
 }

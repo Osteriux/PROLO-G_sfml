@@ -1,8 +1,8 @@
 #include "../../../manager/game_manager.h"
 #include "joueur.h"
 
-Joueur::Joueur(GameManager* gameManager, int x, int y, int health, float speed)
-    : DynamicGameObject(health, speed, std::make_unique<MultiTexture>("assets/dynamic/JOUEUR.png", 1), gameManager, x, y), inventaire()
+Joueur::Joueur(GameManager* gameManager, int x, int y, int health)
+    : DynamicGameObject(health, 1, std::make_unique<MultiTexture>("assets/dynamic/JOUEUR.png", 1), gameManager, x, y), inventaire()
 {
 }
 

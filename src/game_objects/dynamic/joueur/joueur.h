@@ -9,7 +9,7 @@ class Joueur : public DynamicGameObject
 private:
     Inventaire inventaire;
 public:
-    Joueur(GameManager* gameManager, int x, int y, int health, float speed);
+    Joueur(GameManager* gameManager, int x, int y, int health);
     Inventaire& getInventaire();
     std::string getDescription() override;
     void move(Direction::Dir direction);

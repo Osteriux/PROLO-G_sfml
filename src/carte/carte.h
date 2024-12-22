@@ -23,11 +23,11 @@ private:
     sf::Vector2f origin;
     sf::Vector2f offset;
     std::map<int, bool> seenRooms;
-    const int nbLines, nbColumns;
+    int nbLines, nbColumns;
     void updateCases();
 public:
     Carte(int nbLines, int nbColumns, sf::Vector2f origin, sf::Vector2u regionSize, LevelFileData data);
-    void populate(LevelFileData data, std::unique_ptr<Joueur> j, GameManager* gameManager);
+    void populate(LevelFileData data, GameManager* gameManager);
     Case* getCase(int x, int y);
     std::map<std::pair<int, int>, std::map<Direction::Dir, bool>> getAdjacents();
     void addSeenRoom(int room);

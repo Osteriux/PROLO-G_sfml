@@ -15,6 +15,12 @@ int DynamicGameObject::getHealth()
 
 void DynamicGameObject::move(Direction::Dir direction)
 {
+    std::map<Direction::Dir, bool> adj = currCase->getAdjacent();
+    if (!adj[direction])
+    {
+        std::cerr << "Error: " << Direction::directionToString(direction) << " is not a valid move" << std::endl;
+        return;
+    }
     std::cout << "1" << std::endl;
     int x = currCase->getX();
     std::cout << "2" << std::endl;
