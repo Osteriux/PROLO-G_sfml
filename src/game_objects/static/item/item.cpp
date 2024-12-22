@@ -1,9 +1,15 @@
 #include "../../dynamic/joueur/joueur.h"
+#include "../../../manager/game_manager.h"
 #include "item.h"
 
-Item::Item(std::string texture_path, Carte* carte, int x, int y)
-    : StaticGameObject(std::make_unique<MultiTexture>(texture_path, 1), carte, x, y)
+Item::Item(std::string texture_path, GameManager* gameManager, int x, int y)
+    : StaticGameObject(std::make_unique<MultiTexture>(texture_path, 1), gameManager, x, y)
 {
+}
+
+void Item::ramasser(Joueur* user)
+{
+    user->getInventaire().addItem(type);
 }
 
 std::vector<Item::ItemType> Item::getAllItemTypes()

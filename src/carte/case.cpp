@@ -30,6 +30,23 @@ int Case::getY()
     return y;
 }
 
+std::map<Direction::Dir, bool> Case::getAdjacent()
+{
+    std::map<Direction::Dir, bool> adjacent;
+    for(auto direction : Direction::DIRECTIONS){
+        if(std::find(passages.begin(), passages.end(), direction) != passages.end()){
+            adjacent[direction] = true;
+        } else if (portes.find(direction) != portes.end())
+        {
+            adjacent[direction] = portes[direction]->estOuverte();
+        }
+        else {
+            adjacent[direction] = false;
+        }
+    }
+    return adjacent;
+}
+
 void Case::setPosition(sf::Vector2f position)
 {
     this->position = position;
@@ -67,14 +84,16 @@ void Case::transferEntity(Case *nextCase)
 
 void Case::setEntity(std::unique_ptr<DynamicGameObject> entity)
 {
+    entity->setSpritePosition(position);
+    entity->setCase(this);
     this->entity = std::move(entity);
-    this->entity->setSpritePosition(position);
 }
 
 void Case::addItem(std::unique_ptr<StaticGameObject> item)
 {
     items.push_back(std::move(item));
-    this->entity->setSpritePosition(position);
+    std::cout<<" adding item to case"<<std::endl;
+    item->setSpritePosition(position);
 }
 
 void Case::removeItem(int index)

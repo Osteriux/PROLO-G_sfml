@@ -1,3 +1,4 @@
+#include "../game_objects/game_object.h"
 #include "porte.h"
 
 Porte::Porte(sf::Color color, Direction::Dir dir, sf::Vector2f position)

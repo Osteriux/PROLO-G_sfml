@@ -1,47 +1,31 @@
-#include "carte.h"
 #include "../game_objects/dynamic/dynamic_game_object.h"
 #include "../game_objects/static/static_game_object.h"
+#include "../manager/game_manager.h"
+#include "carte.h"
 
-Carte::Carte(int nbLines, int nbColumns, sf::Vector2f origin, sf::Vector2u regionSize)
+Carte::Carte(int nbLines, int nbColumns, sf::Vector2f origin, sf::Vector2u regionSize, LevelFileData levelData)
     : nbLines(nbLines), nbColumns(nbColumns), origin(origin), regionSize(regionSize), scale(1, 1)
 {
+    std::vector<sf::Color> doorColors = ColorGenerator::generateColors(levelData.nbDoorColor);
     cases.resize(nbLines);
     for(int i = 0; i < nbLines; i++){
         cases[i].resize(nbColumns);
         for(int j = 0; j < nbColumns; j++){
-            cases[i][j] = std::make_unique<Case>(i, j, 0, origin + sf::Vector2f(j * Case::SIZE, i * Case::SIZE), std::vector<Direction::Dir>(), std::map<Direction::Dir, sf::Color>());
-        }
-    }
-    renderTexture.create(regionSize.x, regionSize.y);
-    sprite.setTexture(renderTexture.getTexture());
-    sprite.setPosition(origin);
-    seenRooms[0] = true;
-    outline.setFillColor(sf::Color::Transparent);
-    outline.setOutlineColor(sf::Color::White);
-    outline.setOutlineThickness(2);
-    outline.setPosition(origin);
-    outline.setSize(sf::Vector2f(regionSize.x, regionSize.y));
-}
+            std::tuple<int, std::vector<int>, std::vector<std::tuple<int, int>>> cdata = levelData.casesData[std::make_pair(i, j)];
 
-Carte::Carte(int nbLines, int nbColumns, sf::Vector2f origin, sf::Vector2u regionSize, std::map<std::pair<int, int>, std::tuple<int, std::vector<int>, std::vector<std::tuple<int, int>>>> casesData, int nbDoorColor)
-    : nbLines(nbLines), nbColumns(nbColumns), origin(origin), regionSize(regionSize), scale(1, 1)
-{
-    std::vector<sf::Color> doorColors = ColorGenerator::generateColors(nbDoorColor);
-    cases.resize(nbLines);
-    for(int i = 0; i < nbLines; i++){
-        cases[i].resize(nbColumns);
-        for(int j = 0; j < nbColumns; j++){
-            std::tuple<int, std::vector<int>, std::vector<std::tuple<int, int>>> data = casesData[std::make_pair(i, j)];
             std::vector<Direction::Dir> voisins;
             std::map<Direction::Dir, sf::Color> portes;
-            for(auto v : std::get<1>(data)){
+            for(auto v : std::get<1>(cdata)){
                 voisins.push_back(Direction::intToDir(v));
             }
-            for(auto p : std::get<2>(data)){
+            for(auto p : std::get<2>(cdata)){
                 portes[Direction::intToDir(std::get<0>(p))] = doorColors[std::get<1>(p)];
             }
-            cases[i][j] = std::make_unique<Case>(i, j, std::get<0>(data), origin + sf::Vector2f(j * Case::SIZE, i * Case::SIZE), voisins, portes);
-            seenRooms[std::get<0>(data)] = true;
+            std::cout << "Creating case : " << i << " " << j << " " << std::get<0>(cdata) << std::endl;
+            cases[i][j] = std::make_unique<Case>(i, j, std::get<0>(cdata), origin + sf::Vector2f(j * Case::SIZE, i * Case::SIZE), voisins, portes);
+
+            // debug
+            seenRooms[std::get<0>(cdata)] = true;
         }
     }
     renderTexture.create(regionSize.x, regionSize.y);
@@ -52,6 +36,19 @@ Carte::Carte(int nbLines, int nbColumns, sf::Vector2f origin, sf::Vector2u regio
     outline.setOutlineThickness(2);
     outline.setPosition(origin);
     outline.setSize(sf::Vector2f(regionSize.x, regionSize.y));
+    std::cout << "Carte created" << std::endl;
+}
+
+void Carte::populate(LevelFileData levelData, std::unique_ptr<Joueur> j, GameManager* gameManager)
+{
+    std::cout << "Populating carte" << std::endl;
+    cases[levelData.joueurX][levelData.joueurY]->setEntity(std::move(j));
+    for(auto itemData : levelData.itemsData){
+        for(int itemTypeId : itemData.second){
+            cases[itemData.first.first][itemData.first.second]->addItem(ItemFactory::createItem(itemData.first.first, itemData.first.second, itemTypeId, gameManager));
+        }
+    }
+    std::cout << "Carte populated" << std::endl;
 }
 
 Case* Carte::getCase(int x, int y)
@@ -60,22 +57,23 @@ Case* Carte::getCase(int x, int y)
     {
         return cases[x][y].get();
     }
-    return nullptr;
+    throw std::runtime_error("Error: getCase out of bounds : " + std::to_string(x) + " " + std::to_string(y) + " / " + std::to_string(nbLines) + " " + std::to_string(nbColumns));
+}
+
+std::map<std::pair<int, int>, std::map<Direction::Dir, bool>> Carte::getAdjacents()
+{
+    std::map<std::pair<int, int>, std::map<Direction::Dir, bool>> adjacents;
+    for(int i = 0; i < nbLines; i++){
+        for(int j = 0; j < nbColumns; j++){
+            adjacents[std::make_pair(i, j)] = cases[i][j]->getAdjacent();
+        }
+    }
+    return adjacents;
 }
 
 void Carte::addSeenRoom(int room)
 {
     seenRooms[room] = true;
-}
-
-void Carte::addOpenedDoor(int doorId)
-{
-    openedDoors.push_back(doorId);
-}
-
-void Carte::removeOpenedDoor(int doorId)
-{
-    openedDoors.erase(std::remove(openedDoors.begin(), openedDoors.end(), doorId), openedDoors.end());
 }
 
 void Carte::scaleUp()

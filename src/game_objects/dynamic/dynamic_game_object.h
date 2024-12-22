@@ -9,7 +9,7 @@ protected:
     int speed;
     virtual void move(Direction::Dir direction);
 public:
-    DynamicGameObject(int health, int speed, std::unique_ptr<MultiTexture> animation, Carte* carte, int x, int y);
+    DynamicGameObject(int health, int speed, std::unique_ptr<MultiTexture> animation, GameManager* gameManager, int x, int y);
     int getHealth();
     ~DynamicGameObject() = default;
 };

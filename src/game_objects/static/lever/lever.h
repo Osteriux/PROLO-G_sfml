@@ -7,7 +7,7 @@ private:
     bool activated;
     int doorId;
 public:
-    Lever(std::unique_ptr<MultiTexture> animation, Carte* carte, int x, int y, int doorId);
+    Lever(std::unique_ptr<MultiTexture> animation, GameManager* gameManager, int x, int y, int doorId);
     void action(DynamicGameObject* user) override;
     ~Lever() = default;
 };

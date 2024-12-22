@@ -3,7 +3,11 @@
 #include <memory>
 #include <vector>
 #include "case.h"
+#include "../factorys/item_factory.h"
 #include "../utils/color/color_generator.h"
+#include "../utils/fileReader/level_file_handeler.h"
+
+class GameManager;
 
 class Carte
 {
@@ -19,16 +23,14 @@ private:
     sf::Vector2f origin;
     sf::Vector2f offset;
     std::map<int, bool> seenRooms;
-    std::vector<int> openedDoors;
-    int nbLines, nbColumns;
+    const int nbLines, nbColumns;
     void updateCases();
 public:
-    Carte(int nbLines, int nbColumns, sf::Vector2f origin, sf::Vector2u regionSize);
-    Carte(int nbLines, int nbColumns, sf::Vector2f origin, sf::Vector2u regionSize, std::map<std::pair<int, int>, std::tuple<int, std::vector<int>, std::vector<std::tuple<int, int>>>> casesData, int nbDoorColor);
+    Carte(int nbLines, int nbColumns, sf::Vector2f origin, sf::Vector2u regionSize, LevelFileData data);
+    void populate(LevelFileData data, std::unique_ptr<Joueur> j, GameManager* gameManager);
     Case* getCase(int x, int y);
+    std::map<std::pair<int, int>, std::map<Direction::Dir, bool>> getAdjacents();
     void addSeenRoom(int room);
-    void addOpenedDoor(int doorId);
-    void removeOpenedDoor(int doorId);
     void scaleUp();
     void scaleDown();
     void move(sf::Vector2f offset);

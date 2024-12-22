@@ -1,10 +1,12 @@
+#include "../manager/game_manager.h"
+#include "../carte/carte.h"
+#include "../carte/case.h"
 #include "game_object.h"
 
-GameObject::GameObject(std::unique_ptr<MultiTexture> animation, Carte* carte, int x, int y)
-    : carte(carte)
+GameObject::GameObject(std::unique_ptr<MultiTexture> animation, GameManager* gameManager, int x, int y)
+    : gameManager(gameManager)
 {
     this->animation = std::move(animation);
-    currCase = carte->getCase(x, y);
 }
 
 Case* GameObject::getCase()
@@ -12,8 +14,17 @@ Case* GameObject::getCase()
     return currCase;
 }
 
+void GameObject::setCase(Case* newCase)
+{
+    currCase = newCase;
+}
+
 void GameObject::setSpritePosition(sf::Vector2f position)
 {
+    if(animation == nullptr)
+    {
+        throw std::runtime_error("GameObject::setSpritePosition: animation is nullptr");
+    }
     animation->setPosition(position);
 }
 

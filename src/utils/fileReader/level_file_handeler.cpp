@@ -88,6 +88,8 @@ LevelFileData LevelFileHandeler::loadLevelFile(std::string filePath)
         for (int i = 0; i < data.nbEnemies; i++){
             std::getline(file, line);
             std::cout << "enemy data : " << line << std::endl;
+            std::vector<std::string> splitEnemy = split(line, ' ');
+            data.enemiesData[std::make_pair(std::stoi(splitEnemy[0]), std::stoi(splitEnemy[1]))] = std::stoi(splitEnemy[2]);
         }
 
         std::getline(file, line);
@@ -96,6 +98,26 @@ LevelFileData LevelFileHandeler::loadLevelFile(std::string filePath)
         for(int i = 0; i < data.nbItems; i++){
             std::getline(file, line);
             std::cout << "item data : " << line << std::endl;
+            std::vector<std::string> splitItem = split(line, ' ');
+            data.itemsData[std::make_pair(std::stoi(splitItem[0]), std::stoi(splitItem[1]))] = std::vector<int>();
+            std::vector<std::string> splitItemTypes = split(splitItem[2], ',');
+            for(auto it : splitItemTypes){
+                data.itemsData[std::make_pair(std::stoi(splitItem[0]), std::stoi(splitItem[1]))].push_back(std::stoi(it));
+            }
+        }
+
+        std::getline(file, line);
+        std::cout << "number of levers : " << line << std::endl;
+        data.nbLevers = std::stoi(line);
+        for(int i = 0; i < data.nbLevers; i++){
+            std::getline(file, line);
+            std::cout << "lever data : " << line << std::endl;
+            std::vector<std::string> splitLever = split(line, ' ');
+            data.leversData[std::make_pair(std::stoi(splitLever[0]), std::stoi(splitLever[1]))] = std::vector<int>();
+            std::vector<std::string> splitLeverColors = split(splitLever[2], ',');
+            for(auto lc : splitLeverColors){
+                data.leversData[std::make_pair(std::stoi(splitLever[0]), std::stoi(splitLever[1]))].push_back(std::stoi(lc));
+            }
         }
 
         file.close();

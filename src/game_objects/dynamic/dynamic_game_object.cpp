@@ -1,7 +1,10 @@
+#include "../../manager/game_manager.h"
+#include "../../carte/carte.h"
+#include "../../carte/case.h"
 #include "dynamic_game_object.h"
 
-DynamicGameObject::DynamicGameObject(int health, int speed ,std::unique_ptr<MultiTexture> animation, Carte* carte, int x, int y)
-    : GameObject(std::move(animation), carte, x, y), health(health), speed(speed)
+DynamicGameObject::DynamicGameObject(int health, int speed ,std::unique_ptr<MultiTexture> animation, GameManager* , int x, int y)
+    : GameObject(std::move(animation), gameManager, x, y), health(health), speed(speed)
 {
 }
 
@@ -12,13 +15,21 @@ int DynamicGameObject::getHealth()
 
 void DynamicGameObject::move(Direction::Dir direction)
 {
+    std::cout << "1" << std::endl;
     int x = currCase->getX();
+    std::cout << "2" << std::endl;
     int y = currCase->getY();
-    Case* nextCase = nullptr;
+    std::cout << "3" << std::endl;
+    Case* nextCase = currCase;
+    std::cout << "4" << std::endl;
+    Carte* carte = gameManager->getCarte();
+    std::cout << "5" << std::endl;
     switch (direction)
     {
     case Direction::UP:
+        std::cout << "6" << std::endl;
         nextCase = carte->getCase(x-1, y);
+        std::cout << "7" << std::endl;
         break;
     case Direction::DOWN:
         nextCase = carte->getCase(x+1, y);
@@ -32,6 +43,7 @@ void DynamicGameObject::move(Direction::Dir direction)
     default:
         break;
     }
+    std::cout << "Moving " << Direction::directionToString(direction) << " from : (" << x << "," << y << ") to (" << nextCase->getX() << "," << nextCase->getY() << ")" << std::endl;
     if (nextCase)
     {
         currCase->transferEntity(nextCase);
