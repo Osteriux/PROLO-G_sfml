@@ -11,6 +11,11 @@ Inventaire& Joueur::getInventaire()
     return inventaire;
 }
 
+std::string Joueur::getDescription()
+{
+    return "Joueur";
+}
+
 void Joueur::move(Direction::Dir direction)
 {
     DynamicGameObject::move(direction);

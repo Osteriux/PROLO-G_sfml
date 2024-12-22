@@ -1,3 +1,4 @@
+#include "../../dynamic/joueur/joueur.h"
 #include "item.h"
 
 Item::Item(std::string texture_path, Carte* carte, int x, int y)

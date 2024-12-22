@@ -40,19 +40,19 @@ void EventManager::handleKeyboardPressed(sf::Event::KeyEvent event)
         break;
     case sf::Keyboard::Up:
         std::cout << "Carte up" << std::endl;
-        gameManager->getCarte()->move(sf::Vector2f(0, -Case::SIZE));
+        gameManager->getCarte()->move(sf::Vector2f(0, Case::SIZE));
         break;
     case sf::Keyboard::Down:
         std::cout << "Carte down" << std::endl;
-        gameManager->getCarte()->move(sf::Vector2f(0, Case::SIZE));
+        gameManager->getCarte()->move(sf::Vector2f(0, -Case::SIZE));
         break;
     case sf::Keyboard::Left:
         std::cout << "Carte left" << std::endl;
-        gameManager->getCarte()->move(sf::Vector2f(-Case::SIZE, 0));
+        gameManager->getCarte()->move(sf::Vector2f(Case::SIZE, 0));
         break;
     case sf::Keyboard::Right:
         std::cout << "Carte right" << std::endl;
-        gameManager->getCarte()->move(sf::Vector2f(Case::SIZE, 0));
+        gameManager->getCarte()->move(sf::Vector2f(-Case::SIZE, 0));
         break;
     case sf::Keyboard::R:
         std::cout << "Carte reset" << std::endl;

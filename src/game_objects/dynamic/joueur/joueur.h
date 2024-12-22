@@ -9,6 +9,7 @@ private:
 public:
     Joueur(Carte* carte, int x, int y, int health, float speed);
     Inventaire& getInventaire();
+    std::string getDescription() override;
     void move(Direction::Dir direction);
     ~Joueur() = default;
 };

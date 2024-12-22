@@ -1,6 +1,8 @@
 #pragma once
 #include "../static_game_object.h"
 
+class Joueur;
+
 class Item : public StaticGameObject
 {
 public:
@@ -16,7 +18,8 @@ public:
     static int itemTypeToId(ItemType type);
     static ItemType idToItemType(int id);
     static std::vector<ItemType> getAllItemTypes();
+
     Item(std::string texture_path, Carte* carte, int x, int y);
-    virtual std::string getDescription() = 0;
+    virtual void ramasser(Joueur* user) = 0;
     ~Item() = default;
 };

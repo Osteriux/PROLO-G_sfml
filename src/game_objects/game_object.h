@@ -16,6 +16,7 @@ public:
     Case* getCase();
     void setSpritePosition(sf::Vector2f position);
     void setSpriteScale(sf::Vector2f scale);
+    virtual std::string getDescription() = 0;
     virtual void update(float dt);
     virtual void draw(sf::RenderTarget &target);
     ~GameObject() = default;
