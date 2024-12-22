@@ -13,8 +13,7 @@ Carte::Carte(int nbLines, int nbColumns, sf::Vector2f origin, sf::Vector2u regio
         }
     }
     renderTexture.create(regionSize.x, regionSize.y);
-    texture = renderTexture.getTexture();
-    sprite.setTexture(texture);
+    sprite.setTexture(renderTexture.getTexture());
     sprite.setPosition(origin);
     seenRooms[0] = true;
     outline.setFillColor(sf::Color::Transparent);
@@ -46,8 +45,7 @@ Carte::Carte(int nbLines, int nbColumns, sf::Vector2f origin, sf::Vector2u regio
         }
     }
     renderTexture.create(regionSize.x, regionSize.y);
-    texture = renderTexture.getTexture();
-    sprite.setTexture(texture);
+    sprite.setTexture(renderTexture.getTexture());
     sprite.setPosition(origin);
     outline.setFillColor(sf::Color::Transparent);
     outline.setOutlineColor(sf::Color::White);
@@ -87,14 +85,7 @@ void Carte::scaleUp()
     }
     scale.x += 0.1;
     scale.y += 0.1;
-    for (int i = 0; i < nbLines; i++)
-    {
-        for (int j = 0; j < nbColumns; j++)
-        {
-            cases[i][j]->setScale(scale);
-            cases[i][j]->setPosition(origin + sf::Vector2f(j * Case::SIZE * scale.x, i * Case::SIZE * scale.y));
-        }
-    }
+    updateCases();
 }
 
 void Carte::scaleDown()
@@ -104,12 +95,30 @@ void Carte::scaleDown()
     }
     scale.x -= 0.1;
     scale.y -= 0.1;
+    updateCases();
+}
+
+void Carte::move(sf::Vector2f offset)
+{
+    this->offset += offset;
+    updateCases();
+}
+
+void Carte::reset()
+{
+    offset = sf::Vector2f(0, 0);
+    scale = sf::Vector2f(1, 1);
+    updateCases();
+}
+
+void Carte::updateCases()
+{
     for (int i = 0; i < nbLines; i++)
     {
         for (int j = 0; j < nbColumns; j++)
         {
+            cases[i][j]->setPosition(origin + sf::Vector2f(j * Case::SIZE * scale.x, i * Case::SIZE * scale.y) + offset);
             cases[i][j]->setScale(scale);
-            cases[i][j]->setPosition(origin + sf::Vector2f(j * Case::SIZE * scale.x, i * Case::SIZE * scale.y));
         }
     }
 }
@@ -134,9 +143,6 @@ void Carte::draw(sf::RenderWindow &window)
     sf::View view(sf::FloatRect(origin.x, origin.y, regionSize.x, regionSize.y));
     renderTexture.setView(view);
 
-    // Draw the outline to the render texture
-    renderTexture.draw(outline);
-
     // Draw the cases within the outline to the render texture
     for (int i = 0; i < nbLines; i++)
     {
@@ -148,13 +154,12 @@ void Carte::draw(sf::RenderWindow &window)
             }
         }
     }
+    
+    // Draw the outline to the render texture
+    renderTexture.draw(outline);
 
     // Display the render texture
     renderTexture.display();
-
-    // Create a sprite from the render texture
-    texture = renderTexture.getTexture();
-    sprite.setTexture(texture);
 
     // Draw the sprite to the window
     window.draw(sprite);

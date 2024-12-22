@@ -41,6 +41,7 @@ void Porte::setScale(sf::Vector2f scale)
 {
     bg.setScale(scale);
     texture.setScale(scale);
+    setPosition(texture.getPosition());
 }
 
 void Porte::draw(sf::RenderTarget &target)

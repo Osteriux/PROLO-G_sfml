@@ -9,7 +9,6 @@ class Carte
 {
 private:
     sf::RenderTexture renderTexture;
-    sf::Texture texture;
     sf::Sprite sprite;
     sf::Vector2u regionSize;
     sf::Vector2f scale;
@@ -18,9 +17,11 @@ private:
     sf::RectangleShape outline;
     std::vector<std::vector<std::unique_ptr<Case>>> cases;
     sf::Vector2f origin;
+    sf::Vector2f offset;
     std::map<int, bool> seenRooms;
     std::vector<int> openedDoors;
     int nbLines, nbColumns;
+    void updateCases();
 public:
     Carte(int nbLines, int nbColumns, sf::Vector2f origin, sf::Vector2u regionSize);
     Carte(int nbLines, int nbColumns, sf::Vector2f origin, sf::Vector2u regionSize, std::map<std::pair<int, int>, std::tuple<int, std::vector<int>, std::vector<std::tuple<int, int>>>> casesData, int nbDoorColor);
@@ -30,6 +31,8 @@ public:
     void removeOpenedDoor(int doorId);
     void scaleUp();
     void scaleDown();
+    void move(sf::Vector2f offset);
+    void reset();
     void update(float dt);
     void draw(sf::RenderWindow &window);
     ~Carte() = default;
