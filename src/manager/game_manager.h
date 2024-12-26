@@ -23,4 +23,5 @@ public:
     void update(float dt);
     void draw(sf::RenderWindow &window);
     ~GameManager() = default;
+    void debug();
 };

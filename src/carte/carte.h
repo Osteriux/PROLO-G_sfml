@@ -38,4 +38,5 @@ public:
     void update(float dt);
     void draw(sf::RenderWindow &window);
     ~Carte() = default;
+    void debug();
 };

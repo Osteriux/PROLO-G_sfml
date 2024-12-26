@@ -51,12 +51,10 @@ void Carte::populate(LevelFileData levelData, GameManager* gameManager)
         }
     }
     std::cout << "Carte populated" << std::endl;
-    std::cout << "Carte size : " << this->nbLines << " " << this->nbColumns << std::endl;
 }
 
 Case* Carte::getCase(int x, int y)
 {
-    std::cout << "Carte size : " << this->nbLines << " " << this->nbColumns << std::endl;
     if (x >= 0 && x < nbLines && y >= 0 && y < nbColumns)
     {
         Case* c = cases[x][y].get();
@@ -65,7 +63,8 @@ Case* Carte::getCase(int x, int y)
         }
         return c;
     }
-    throw std::runtime_error("Error: getCase out of bounds : " + std::to_string(x) + " " + std::to_string(y) + " / " + std::to_string(nbLines) + " " + std::to_string(nbColumns));
+    std::cerr << "Error: getCase out of bounds : " + std::to_string(x) + " " + std::to_string(y) + " / " + std::to_string(nbLines) + " " + std::to_string(nbColumns) << std::endl;
+    return nullptr;
 }
 
 std::map<std::pair<int, int>, std::map<Direction::Dir, bool>> Carte::getAdjacents()
@@ -172,4 +171,9 @@ void Carte::draw(sf::RenderWindow &window)
 
     // Draw the outline to the window
     window.draw(outline);
+}
+
+void Carte::debug()
+{
+    std::cout << "Carte size : " << this->nbLines << " " << this->nbColumns << std::endl;
 }
