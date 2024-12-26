@@ -20,6 +20,7 @@ private:
     static constexpr float MIN_SCALE = 0.1f;
     sf::RectangleShape outline;
     std::vector<std::vector<std::unique_ptr<Case>>> cases;
+    std::vector<sf::Color> doorColors;
     sf::Vector2f origin;
     sf::Vector2f offset;
     std::map<int, bool> seenRooms;

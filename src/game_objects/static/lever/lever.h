@@ -6,8 +6,10 @@ class Lever : public StaticGameObject
 private:
     bool activated;
     int doorId;
+    static std::unique_ptr<MultiTexture> createRect(sf::Color color, int nb);
 public:
-    Lever(std::unique_ptr<MultiTexture> animation, GameManager* gameManager, int x, int y, int doorId);
+    Lever(sf::Color color, GameManager* gameManager, int x, int y, int doorId, int nb);
+    std::string getDescription() override;
     void action(DynamicGameObject* user) override;
     ~Lever() = default;
 };

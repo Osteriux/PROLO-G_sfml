@@ -18,3 +18,8 @@ std::unique_ptr<Item> ItemFactory::createItem(int x, int y, int type, GameManage
         throw std::invalid_argument("Invalid item type");
     }
 }
+
+std::unique_ptr<Lever> ItemFactory::createLever(sf::Color color, GameManager* gameManager, int x, int y, int doorId, int nb)
+{
+    return std::make_unique<Lever>(color, gameManager, x, y, doorId, nb);
+}

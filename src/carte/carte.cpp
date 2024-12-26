@@ -8,7 +8,7 @@ Carte::Carte(int nbLines, int nbColumns, sf::Vector2f origin, sf::Vector2u regio
 {
     this->nbLines = nbLines;
     this->nbColumns = nbColumns;
-    std::vector<sf::Color> doorColors = ColorGenerator::generateColors(levelData.nbDoorColor);
+    doorColors = ColorGenerator::generateColors(levelData.nbDoorColor);
     cases.resize(nbLines);
     for(int i = 0; i < nbLines; i++){
         cases[i].resize(nbColumns);
@@ -50,7 +50,15 @@ void Carte::populate(LevelFileData levelData, GameManager* gameManager)
             cases[itemData.first.first][itemData.first.second]->addItem(ItemFactory::createItem(itemData.first.first, itemData.first.second, itemTypeId, gameManager));
         }
     }
+    for(auto leverData : levelData.leversData){
+        int i = 0;
+        for(int doorId : leverData.second){
+            cases[leverData.first.first][leverData.first.second]->addItem(ItemFactory::createLever(doorColors[doorId], gameManager, leverData.first.first, leverData.first.second, doorId, i));
+            i++;
+        }
+    }
     std::cout << "Carte populated" << std::endl;
+    updateCases();
 }
 
 Case* Carte::getCase(int x, int y)

@@ -28,6 +28,34 @@ MultiTexture::MultiTexture(std::string texturePath, int nbImages)
     setTextureRect(rect);
 }
 
+MultiTexture::MultiTexture(sf::Color color, int width, int height, sf::Vector2f offset)
+    : nbLines(1), nbColumns(1), columnsSize(1, 1)
+{
+    // Create a render texture
+    sf::RenderTexture renderTexture;
+    renderTexture.create(32, 32);
+
+    // Create a rectangle shape with the given specifications
+    sf::RectangleShape shape(sf::Vector2f(width, height));
+    shape.setPosition(offset);
+    shape.setFillColor(color);
+
+    // Render the rectangle shape to the render texture
+    renderTexture.clear(sf::Color::Transparent);
+    renderTexture.draw(shape);
+    renderTexture.display();
+
+    // Get the texture from the render texture
+    texture = renderTexture.getTexture();
+
+    // Initialize other member variables
+    currLine = 0;
+    currColumn = 0;
+    rect = sf::IntRect(0, 0, 32, 32);
+    setTexture(texture);
+    setTextureRect(rect);
+}
+
 sf::Vector2f MultiTexture::getSize() const{
     return sf::Vector2f(rect.width, rect.height);
 }

@@ -91,11 +91,8 @@ void Case::setEntity(std::unique_ptr<DynamicGameObject> entity)
 
 void Case::addItem(std::unique_ptr<StaticGameObject> item)
 {
-    std::cout << "setting scale" << std::endl;
     item->setSpriteScale(this->getScale());
-    std::cout << "setting position" << std::endl;
     item->setSpritePosition(position);
-    std::cout<<" adding item to case"<<std::endl;
     items.push_back(std::move(item));
 }
 
@@ -124,15 +121,15 @@ void Case::draw(sf::RenderTarget &target)
     for(auto& porte : portes){ 
         porte.second->draw(target);
     }
-    // dessin de l'entité si elle existe
-    if (entity)
-    {
-        entity->draw(target);
-    }
     // dessin des items
     for (auto &item : items)
     {
         item->draw(target);
+    }
+    // dessin de l'entité si elle existe
+    if (entity)
+    {
+        entity->draw(target);
     }
 }
 
