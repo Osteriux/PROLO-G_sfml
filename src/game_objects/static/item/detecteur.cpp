@@ -1,7 +1,7 @@
 #include "detecteur.h"
 
 Detecteur::Detecteur(int x, int y, GameManager* gameManager)
-    : Item("assets/static/DETECTEUR.png", gameManager, x, y)
+    : Item(std::make_unique<MultiTexture>(Item::texturePath(Item::DETECTEUR), 2, 3, std::vector({3, 3})), gameManager, x, y)
 {
     type = ItemType::DETECTEUR;
     charge = 0;

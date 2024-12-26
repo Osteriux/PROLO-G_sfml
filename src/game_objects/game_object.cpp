@@ -30,6 +30,10 @@ void GameObject::setSpritePosition(sf::Vector2f position)
 
 void GameObject::setSpriteScale(sf::Vector2f scale)
 {
+    if(!animation)
+    {
+        std::cerr << "GameObject::setSpritePosition: animation is nullptr" << std::endl;
+    }
     animation->setScale(scale);
 }
 

@@ -2,8 +2,8 @@
 #include "../../../manager/game_manager.h"
 #include "item.h"
 
-Item::Item(std::string texture_path, GameManager* gameManager, int x, int y)
-    : StaticGameObject(std::make_unique<MultiTexture>(texture_path, 1), gameManager, x, y)
+Item::Item(std::unique_ptr<MultiTexture> tex, GameManager* gameManager, int x, int y)
+    : StaticGameObject(std::move(tex), gameManager, x, y)
 {
 }
 
@@ -80,4 +80,8 @@ Item::ItemType Item::idToItemType(int id)
     default:
         throw std::invalid_argument("Invalid item id");
     }
+}
+
+std::string Item::texturePath(ItemType type){
+    return "assets/static/"+ itemTypeToString(type) +".png";
 }

@@ -91,9 +91,12 @@ void Case::setEntity(std::unique_ptr<DynamicGameObject> entity)
 
 void Case::addItem(std::unique_ptr<StaticGameObject> item)
 {
-    items.push_back(std::move(item));
-    std::cout<<" adding item to case"<<std::endl;
+    std::cout << "setting scale" << std::endl;
+    item->setSpriteScale(this->getScale());
+    std::cout << "setting position" << std::endl;
     item->setSpritePosition(position);
+    std::cout<<" adding item to case"<<std::endl;
+    items.push_back(std::move(item));
 }
 
 void Case::removeItem(int index)

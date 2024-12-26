@@ -1,7 +1,7 @@
 #include "mine.h"
 
 Mine::Mine(int x, int y, GameManager* gameManager)
-    : Item("assets/static/MINE.png", gameManager, x, y)
+    : Item(std::make_unique<MultiTexture>(Item::texturePath(Item::MINE), 2), gameManager, x, y)
 {
     type = ItemType::MINE;
     active = false;

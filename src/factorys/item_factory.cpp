@@ -2,6 +2,7 @@
 
 std::unique_ptr<Item> ItemFactory::createItem(int x, int y, int type, GameManager* gameManager)
 {
+    std::cout << "creatind item " << type << " at : " << x << "," << y << std::endl;
     Item::ItemType itemType = Item::idToItemType(type);
     switch (itemType)
     {

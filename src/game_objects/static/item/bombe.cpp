@@ -2,7 +2,7 @@
 #include "../../dynamic/joueur/joueur.h"
 
 Bombe::Bombe(int x, int y, GameManager* gameManager)
-    : Item("assets/static/BOMBE.png", gameManager, x, y)
+    : Item(std::make_unique<MultiTexture>(Item::texturePath(Item::BOMBE), 2), gameManager, x, y)
 {
     type = ItemType::BOMBE;
 }

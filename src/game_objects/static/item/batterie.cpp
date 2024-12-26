@@ -2,7 +2,7 @@
 #include "../../dynamic/joueur/joueur.h"
 
 Batterie::Batterie(int x, int y, GameManager* gameManager)
-    : Item("assets/static/BATTERIE.png", gameManager, x, y)
+    : Item(std::make_unique<MultiTexture>(Item::texturePath(Item::BATTERIE), 1), gameManager, x, y)
 {
     type = ItemType::BATTERIE;
 }
