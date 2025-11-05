@@ -4,6 +4,7 @@
 class Chien : public Monstre
 {
 public:
-    Chien(sf::Vector2f position, GameManager* gameManager);
+    Chien(GameManager *gameManager, int x, int y);
+    std::string getDescription() const override;
     ~Chien() = default;
 };

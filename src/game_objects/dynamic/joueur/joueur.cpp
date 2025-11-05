@@ -11,7 +11,7 @@ Inventaire& Joueur::getInventaire()
     return inventaire;
 }
 
-std::string Joueur::getDescription()
+std::string Joueur::getDescription() const
 {
     return "Joueur";
 }

@@ -4,6 +4,7 @@
 #include <vector>
 #include "case.h"
 #include "../factorys/item_factory.h"
+#include "../factorys/monstre_factory.h"
 #include "../utils/color/color_generator.h"
 #include "../utils/fileReader/level_file_handeler.h"
 

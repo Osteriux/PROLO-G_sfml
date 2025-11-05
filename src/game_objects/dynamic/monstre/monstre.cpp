@@ -1,7 +1,8 @@
 #include "monstre.h"
+#include "../../../manager/game_manager.h"
 
-Monstre::Monstre(sf::Vector2f position, GameManager* gameManager, std::string type, int health, float speed)
-    : DynamicGameObject(health, speed, std::make_unique<MultiTexture>("assets/dynamic/"+ type +".png", 1), gameManager, position.x, position.y)
+Monstre::Monstre(GameManager *gameManager, std::string type, int health, int speed, int x, int y)
+    : DynamicGameObject(health, speed, std::make_unique<MultiTexture>("assets/dynamic/" + type + ".png", 1), gameManager, x, y)
 {
 }
 
@@ -56,7 +57,7 @@ Direction::Dir Monstre::pathFinding(int joueurX, int joueurY)
     }
 
     std::pair<int, int> current = player;
-    while (parents[current] != monster)
+    while (parents.find(current) != parents.end() && parents[current] != monster)
     {
         current = parents[current];
     }

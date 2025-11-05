@@ -57,6 +57,9 @@ void Carte::populate(LevelFileData levelData, GameManager* gameManager)
             i++;
         }
     }
+    for(auto monstreData : levelData.enemiesData){
+        cases[monstreData.first.first][monstreData.first.second]->setEntity(MonstreFactory::createMonstre(gameManager, Monstre::intToMonstreType(monstreData.second), monstreData.first.first, monstreData.first.second));
+    }
     std::cout << "Carte populated" << std::endl;
     updateCases();
 }

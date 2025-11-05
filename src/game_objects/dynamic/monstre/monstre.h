@@ -4,13 +4,16 @@
 #include <cmath>
 #include <functional>
 #include "../dynamic_game_object.h"
-#include "../../../manager/game_manager.h"
+
+// Forward declaration to avoid circular dependency with GameManager -> Carte -> MonstreFactory -> Monstre
+class GameManager;
 
 class Monstre : public DynamicGameObject
 {
 protected:
     float heuristic(std::pair<int, int> a, std::pair<int, int> b);
     Direction::Dir pathFinding(int joueurX, int joueurY);
+
 public:
     enum MonstreType
     {
@@ -23,6 +26,6 @@ public:
     static int monstreTypeToInt(MonstreType type);
     static MonstreType intToMonstreType(int type);
 
-    Monstre(sf::Vector2f position, GameManager* gameManager, std::string type, int health, float speed);
+    Monstre(GameManager *gameManager, std::string type, int health, int speed, int x, int y);
     ~Monstre() = default;
 };

@@ -7,7 +7,7 @@ Batterie::Batterie(int x, int y, GameManager* gameManager)
     type = ItemType::BATTERIE;
 }
 
-std::string Batterie::getDescription()
+std::string Batterie::getDescription() const
 {
     return "Batterie";
 }

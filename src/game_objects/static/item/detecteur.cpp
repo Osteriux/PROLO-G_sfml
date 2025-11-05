@@ -8,7 +8,7 @@ Detecteur::Detecteur(int x, int y, GameManager* gameManager)
     active = false;
 }
 
-std::string Detecteur::getDescription()
+std::string Detecteur::getDescription() const
 {
     return "Detecteur";
 }

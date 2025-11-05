@@ -9,7 +9,7 @@ private:
     static std::unique_ptr<MultiTexture> createRect(sf::Color color, int nb);
 public:
     Lever(sf::Color color, GameManager* gameManager, int x, int y, int doorId, int nb);
-    std::string getDescription() override;
+    std::string getDescription() const override;
     void action(DynamicGameObject* user) override;
     ~Lever() = default;
 };

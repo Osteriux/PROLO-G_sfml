@@ -8,7 +8,7 @@ private:
     bool active;
 public:
     Detecteur(int x, int y, GameManager* gameManager);
-    std::string getDescription() override;
+    std::string getDescription() const override;
     void action(DynamicGameObject* user) override;
     ~Detecteur() = default;
 };

@@ -7,7 +7,7 @@ Mine::Mine(int x, int y, GameManager* gameManager)
     active = false;
 }
 
-std::string Mine::getDescription()
+std::string Mine::getDescription() const
 {
     return "Mine";
 }

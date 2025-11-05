@@ -11,7 +11,7 @@ private:
 public:
     Joueur(GameManager* gameManager, int x, int y, int health);
     Inventaire& getInventaire();
-    std::string getDescription() override;
+    std::string getDescription() const override;
     void move(Direction::Dir direction);
     ~Joueur() = default;
 };

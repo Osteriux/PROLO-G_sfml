@@ -18,7 +18,7 @@ void Lever::action(DynamicGameObject* user)
     }
 }
 
-std::string Lever::getDescription()
+std::string Lever::getDescription() const
 {
     return "Levier";
 }

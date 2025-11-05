@@ -7,7 +7,7 @@ Bombe::Bombe(int x, int y, GameManager* gameManager)
     type = ItemType::BOMBE;
 }
 
-std::string Bombe::getDescription()
+std::string Bombe::getDescription() const
 {
     return "Bombe";
 }
