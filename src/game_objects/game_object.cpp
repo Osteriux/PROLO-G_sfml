@@ -1,10 +1,9 @@
 #include "../manager/game_manager.h"
-#include "../carte/carte.h"
-#include "../carte/case.h"
+#include "../map/map.h"
+#include "../map/case.h"
 #include "game_object.h"
 
-GameObject::GameObject(std::unique_ptr<MultiTexture> animation, GameManager* gameManager, int x, int y)
-    : gameManager(gameManager)
+GameObject::GameObject(std::unique_ptr<MultiTexture> animation, int x, int y)
 {
     this->animation = std::move(animation);
 }

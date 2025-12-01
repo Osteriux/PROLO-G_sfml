@@ -1,7 +1,7 @@
 #include "multi_texture.h"
 
-MultiTexture::MultiTexture(std::string texture_path, int nbLines, int nbColumns, std::vector<int> columnsSize)
-    : nbLines(nbLines), nbColumns(nbColumns), columnsSize(columnsSize)
+MultiTexture::MultiTexture(std::string texture_path, int lineCount, int columnCount, std::vector<int> columnsSize)
+    : lineCount(lineCount), columnCount(columnCount), columnsSize(columnsSize)
 {
     if (!texture.loadFromFile(texture_path))
     {
@@ -10,12 +10,12 @@ MultiTexture::MultiTexture(std::string texture_path, int nbLines, int nbColumns,
     currLine = 0;
     currColumn = 0;
     setTexture(texture);
-    rect = sf::IntRect(0, 0, texture.getSize().x / nbColumns, texture.getSize().y / nbLines);
+    rect = sf::IntRect(0, 0, texture.getSize().x / columnCount, texture.getSize().y / lineCount);
     setTextureRect(rect);
 }
 
 MultiTexture::MultiTexture(std::string texturePath, int nbImages)
-    : nbLines(1), nbColumns(nbImages), columnsSize(1, nbImages)
+    : lineCount(1), columnCount(nbImages), columnsSize(1, nbImages)
 {
     if (!texture.loadFromFile(texturePath))
     {
@@ -29,7 +29,7 @@ MultiTexture::MultiTexture(std::string texturePath, int nbImages)
 }
 
 MultiTexture::MultiTexture(sf::Color color, int width, int height, sf::Vector2f offset)
-    : nbLines(1), nbColumns(1), columnsSize(1, 1)
+    : lineCount(1), columnCount(1), columnsSize(1, 1)
 {
     // Create a render texture
     sf::RenderTexture renderTexture;

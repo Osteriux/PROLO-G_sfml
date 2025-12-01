@@ -1,10 +1,10 @@
 #include "event_manager.h"
+#include "game_manager.h"
+#include "../map/case.h"
 
-EventManager::EventManager(GameManager *gameManager)
-    : gameManager(gameManager)
+EventManager::EventManager()
 {
 }
-
 
 void EventManager::handleEvents(sf::Event event)
 {
@@ -31,32 +31,32 @@ void EventManager::handleKeyboardPressed(sf::Event::KeyEvent event)
     case sf::Keyboard::PageUp:
     case sf::Keyboard::Add:
         std::cout << "Zoom in" << std::endl;
-        gameManager->getCarte()->scaleUp();
+        GameManager::getInstance().getMap()->scaleUp();
         break;
     case sf::Keyboard::PageDown:
     case sf::Keyboard::Subtract:
         std::cout << "Zoom out" << std::endl;
-        gameManager->getCarte()->scaleDown();
+        GameManager::getInstance().getMap()->scaleDown();
         break;
     case sf::Keyboard::Up:
-        std::cout << "Carte up" << std::endl;
-        gameManager->getCarte()->move(sf::Vector2f(0, Case::SIZE));
+        std::cout << "Map up" << std::endl;
+        GameManager::getInstance().getMap()->move(sf::Vector2f(0, Case::SIZE));
         break;
     case sf::Keyboard::Down:
-        std::cout << "Carte down" << std::endl;
-        gameManager->getCarte()->move(sf::Vector2f(0, -Case::SIZE));
+        std::cout << "Map down" << std::endl;
+        GameManager::getInstance().getMap()->move(sf::Vector2f(0, -Case::SIZE));
         break;
     case sf::Keyboard::Left:
-        std::cout << "Carte left" << std::endl;
-        gameManager->getCarte()->move(sf::Vector2f(Case::SIZE, 0));
+        std::cout << "Map left" << std::endl;
+        GameManager::getInstance().getMap()->move(sf::Vector2f(Case::SIZE, 0));
         break;
     case sf::Keyboard::Right:
-        std::cout << "Carte right" << std::endl;
-        gameManager->getCarte()->move(sf::Vector2f(-Case::SIZE, 0));
+        std::cout << "Map right" << std::endl;
+        GameManager::getInstance().getMap()->move(sf::Vector2f(-Case::SIZE, 0));
         break;
     case sf::Keyboard::R:
-        std::cout << "Carte reset" << std::endl;
-        gameManager->getCarte()->reset();
+        std::cout << "Map reset" << std::endl;
+        GameManager::getInstance().getMap()->reset();
         break;
     default:
         break;
@@ -74,11 +74,10 @@ void EventManager::handleKeyboardReleased(sf::Event::KeyEvent event)
 
 void EventManager::handleMousePressed(sf::Event::MouseButtonEvent event)
 {
-    gameManager->getHUD().onClic(sf::Vector2f(event.x, event.y));
+    GameManager::getInstance().getHUD().onClic(sf::Vector2f(event.x, event.y));
     switch (event.button)
     {
     default:
         break;
     }
 }
-

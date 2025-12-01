@@ -12,11 +12,10 @@ class GameObject
 {
 protected:
     std::unique_ptr<MultiTexture> animation;
-    GameManager *gameManager;
     Case *currCase;
 
 public:
-    GameObject(std::unique_ptr<MultiTexture> animation, GameManager *gameManager, int x, int y);
+    GameObject(std::unique_ptr<MultiTexture> animation, int x, int y);
     Case *getCase();
     void setCase(Case *newCase);
     void setSpritePosition(sf::Vector2f position);

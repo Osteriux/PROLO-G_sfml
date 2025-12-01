@@ -1,10 +1,10 @@
 #include "../../manager/game_manager.h"
-#include "../../carte/carte.h"
-#include "../../carte/case.h"
+#include "../../map/map.h"
+#include "../../map/case.h"
 #include "dynamic_game_object.h"
 
-DynamicGameObject::DynamicGameObject(int health, int speed ,std::unique_ptr<MultiTexture> animation, GameManager* gameManager, int x, int y)
-    : GameObject(std::move(animation), gameManager, x, y), health(health), speed(speed)
+DynamicGameObject::DynamicGameObject(int health, int speed ,std::unique_ptr<MultiTexture> animation, int x, int y)
+    : GameObject(std::move(animation), x, y), health(health), speed(speed)
 {
 }
 
@@ -24,20 +24,20 @@ void DynamicGameObject::move(Direction::Dir direction)
     int x = currCase->getX();
     int y = currCase->getY();
     Case* nextCase = currCase;
-    Carte* carte = gameManager->getCarte();
+    Map* map = GameManager::getInstance().getMap();
     switch (direction)
     {
     case Direction::UP:
-        nextCase = carte->getCase(x-1, y);
+        nextCase = map->getCase(x-1, y);
         break;
     case Direction::DOWN:
-        nextCase = carte->getCase(x+1, y);
+        nextCase = map->getCase(x+1, y);
         break;
     case Direction::LEFT:
-        nextCase = carte->getCase(x, y-1);
+        nextCase = map->getCase(x, y-1);
         break;
     case Direction::RIGHT:
-        nextCase = carte->getCase(x, y+1);
+        nextCase = map->getCase(x, y+1);
         break;
     default:
         break;

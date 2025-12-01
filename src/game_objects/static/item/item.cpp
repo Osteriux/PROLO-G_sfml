@@ -1,20 +1,20 @@
-#include "../../dynamic/joueur/joueur.h"
+#include "../../dynamic/player/player.h"
 #include "../../../manager/game_manager.h"
 #include "item.h"
 
-Item::Item(std::unique_ptr<MultiTexture> tex, GameManager* gameManager, int x, int y)
-    : StaticGameObject(std::move(tex), gameManager, x, y)
+Item::Item(std::unique_ptr<MultiTexture> tex, int x, int y)
+    : StaticGameObject(std::move(tex), x, y)
 {
 }
 
-void Item::ramasser(Joueur* user)
+void Item::pickup(Player* user)
 {
-    user->getInventaire().addItem(type);
+    user->getInventory().addItem(type);
 }
 
 std::vector<Item::ItemType> Item::getAllItemTypes()
 {
-    return {ItemType::MINE, ItemType::BATTERIE, ItemType::BOMBE, ItemType::DETECTEUR};
+    return {ItemType::MINE, ItemType::BATTERY, ItemType::BOMB, ItemType::DETECTOR};
 }
 
 std::string Item::itemTypeToString(ItemType type)
@@ -23,12 +23,12 @@ std::string Item::itemTypeToString(ItemType type)
     {
     case ItemType::MINE:
         return "MINE";
-    case ItemType::BATTERIE:
-        return "BATTERIE";
-    case ItemType::BOMBE:
-        return "BOMBE";
-    case ItemType::DETECTEUR:
-        return "DETECTEUR";
+    case ItemType::BATTERY:
+        return "BATTERY";
+    case ItemType::BOMB:
+        return "BOMB";
+    case ItemType::DETECTOR:
+        return "DETECTOR";
     default:
         throw std::invalid_argument("Invalid item type");
     }
@@ -38,12 +38,12 @@ Item::ItemType Item::stringToItemType(std::string type)
 {
     if (type == "MINE")
         return ItemType::MINE;
-    else if (type == "BATTERIE")
-        return ItemType::BATTERIE;
-    else if (type == "BOMBE")
-        return ItemType::BOMBE;
-    else if (type == "DETECTEUR")
-        return ItemType::DETECTEUR;
+    else if (type == "BATTERY")
+        return ItemType::BATTERY;
+    else if (type == "BOMB")
+        return ItemType::BOMB;
+    else if (type == "DETECTOR")
+        return ItemType::DETECTOR;
     else
         throw std::invalid_argument("Invalid item type");
 }
@@ -54,11 +54,11 @@ int Item::itemTypeToId(ItemType type)
     {
     case ItemType::MINE:
         return 0;
-    case ItemType::BATTERIE:
+    case ItemType::BATTERY:
         return 1;
-    case ItemType::BOMBE:
+    case ItemType::BOMB:
         return 2;
-    case ItemType::DETECTEUR:
+    case ItemType::DETECTOR:
         return 3;
     default:
         throw std::invalid_argument("Invalid item id");
@@ -72,16 +72,17 @@ Item::ItemType Item::idToItemType(int id)
     case 0:
         return ItemType::MINE;
     case 1:
-        return ItemType::BATTERIE;
+        return ItemType::BATTERY;
     case 2:
-        return ItemType::BOMBE;
+        return ItemType::BOMB;
     case 3:
-        return ItemType::DETECTEUR;
+        return ItemType::DETECTOR;
     default:
         throw std::invalid_argument("Invalid item id");
     }
 }
 
-std::string Item::texturePath(ItemType type){
-    return "assets/static/"+ itemTypeToString(type) +".png";
+std::string Item::texturePath(ItemType type)
+{
+    return "assets/static/" + itemTypeToString(type) + ".png";
 }

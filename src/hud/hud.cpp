@@ -1,16 +1,16 @@
 #include "hud.h"
 
-HUD::HUD(sf::Vector2u origin, sf::Vector2u size, Joueur* joueur)
-    : origin(origin), size(size), joueur(joueur),
-      leftArrow(sf::Vector2f(origin.x + 10, origin.y + 110), sf::Vector2f(32,32), "assets/boutons/LEFT.png"),
-      downArrow(sf::Vector2f(origin.x + 50, origin.y + 150), sf::Vector2f(32,32), "assets/boutons/DOWN.png"),
-      rightArrow(sf::Vector2f(origin.x + 90, origin.y + 110), sf::Vector2f(32,32), "assets/boutons/RIGHT.png"),
-      upArrow(sf::Vector2f(origin.x + 50, origin.y + 70), sf::Vector2f(32,32), "assets/boutons/UP.png"),
-      useRadar(sf::Vector2f(origin.x + 50, origin.y + 110), sf::Vector2f(32,32), "assets/boutons/RADAR.png"),
+HUD::HUD(sf::Vector2u origin, sf::Vector2u size, Player* player)
+    : origin(origin), size(size), player(player),
+      leftArrow(sf::Vector2f(origin.x + 10, origin.y + 110), sf::Vector2f(32,32), "assets/buttons/LEFT.png"),
+      downArrow(sf::Vector2f(origin.x + 50, origin.y + 150), sf::Vector2f(32,32), "assets/buttons/DOWN.png"),
+      rightArrow(sf::Vector2f(origin.x + 90, origin.y + 110), sf::Vector2f(32,32), "assets/buttons/RIGHT.png"),
+      upArrow(sf::Vector2f(origin.x + 50, origin.y + 70), sf::Vector2f(32,32), "assets/buttons/UP.png"),
+      useRadar(sf::Vector2f(origin.x + 50, origin.y + 110), sf::Vector2f(32,32), "assets/buttons/RADAR.png"),
       mineB(sf::Vector2f(origin.x + 140, origin.y + 90), sf::Vector2f(32,32), "assets/hud/MINE.png"),
-      batterieB(sf::Vector2f(origin.x + 200, origin.y + 90), sf::Vector2f(32,32), "assets/hud/BATTERIE.png"),
-      bombeB(sf::Vector2f(origin.x + 140, origin.y + 130), sf::Vector2f(32,32), "assets/hud/BOMBE.png"),
-      detecteurB(sf::Vector2f(origin.x + 200, origin.y + 130), sf::Vector2f(32,32), "assets/hud/DETECTEUR.png")
+      batterieB(sf::Vector2f(origin.x + 200, origin.y + 90), sf::Vector2f(32,32), "assets/hud/BATTERY.png"),
+      bombeB(sf::Vector2f(origin.x + 140, origin.y + 130), sf::Vector2f(32,32), "assets/hud/BOMB.png"),
+      detecteurB(sf::Vector2f(origin.x + 200, origin.y + 130), sf::Vector2f(32,32), "assets/hud/DETECTOR.png")
 {
     if (!font.loadFromFile("assets/fonts/arial.ttf"))
     {
@@ -55,21 +55,21 @@ HUD::HUD(sf::Vector2u origin, sf::Vector2u size, Joueur* joueur)
     ramasserText.setFillColor(sf::Color::White);
     ramasserText.setPosition(sf::Vector2f(origin.x + 10, origin.y + 190));
     ramasserText.setString("Ramasser :");
-    // ramasserActions.push_back(ButtonImage(sf::Vector2f(origin.x + 10, origin.y + 310), sf::Vector2f(32,32), "assets/boutons/ITEM.png"));
+    // ramasserActions.push_back(ButtonImage(sf::Vector2f(origin.x + 10, origin.y + 310), sf::Vector2f(32,32), "assets/buttons/ITEM.png"));
 
     interagireText.setFont(font);
     interagireText.setCharacterSize(24);
     interagireText.setFillColor(sf::Color::White);
     interagireText.setPosition(sf::Vector2f(origin.x + 10, origin.y + 350));
     interagireText.setString("Interagir :");
-    // interagireActions.push_back(ButtonImage(sf::Vector2f(origin.x + 10, origin.y + 390), sf::Vector2f(32,32), "assets/boutons/ITEM.png"));
+    // interagireActions.push_back(ButtonImage(sf::Vector2f(origin.x + 10, origin.y + 390), sf::Vector2f(32,32), "assets/buttons/ITEM.png"));
 
     buttonsText.setFont(font);
     buttonsText.setCharacterSize(24);
     buttonsText.setFillColor(sf::Color::White);
     buttonsText.setPosition(sf::Vector2f(origin.x + 10, origin.y + 430));
     buttonsText.setString("Boutons : ON/OFF");
-    // buttonsActions.push_back(ButtonLevier(sf::Vector2f(origin.x + 10, origin.y + 470), sf::Vector2f(32,32), "assets/boutons/ITEM.png"));
+    // buttonsActions.push_back(ButtonLever(sf::Vector2f(origin.x + 10, origin.y + 470), sf::Vector2f(32,32), "assets/buttons/ITEM.png"));
 }
 
 void HUD::onClic(sf::Vector2f mousePosition)
@@ -77,62 +77,62 @@ void HUD::onClic(sf::Vector2f mousePosition)
     if (leftArrow.isClicked(mousePosition))
     {
         std::cout << "left" << std::endl;
-        joueur->move(Direction::LEFT);
+        player->move(Direction::LEFT);
     }
     else if (downArrow.isClicked(mousePosition))
     {
         std::cout << "down" << std::endl;
-        joueur->move(Direction::DOWN);
+        player->move(Direction::DOWN);
     }
     else if (rightArrow.isClicked(mousePosition))
     {
         std::cout << "right" << std::endl;
-        joueur->move(Direction::RIGHT);
+        player->move(Direction::RIGHT);
     }
     else if (upArrow.isClicked(mousePosition))
     {
         std::cout << "up" << std::endl;
-        joueur->move(Direction::UP);
+        player->move(Direction::UP);
     }
     else if (useRadar.isClicked(mousePosition))
     {
         std::cout << "radar" << std::endl;
-        // joueur->useRadar();
+        // player->useRadar();
     }
     else if (mineB.isClicked(mousePosition))
     {
         std::cout << "mine" << std::endl;
-        // joueur->useItem(Item::ItemType::MINE);
+        // player->useItem(Item::ItemType::MINE);
     }
     else if (batterieB.isClicked(mousePosition))
     {
-        std::cout << "batterie" << std::endl;
-        // joueur->useItem(Item::ItemType::BATTERIE);
+        std::cout << "battery" << std::endl;
+        // player->useItem(Item::ItemType::BATTERY);
     }
     else if (bombeB.isClicked(mousePosition))
     {
-        std::cout << "bombe" << std::endl;
-        // joueur->useItem(Item::ItemType::BOMBE);
+        std::cout << "bomb" << std::endl;
+        // player->useItem(Item::ItemType::BOMB);
     }
     else if (detecteurB.isClicked(mousePosition))
     {
-        std::cout << "detecteur" << std::endl;
-        // joueur->useItem(Item::ItemType::DETECTEUR);
+        std::cout << "detector" << std::endl;
+        // player->useItem(Item::ItemType::DETECTOR);
     }
 }
 
 void HUD::update(float dt)
 {
-    mineT.setString(std::to_string(joueur->getInventaire().getQuantity(Item::ItemType::MINE)));
-    batterieT.setString(std::to_string(joueur->getInventaire().getQuantity(Item::ItemType::BATTERIE)));
-    bombeT.setString(std::to_string(joueur->getInventaire().getQuantity(Item::ItemType::BOMBE)));
-    detecteurT.setString(std::to_string(joueur->getInventaire().getQuantity(Item::ItemType::DETECTEUR)));
+    mineT.setString(std::to_string(player->getInventory().getQuantity(Item::ItemType::MINE)));
+    batterieT.setString(std::to_string(player->getInventory().getQuantity(Item::ItemType::BATTERY)));
+    bombeT.setString(std::to_string(player->getInventory().getQuantity(Item::ItemType::BOMB)));
+    detecteurT.setString(std::to_string(player->getInventory().getQuantity(Item::ItemType::DETECTOR)));
 }
 
 void HUD::draw(sf::RenderWindow &window)
 {
     window.draw(outline);
-    for(int h = 0; h < joueur->getHealth(); h++)
+    for(int h = 0; h < player->getHealth(); h++)
     {
         heart.setPosition(sf::Vector2f(origin.x + 10 + h*50, origin.y + 10));
         window.draw(heart);

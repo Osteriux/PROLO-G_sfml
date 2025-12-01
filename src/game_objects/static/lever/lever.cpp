@@ -1,11 +1,11 @@
 #include "lever.h"
 
-Lever::Lever(sf::Color color, GameManager* gameManager, int x, int y, int doorId, int nb)
-    : StaticGameObject(createRect(color, nb), gameManager, x, y), activated(false), doorId(doorId)
+Lever::Lever(sf::Color color, int x, int y, int doorId, int nb)
+    : StaticGameObject(createRect(color, nb), x, y), activated(false), doorId(doorId)
 {
 }
 
-void Lever::action(DynamicGameObject* user)
+void Lever::action(DynamicGameObject *user)
 {
     activated = !activated;
     if (activated)
@@ -20,19 +20,22 @@ void Lever::action(DynamicGameObject* user)
 
 std::string Lever::getDescription() const
 {
-    return "Levier";
+    return "Lever";
 }
 
 std::unique_ptr<MultiTexture> Lever::createRect(sf::Color color, int nb)
 {
-    if(nb > 20){
-        throw std::invalid_argument("trop de levier sur le même case : must be less than 20");
+    if (nb > 20)
+    {
+        throw std::invalid_argument("too many levers on the same case: must be less than 20");
     }
     sf::Vector2f pos(7, 7);
-    if(nb > 10){
+    if (nb > 10)
+    {
         pos.x = 21;
     }
-    if((nb / 5) % 2 == 1){
+    if ((nb / 5) % 2 == 1)
+    {
         pos.x += 3;
     }
     pos.y += 3 * (nb % 5);

@@ -6,12 +6,12 @@ class MultiTexture : public sf::Sprite
 {
 protected:
     sf::Texture texture;
-    int nbColumns, nbLines;
+    int columnCount, lineCount;
     int currLine, currColumn;
     std::vector<int> columnsSize;
     sf::IntRect rect;
 public:
-    MultiTexture(std::string texture_path, int nbLines, int nbColumns, std::vector<int> columnsSize);
+    MultiTexture(std::string texture_path, int lineCount, int columnCount, std::vector<int> columnsSize);
     MultiTexture(std::string texturePath, int nbImages);
     MultiTexture(sf::Color color, int width, int height, sf::Vector2f offset);
     sf::Vector2f getSize() const;

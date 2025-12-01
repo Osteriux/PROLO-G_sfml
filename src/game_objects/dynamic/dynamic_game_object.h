@@ -1,6 +1,6 @@
 #pragma once
 #include "../game_object.h"
-#include "../../carte/direction.h"
+#include "../../map/direction.h"
 
 class DynamicGameObject : public GameObject
 {
@@ -9,7 +9,7 @@ protected:
     int speed;
     virtual void move(Direction::Dir direction);
 public:
-    DynamicGameObject(int health, int speed, std::unique_ptr<MultiTexture> animation, GameManager* gameManager, int x, int y);
+    DynamicGameObject(int health, int speed, std::unique_ptr<MultiTexture> animation, int x, int y);
     int getHealth();
     ~DynamicGameObject() = default;
 };

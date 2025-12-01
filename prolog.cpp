@@ -10,8 +10,9 @@ int main()
     sf::Vector2u windowSize = sf::Vector2u(baseSize.x * scale.x, baseSize.y * scale.y);
     sf::RenderWindow window(sf::VideoMode(windowSize.x, windowSize.y), "PROLO-G");
 
-    GameManager gameManager(windowSize, "assets/levels/test3.txt");
-    EventManager eventManager(&gameManager);
+    // Initialize the GameManager singleton
+    GameManager::initialize(windowSize, "assets/levels/test3.txt");
+    EventManager eventManager;
 
     sf::Clock clock;
 
@@ -36,13 +37,16 @@ int main()
         window.clear();
 
         // dessin de tout ce qu'on a à dessiner
-        gameManager.draw(window);
+        GameManager::getInstance().draw(window);
 
-        gameManager.update(dt);
+        GameManager::getInstance().update(dt);
 
         // fin de la frame courante, affichage de tout ce qu'on a dessiné
         window.display();
     }
+
+    // Clean up the singleton
+    GameManager::destroy();
 
     return 0;
 }

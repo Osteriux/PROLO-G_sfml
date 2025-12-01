@@ -10,21 +10,21 @@ struct LevelFileData{
     /// @brief The name of the level
     std::string levelName;
     /// @brief The width of map
-    int wCarte;
+    int mapWidth;
     /// @brief The height of map
-    int hCarte;
+    int mapHeight;
     /// @brief number of different door colors
-    int nbDoorColor;
+    int doorColorCount;
     /// @brief The x position of the player
-    int joueurX;
+    int playerX;
     /// @brief The y position of the player
-    int joueurY;
+    int playerY;
     /// @brief The number of enemies
-    int nbEnemies;
+    int enemyCount;
     /// @brief The number of items
-    int nbItems;
+    int itemCount;
     /// @brief The number of levers
-    int nbLevers;
+    int leverCount;
     /// @brief The data of the cases
     ///  The key is the position of the case and the value is a tuple containing the room number, the neighboors direction and the doors direction and color
     std::map<std::pair<int, int>, std::tuple<int, std::vector<int>, std::vector<std::tuple<int, int>>>> casesData;

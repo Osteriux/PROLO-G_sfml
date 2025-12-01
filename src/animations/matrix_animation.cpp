@@ -1,7 +1,7 @@
 #include "matrix_animation.h"
 
-MatrixAnimation::MatrixAnimation(std::string texture_path, int nbLines, int nbColumns, std::vector<int> columnsSize, float switchTime)
-    : MultiTexture(texture_path, nbLines, nbColumns, columnsSize), switchTime(switchTime)
+MatrixAnimation::MatrixAnimation(std::string texture_path, int lineCount, int columnCount, std::vector<int> columnsSize, float switchTime)
+    : MultiTexture(texture_path, lineCount, columnCount, columnsSize), switchTime(switchTime)
 {
     if (!texture.loadFromFile(texture_path))
     {
@@ -10,7 +10,7 @@ MatrixAnimation::MatrixAnimation(std::string texture_path, int nbLines, int nbCo
     currLine = 0;
     currColumn = 0;
     currentTime = 0;
-    rect = sf::IntRect(0, 0, texture.getSize().x / nbColumns, texture.getSize().y / nbLines);
+    rect = sf::IntRect(0, 0, texture.getSize().x / columnCount, texture.getSize().y / lineCount);
     setTextureRect(rect);
 }
 

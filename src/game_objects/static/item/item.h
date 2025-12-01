@@ -3,7 +3,7 @@
 
 class GameManager;
 
-class Joueur;
+class Player;
 
 class Item : public StaticGameObject
 {
@@ -11,22 +11,22 @@ public:
     enum class ItemType
     {
         MINE,
-        BATTERIE,
-        BOMBE,
-        DETECTEUR
+        BATTERY,
+        BOMB,
+        DETECTOR
     };
     static const ItemType MINE = ItemType::MINE;
-    static const ItemType BATTERIE = ItemType::BATTERIE;
-    static const ItemType BOMBE = ItemType::BOMBE;
-    static const ItemType DETECTEUR = ItemType::DETECTEUR;
+    static const ItemType BATTERY = ItemType::BATTERY;
+    static const ItemType BOMB = ItemType::BOMB;
+    static const ItemType DETECTOR = ItemType::DETECTOR;
     static std::string itemTypeToString(ItemType type);
     static ItemType stringToItemType(std::string type);
     static int itemTypeToId(ItemType type);
     static ItemType idToItemType(int id);
     static std::vector<ItemType> getAllItemTypes();
 
-    Item(std::unique_ptr<MultiTexture> tex, GameManager* gameManager, int x, int y);
-    void ramasser(Joueur* user);
+    Item(std::unique_ptr<MultiTexture> tex, int x, int y);
+    void pickup(Player* user);
     ~Item() = default;
 protected:
     ItemType type;
