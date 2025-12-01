@@ -40,19 +40,19 @@ void EventManager::handleKeyboardPressed(sf::Event::KeyEvent event)
         break;
     case sf::Keyboard::Up:
         std::cout << "Map up" << std::endl;
-        GameManager::getInstance().getMap()->move(sf::Vector2f(0, Case::SIZE));
+        GameManager::getInstance().getMap()->move(sf::Vector2f(0, -Case::SIZE));
         break;
     case sf::Keyboard::Down:
         std::cout << "Map down" << std::endl;
-        GameManager::getInstance().getMap()->move(sf::Vector2f(0, -Case::SIZE));
+        GameManager::getInstance().getMap()->move(sf::Vector2f(0, Case::SIZE));
         break;
     case sf::Keyboard::Left:
         std::cout << "Map left" << std::endl;
-        GameManager::getInstance().getMap()->move(sf::Vector2f(Case::SIZE, 0));
+        GameManager::getInstance().getMap()->move(sf::Vector2f(-Case::SIZE, 0));
         break;
     case sf::Keyboard::Right:
         std::cout << "Map right" << std::endl;
-        GameManager::getInstance().getMap()->move(sf::Vector2f(-Case::SIZE, 0));
+        GameManager::getInstance().getMap()->move(sf::Vector2f(Case::SIZE, 0));
         break;
     case sf::Keyboard::R:
         std::cout << "Map reset" << std::endl;

@@ -1,11 +1,11 @@
 #pragma once
-#include "item.h"
+#include "pickup.h"
 
-class Battery : public Item
+class Battery : public Pickup
 {
 public:
     Battery(int x, int y);
     std::string getDescription() const override;
-    void action(DynamicGameObject* user) override;
+    void action(DynamicGameObject *user) override;
     ~Battery() = default;
 };

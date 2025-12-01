@@ -1,11 +1,12 @@
 #include "lever.h"
 
 Lever::Lever(sf::Color color, int x, int y, int doorId, int nb)
-    : StaticGameObject(createRect(color, nb), x, y), activated(false), doorId(doorId)
+    : Interactible(createRect(color, nb), x, y), activated(false), doorId(doorId)
 {
+    type = InteractibleType::LEVER;
 }
 
-void Lever::action(DynamicGameObject *user)
+void Lever::interact(DynamicGameObject *user)
 {
     activated = !activated;
     if (activated)

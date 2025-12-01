@@ -1,0 +1,88 @@
+#include "../../dynamic/player/player.h"
+#include "../../../manager/game_manager.h"
+#include "pickup.h"
+
+Pickup::Pickup(std::unique_ptr<MultiTexture> tex, int x, int y)
+    : StaticGameObject(std::move(tex), x, y)
+{
+}
+
+void Pickup::pickup(Player *user)
+{
+    user->getInventory().addPickup(type);
+}
+
+std::vector<Pickup::PickupType> Pickup::getAllPickupTypes()
+{
+    return {PickupType::MINE, PickupType::BATTERY, PickupType::BOMB, PickupType::DETECTOR};
+}
+
+std::string Pickup::pickupTypeToString(PickupType type)
+{
+    switch (type)
+    {
+    case PickupType::MINE:
+        return "MINE";
+    case PickupType::BATTERY:
+        return "BATTERY";
+    case PickupType::BOMB:
+        return "BOMB";
+    case PickupType::DETECTOR:
+        return "DETECTOR";
+    default:
+        throw std::invalid_argument("Invalid pickup type");
+    }
+}
+
+Pickup::PickupType Pickup::stringToPickupType(std::string type)
+{
+    if (type == "MINE")
+        return PickupType::MINE;
+    else if (type == "BATTERY")
+        return PickupType::BATTERY;
+    else if (type == "BOMB")
+        return PickupType::BOMB;
+    else if (type == "DETECTOR")
+        return PickupType::DETECTOR;
+    else
+        throw std::invalid_argument("Invalid pickup type");
+}
+
+int Pickup::pickupTypeToId(PickupType type)
+{
+    switch (type)
+    {
+    case PickupType::MINE:
+        return 0;
+    case PickupType::BATTERY:
+        return 1;
+    case PickupType::BOMB:
+        return 2;
+    case PickupType::DETECTOR:
+        return 3;
+    default:
+        throw std::invalid_argument("Invalid pickup id");
+    }
+}
+
+Pickup::PickupType Pickup::idToPickupType(int id)
+{
+    switch (id)
+    {
+    case 0:
+        return PickupType::MINE;
+    case 1:
+        return PickupType::BATTERY;
+    case 2:
+        return PickupType::BOMB;
+    case 3:
+        return PickupType::DETECTOR;
+    default:
+        throw std::invalid_argument("Invalid pickup id");
+    }
+}
+
+std::string Pickup::texturePath(PickupType type)
+{
+    return "assets/static/" + pickupTypeToString(type) + ".png";
+}

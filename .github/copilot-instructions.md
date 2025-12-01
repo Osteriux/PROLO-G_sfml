@@ -9,7 +9,7 @@ PROLO-G is a dungeon-exploration game using C++17 and SFML 2.6.2 with a **Single
 - **GameManager** (Singleton): Central coordinator accessed via `GameManager::getInstance()`. Initialize with `GameManager::initialize(windowSize, levelPath)` before use, destroy with `GameManager::destroy()` on cleanup.
 - **EventManager**: Handles SFML input events, delegates to GameManager singleton (no member reference needed).
 - **Map**: Grid-based map system with `Case` cells, handles rendering/scaling/visibility.
-- **GameObject Hierarchy**: `GameObject` → `DynamicGameObject` (Player, Monster) / `StaticGameObject` (Item, Lever).
+- **GameObject Hierarchy**: `GameObject` → `DynamicGameObject` (Player, Monster) / `StaticGameObject` → `Pickup` (Mine, Battery, Bomb, Detector) / `Interactible` (Lever).
 
 ### Memory Ownership Model
 
@@ -38,9 +38,9 @@ class DynamicGameObject;
 ### 2. Factory Pattern for Object Creation
 
 ```cpp
-// ItemFactory - no GameManager parameter needed
-auto item = ItemFactory::createItem(x, y, itemTypeId);
-auto lever = ItemFactory::createLever(color, x, y, doorId, nb);
+// PickupFactory - no GameManager parameter needed
+auto pickup = PickupFactory::createPickup(x, y, pickupTypeId);
+auto lever = PickupFactory::createLever(color, x, y, doorId, nb);
 
 // MonsterFactory - no GameManager parameter
 auto monster = MonsterFactory::createMonster(monsterType, x, y);
@@ -89,7 +89,7 @@ cmake --build out/build/prolo-g_preset
 
 ### Asset Handling
 
-Assets auto-copy from `assets/` to build directory post-build. Level files are in `assets/levels/*.txt` with custom format parsed by `LevelFileHandeler`.
+Assets auto-copy from `assets/` to build directory post-build. Level files are in `assets/font/*.txt` with custom format parsed by `LevelFileHandeler`.
 
 ## Code Conventions
 
@@ -114,19 +114,28 @@ Use `#pragma once` exclusively (modern compiler support assumed).
 
 ### Adding New GameObject Type
 
-1. Inherit from `DynamicGameObject` or `StaticGameObject`
+1. Inherit from `DynamicGameObject`, `Pickup`, or `Interactible`
 2. Constructor signature: `MyObject(int x, int y, ...other params)` - NO GameManager param
-3. Call parent with `GameObject(std::move(texture), x, y)`
-2. Access GameManager in methods: `GameManager::getInstance().getMap()`
+3. Call parent with appropriate constructor (e.g., `Pickup(std::move(texture), x, y)`)
+4. Access GameManager in methods: `GameManager::getInstance().getMap()`
 5. Add factory method if needed (return `std::unique_ptr<YourType>`)
 
-### Adding New Item Type
+### Adding New Pickup Type
 
-1. Add enum to `Item::ItemType` in `item.h`
-2. Create subclass inheriting from `Item`
+1. Add enum to `Pickup::PickupType` in `pickup.h`
+2. Create subclass in `src/game_object/static/pickup/` inheriting from `Pickup`
 3. Implement `getDescription()` and `action(DynamicGameObject* user)` overrides
-4. Add case to `ItemFactory::createItem()` switch
-5. Add texture path to `Item::texturePath()` static method
+4. Add case to `PickupFactory::createPickup()` switch in `src/factory/item_factory.cpp`
+5. Add texture path to `Pickup::texturePath()` static method
+6. Add corresponding PNG file to `assets/static/`
+
+### Adding New Interactible Type
+
+1. Add enum to `Interactible::InteractibleType` in `interactible.h`
+2. Create subclass in `src/game_object/static/interactible/` inheriting from `Interactible`
+3. Implement `getDescription()` and `interact(DynamicGameObject* user)` overrides
+4. Add factory method to `PickupFactory` in `src/factory/item_factory.h/cpp` if needed
+5. Interactibles are triggered by player interaction, while Pickups are collected automatically
 
 ### Modifying Game State Access
 
@@ -145,4 +154,14 @@ Doxygen HTML docs in `doc/html/` - regenerate with `doxygen Doxyfile`.
 
 ## Recently Completed Refactoring
 
-GameManager converted to singleton pattern. All constructors updated to remove GameManager parameters. If you see old code patterns with GameManager pointers being passed, they're outdated - use `getInstance()` instead.
+1. **GameManager Singleton** (Dec 2025): Converted to singleton pattern. All constructors updated to remove GameManager parameters. Use `getInstance()` instead of passing pointers.
+
+2. **Static GameObject Reorganization** (Dec 2025): Split into two hierarchies:
+
+   - **Pickup**: Collectible items (Mine, Battery, Bomb, Detector) - automatically picked up on contact
+   - **Interactible**: Environmental objects (Lever) - require player interaction via `interact()`
+   - Both inherit from `StaticGameObject` with `action(DynamicGameObject*)` interface
+   - Factory renamed: `ItemFactory` class name → `PickupFactory` (file still named `item_factory.h/cpp`)
+   - Directory structure: `src/game_object/static/{pickup/,interactible/}`
+
+3. **French to English Translation** (Dec 2025): Complete codebase translation including classes, methods, variables, enums, and asset files. All naming now follows English conventions.

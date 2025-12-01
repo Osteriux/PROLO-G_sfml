@@ -1,5 +1,5 @@
 #include "monster_factory.h"
-#include "../game_objects/dynamic/monster/dog.h"
+#include "../game_object/dynamic/monster/dog.h"
 
 std::unique_ptr<Monster> MonsterFactory::createMonster(Monster::MonsterType type, int x, int y)
 {

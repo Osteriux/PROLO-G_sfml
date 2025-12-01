@@ -1,15 +1,16 @@
 #pragma once
-#include "../static_game_object.h"
+#include "interactible.h"
 
-class Lever : public StaticGameObject
+class Lever : public Interactible
 {
 private:
     bool activated;
     int doorId;
     static std::unique_ptr<MultiTexture> createRect(sf::Color color, int nb);
+
 public:
     Lever(sf::Color color, int x, int y, int doorId, int nb);
     std::string getDescription() const override;
-    void action(DynamicGameObject* user) override;
+    void interact(DynamicGameObject *user) override;
     ~Lever() = default;
 };

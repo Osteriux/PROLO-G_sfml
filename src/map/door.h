@@ -1,11 +1,12 @@
 #pragma once
 #include <sstream>
-#include "../animations/multi_texture.h"
+#include "../animation/multi_texture.h"
 #include "direction.h"
 
 class GameObject;
 
-class Door {
+class Door
+{
 private:
     MultiTexture texture;
     sf::RectangleShape bg;
@@ -15,6 +16,7 @@ private:
     sf::Color color;
     std::string texturePath(Direction::Dir dir);
     sf::RectangleShape createColorRect(Direction::Dir dir, sf::Vector2f position);
+
 public:
     Door(sf::Color color, Direction::Dir dir, sf::Vector2f position);
     bool estOuverte();

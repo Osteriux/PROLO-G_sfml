@@ -2,9 +2,9 @@
 #include "../../dynamic/player/player.h"
 
 Battery::Battery(int x, int y)
-    : Item(std::make_unique<MultiTexture>(Item::texturePath(Item::BATTERY), 1), x, y)
+    : Pickup(std::make_unique<MultiTexture>(Pickup::texturePath(Pickup::BATTERY), 1), x, y)
 {
-    type = ItemType::BATTERY;
+    type = PickupType::BATTERY;
 }
 
 std::string Battery::getDescription() const
@@ -12,7 +12,7 @@ std::string Battery::getDescription() const
     return "Battery";
 }
 
-void Battery::action(DynamicGameObject* user)
+void Battery::action(DynamicGameObject *user)
 {
     std::cout << "Battery action" << std::endl;
 }

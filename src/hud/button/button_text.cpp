@@ -3,9 +3,9 @@
 ButtonText::ButtonText(sf::Vector2f position, sf::Vector2f size, std::string text, sf::Color backgroundColor, sf::Color textColor)
     : ButtonBase(position, size, backgroundColor)
 {
-    if (!font.loadFromFile("assets/fonts/arial.ttf"))
+    if (!font.loadFromFile("assets/font/arial.ttf"))
     {
-        std::cerr << "Error loading font : assets/fonts/arial.ttf" << std::endl;
+        std::cerr << "Error loading font : assets/font/arial.ttf" << std::endl;
     }
     this->text.setFont(font);
     this->text.setString(text);

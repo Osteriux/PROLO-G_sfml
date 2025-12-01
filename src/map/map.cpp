@@ -1,5 +1,5 @@
-#include "../game_objects/dynamic/dynamic_game_object.h"
-#include "../game_objects/static/static_game_object.h"
+#include "../game_object/dynamic/dynamic_game_object.h"
+#include "../game_object/static/static_game_object.h"
 #include "../manager/game_manager.h"
 #include "map.h"
 
@@ -10,17 +10,21 @@ Map::Map(int lineCount, int columnCount, sf::Vector2f origin, sf::Vector2u regio
     this->columnCount = columnCount;
     doorColors = ColorGenerator::generateColors(levelData.doorColorCount);
     cases.resize(lineCount);
-    for(int i = 0; i < lineCount; i++){
+    for (int i = 0; i < lineCount; i++)
+    {
         cases[i].resize(columnCount);
-        for(int j = 0; j < columnCount; j++){
+        for (int j = 0; j < columnCount; j++)
+        {
             std::tuple<int, std::vector<int>, std::vector<std::tuple<int, int>>> cdata = levelData.casesData[std::make_pair(i, j)];
 
             std::vector<Direction::Dir> neighbors;
             std::map<Direction::Dir, sf::Color> doors;
-            for(auto v : std::get<1>(cdata)){
+            for (auto v : std::get<1>(cdata))
+            {
                 neighbors.push_back(Direction::intToDir(v));
             }
-            for(auto p : std::get<2>(cdata)){
+            for (auto p : std::get<2>(cdata))
+            {
                 doors[Direction::intToDir(std::get<0>(p))] = doorColors[std::get<1>(p)];
             }
             std::cout << "Creating case : " << i << " " << j << " " << std::get<0>(cdata) << std::endl;
@@ -45,31 +49,37 @@ Map::Map(int lineCount, int columnCount, sf::Vector2f origin, sf::Vector2u regio
 void Map::populate(LevelFileData levelData)
 {
     std::cout << "Populating map" << std::endl;
-    for(auto itemData : levelData.itemsData){
-        for(int itemTypeId : itemData.second){
-            cases[itemData.first.first][itemData.first.second]->addItem(ItemFactory::createItem(itemData.first.first, itemData.first.second, itemTypeId));
+    for (auto pickupData : levelData.pickupsData)
+    {
+        for (int pickupTypeId : pickupData.second)
+        {
+            cases[pickupData.first.first][pickupData.first.second]->addPickup(PickupFactory::createPickup(pickupData.first.first, pickupData.first.second, pickupTypeId));
         }
     }
-    for(auto leverData : levelData.leversData){
+    for (auto leverData : levelData.leversData)
+    {
         int i = 0;
-        for(int doorId : leverData.second){
-            cases[leverData.first.first][leverData.first.second]->addItem(ItemFactory::createLever(doorColors[doorId], leverData.first.first, leverData.first.second, doorId, i));
+        for (int doorId : leverData.second)
+        {
+            cases[leverData.first.first][leverData.first.second]->addPickup(PickupFactory::createLever(doorColors[doorId], leverData.first.first, leverData.first.second, doorId, i));
             i++;
         }
     }
-    for(auto monsterData : levelData.enemiesData){
+    for (auto monsterData : levelData.enemiesData)
+    {
         cases[monsterData.first.first][monsterData.first.second]->setEntity(MonsterFactory::createMonster(Monster::intToMonsterType(monsterData.second), monsterData.first.first, monsterData.first.second));
     }
     std::cout << "Map populated" << std::endl;
     updateCases();
 }
 
-Case* Map::getCase(int x, int y)
+Case *Map::getCase(int x, int y)
 {
     if (x >= 0 && x < lineCount && y >= 0 && y < columnCount)
     {
-        Case* c = cases[x][y].get();
-        if(c == nullptr){
+        Case *c = cases[x][y].get();
+        if (c == nullptr)
+        {
             std::cerr << "Error: getCase returned null" << std::endl;
         }
         return c;
@@ -81,8 +91,10 @@ Case* Map::getCase(int x, int y)
 std::map<std::pair<int, int>, std::map<Direction::Dir, bool>> Map::getAdjacents()
 {
     std::map<std::pair<int, int>, std::map<Direction::Dir, bool>> adjacents;
-    for(int i = 0; i < lineCount; i++){
-        for(int j = 0; j < columnCount; j++){
+    for (int i = 0; i < lineCount; i++)
+    {
+        for (int j = 0; j < columnCount; j++)
+        {
             adjacents[std::make_pair(i, j)] = cases[i][j]->getAdjacent();
         }
     }
@@ -96,7 +108,8 @@ void Map::addSeenRoom(int room)
 
 void Map::scaleUp()
 {
-    if(scale.x + 0.1 > MAX_SCALE || scale.y + 0.1 > MAX_SCALE){
+    if (scale.x + 0.1 > MAX_SCALE || scale.y + 0.1 > MAX_SCALE)
+    {
         return;
     }
     scale.x += 0.1;
@@ -106,7 +119,8 @@ void Map::scaleUp()
 
 void Map::scaleDown()
 {
-    if(scale.x - 0.1 < MIN_SCALE || scale.y - 0.1 < MIN_SCALE){
+    if (scale.x - 0.1 < MIN_SCALE || scale.y - 0.1 < MIN_SCALE)
+    {
         return;
     }
     scale.x -= 0.1;
@@ -170,7 +184,7 @@ void Map::draw(sf::RenderWindow &window)
             }
         }
     }
-    
+
     // Draw the outline to the render texture
     renderTexture.draw(outline);
 

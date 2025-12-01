@@ -3,7 +3,7 @@
 #include <memory>
 #include "../hud/hud.h"
 #include "../hud/log.h"
-#include "../game_objects/dynamic/player/player.h"
+#include "../game_object/dynamic/player/player.h"
 #include "../utils/fileReader/level_file_handeler.h"
 #include "../map/map.h"
 

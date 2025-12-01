@@ -3,8 +3,8 @@
 #include <memory>
 #include <vector>
 #include "case.h"
-#include "../factorys/item_factory.h"
-#include "../factorys/monster_factory.h"
+#include "../factory/item_factory.h"
+#include "../factory/monster_factory.h"
 #include "../utils/color/color_generator.h"
 #include "../utils/fileReader/level_file_handeler.h"
 
@@ -27,10 +27,11 @@ private:
     std::map<int, bool> seenRooms;
     int lineCount, columnCount;
     void updateCases();
+
 public:
     Map(int lineCount, int columnCount, sf::Vector2f origin, sf::Vector2u regionSize, LevelFileData data);
     void populate(LevelFileData data);
-    Case* getCase(int x, int y);
+    Case *getCase(int x, int y);
     std::map<std::pair<int, int>, std::map<Direction::Dir, bool>> getAdjacents();
     void addSeenRoom(int room);
     void scaleUp();

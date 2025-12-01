@@ -1,13 +1,14 @@
 #pragma once
-#include "item.h"
+#include "pickup.h"
 
-class Mine : public Item
+class Mine : public Pickup
 {
 private:
     bool active;
+
 public:
     Mine(int x, int y);
     std::string getDescription() const override;
-    void action(DynamicGameObject* user) override;
+    void action(DynamicGameObject *user) override;
     ~Mine() = default;
 };

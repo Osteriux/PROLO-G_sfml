@@ -11,7 +11,7 @@ int main()
     sf::RenderWindow window(sf::VideoMode(windowSize.x, windowSize.y), "PROLO-G");
 
     // Initialize the GameManager singleton
-    GameManager::initialize(windowSize, "assets/levels/test3.txt");
+    GameManager::initialize(windowSize, "assets/level/test3.txt");
     EventManager eventManager;
 
     sf::Clock clock;
@@ -24,7 +24,8 @@ int main()
         while (window.pollEvent(event))
         {
             // évènement "fermeture demandée" : on ferme la fenêtre
-            if (event.type == sf::Event::Closed){
+            if (event.type == sf::Event::Closed)
+            {
                 window.close();
             }
             eventManager.handleEvents(event);

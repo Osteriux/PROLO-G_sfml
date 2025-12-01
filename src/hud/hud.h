@@ -1,16 +1,17 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <vector>
-#include "../game_objects/dynamic/player/player.h"
-#include "../game_objects/static/item/item.h"
-#include "buttons/button_text.h"
-#include "buttons/button_image.h"
-#include "buttons/button_lever.h"
+#include "../game_object/dynamic/player/player.h"
+#include "../game_object/static/pickup/pickup.h"
+#include "button/button_text.h"
+#include "button/button_image.h"
+#include "button/button_lever.h"
 
-class HUD {
+class HUD
+{
 private:
     sf::RectangleShape outline;
-    Player* player;
+    Player *player;
     sf::Vector2u origin;
     sf::Vector2u size;
     sf::Font font;
@@ -40,8 +41,9 @@ private:
 
     sf::Text buttonsText;
     std::vector<ButtonLever> buttonsActions;
+
 public:
-    HUD(sf::Vector2u origin, sf::Vector2u size, Player* player);
+    HUD(sf::Vector2u origin, sf::Vector2u size, Player *player);
     void onClic(sf::Vector2f mousePosition);
     void update(float dt);
     void draw(sf::RenderWindow &window);

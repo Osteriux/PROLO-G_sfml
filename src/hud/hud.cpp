@@ -1,20 +1,20 @@
 #include "hud.h"
 
-HUD::HUD(sf::Vector2u origin, sf::Vector2u size, Player* player)
+HUD::HUD(sf::Vector2u origin, sf::Vector2u size, Player *player)
     : origin(origin), size(size), player(player),
-      leftArrow(sf::Vector2f(origin.x + 10, origin.y + 110), sf::Vector2f(32,32), "assets/buttons/LEFT.png"),
-      downArrow(sf::Vector2f(origin.x + 50, origin.y + 150), sf::Vector2f(32,32), "assets/buttons/DOWN.png"),
-      rightArrow(sf::Vector2f(origin.x + 90, origin.y + 110), sf::Vector2f(32,32), "assets/buttons/RIGHT.png"),
-      upArrow(sf::Vector2f(origin.x + 50, origin.y + 70), sf::Vector2f(32,32), "assets/buttons/UP.png"),
-      useRadar(sf::Vector2f(origin.x + 50, origin.y + 110), sf::Vector2f(32,32), "assets/buttons/RADAR.png"),
-      mineB(sf::Vector2f(origin.x + 140, origin.y + 90), sf::Vector2f(32,32), "assets/hud/MINE.png"),
-      batterieB(sf::Vector2f(origin.x + 200, origin.y + 90), sf::Vector2f(32,32), "assets/hud/BATTERY.png"),
-      bombeB(sf::Vector2f(origin.x + 140, origin.y + 130), sf::Vector2f(32,32), "assets/hud/BOMB.png"),
-      detecteurB(sf::Vector2f(origin.x + 200, origin.y + 130), sf::Vector2f(32,32), "assets/hud/DETECTOR.png")
+      leftArrow(sf::Vector2f(origin.x + 10, origin.y + 110), sf::Vector2f(32, 32), "assets/button/LEFT.png"),
+      downArrow(sf::Vector2f(origin.x + 50, origin.y + 150), sf::Vector2f(32, 32), "assets/button/DOWN.png"),
+      rightArrow(sf::Vector2f(origin.x + 90, origin.y + 110), sf::Vector2f(32, 32), "assets/button/RIGHT.png"),
+      upArrow(sf::Vector2f(origin.x + 50, origin.y + 70), sf::Vector2f(32, 32), "assets/button/UP.png"),
+      useRadar(sf::Vector2f(origin.x + 50, origin.y + 110), sf::Vector2f(32, 32), "assets/button/RADAR.png"),
+      mineB(sf::Vector2f(origin.x + 140, origin.y + 90), sf::Vector2f(32, 32), "assets/hud/MINE.png"),
+      batterieB(sf::Vector2f(origin.x + 200, origin.y + 90), sf::Vector2f(32, 32), "assets/hud/BATTERY.png"),
+      bombeB(sf::Vector2f(origin.x + 140, origin.y + 130), sf::Vector2f(32, 32), "assets/hud/BOMB.png"),
+      detecteurB(sf::Vector2f(origin.x + 200, origin.y + 130), sf::Vector2f(32, 32), "assets/hud/DETECTOR.png")
 {
-    if (!font.loadFromFile("assets/fonts/arial.ttf"))
+    if (!font.loadFromFile("assets/font/arial.ttf"))
     {
-        std::cerr << "Error loading font : assets/fonts/arial.ttf" << std::endl;
+        std::cerr << "Error loading font : assets/font/arial.ttf" << std::endl;
     }
     outline.setFillColor(sf::Color::Transparent);
     outline.setOutlineColor(sf::Color::White);
@@ -55,21 +55,21 @@ HUD::HUD(sf::Vector2u origin, sf::Vector2u size, Player* player)
     ramasserText.setFillColor(sf::Color::White);
     ramasserText.setPosition(sf::Vector2f(origin.x + 10, origin.y + 190));
     ramasserText.setString("Ramasser :");
-    // ramasserActions.push_back(ButtonImage(sf::Vector2f(origin.x + 10, origin.y + 310), sf::Vector2f(32,32), "assets/buttons/ITEM.png"));
+    // ramasserActions.push_back(ButtonImage(sf::Vector2f(origin.x + 10, origin.y + 310), sf::Vector2f(32,32), "assets/button/ITEM.png"));
 
     interagireText.setFont(font);
     interagireText.setCharacterSize(24);
     interagireText.setFillColor(sf::Color::White);
     interagireText.setPosition(sf::Vector2f(origin.x + 10, origin.y + 350));
     interagireText.setString("Interagir :");
-    // interagireActions.push_back(ButtonImage(sf::Vector2f(origin.x + 10, origin.y + 390), sf::Vector2f(32,32), "assets/buttons/ITEM.png"));
+    // interagireActions.push_back(ButtonImage(sf::Vector2f(origin.x + 10, origin.y + 390), sf::Vector2f(32,32), "assets/button/ITEM.png"));
 
     buttonsText.setFont(font);
     buttonsText.setCharacterSize(24);
     buttonsText.setFillColor(sf::Color::White);
     buttonsText.setPosition(sf::Vector2f(origin.x + 10, origin.y + 430));
     buttonsText.setString("Boutons : ON/OFF");
-    // buttonsActions.push_back(ButtonLever(sf::Vector2f(origin.x + 10, origin.y + 470), sf::Vector2f(32,32), "assets/buttons/ITEM.png"));
+    // buttonsActions.push_back(ButtonLever(sf::Vector2f(origin.x + 10, origin.y + 470), sf::Vector2f(32,32), "assets/button/ITEM.png"));
 }
 
 void HUD::onClic(sf::Vector2f mousePosition)
@@ -102,39 +102,39 @@ void HUD::onClic(sf::Vector2f mousePosition)
     else if (mineB.isClicked(mousePosition))
     {
         std::cout << "mine" << std::endl;
-        // player->useItem(Item::ItemType::MINE);
+        // player->usePickup(Pickup::PickupType::MINE);
     }
     else if (batterieB.isClicked(mousePosition))
     {
         std::cout << "battery" << std::endl;
-        // player->useItem(Item::ItemType::BATTERY);
+        // player->usePickup(Pickup::PickupType::BATTERY);
     }
     else if (bombeB.isClicked(mousePosition))
     {
         std::cout << "bomb" << std::endl;
-        // player->useItem(Item::ItemType::BOMB);
+        // player->usePickup(Pickup::PickupType::BOMB);
     }
     else if (detecteurB.isClicked(mousePosition))
     {
         std::cout << "detector" << std::endl;
-        // player->useItem(Item::ItemType::DETECTOR);
+        // player->usePickup(Pickup::PickupType::DETECTOR);
     }
 }
 
 void HUD::update(float dt)
 {
-    mineT.setString(std::to_string(player->getInventory().getQuantity(Item::ItemType::MINE)));
-    batterieT.setString(std::to_string(player->getInventory().getQuantity(Item::ItemType::BATTERY)));
-    bombeT.setString(std::to_string(player->getInventory().getQuantity(Item::ItemType::BOMB)));
-    detecteurT.setString(std::to_string(player->getInventory().getQuantity(Item::ItemType::DETECTOR)));
+    mineT.setString(std::to_string(player->getInventory().getQuantity(Pickup::PickupType::MINE)));
+    batterieT.setString(std::to_string(player->getInventory().getQuantity(Pickup::PickupType::BATTERY)));
+    bombeT.setString(std::to_string(player->getInventory().getQuantity(Pickup::PickupType::BOMB)));
+    detecteurT.setString(std::to_string(player->getInventory().getQuantity(Pickup::PickupType::DETECTOR)));
 }
 
 void HUD::draw(sf::RenderWindow &window)
 {
     window.draw(outline);
-    for(int h = 0; h < player->getHealth(); h++)
+    for (int h = 0; h < player->getHealth(); h++)
     {
-        heart.setPosition(sf::Vector2f(origin.x + 10 + h*50, origin.y + 10));
+        heart.setPosition(sf::Vector2f(origin.x + 10 + h * 50, origin.y + 10));
         window.draw(heart);
     }
     leftArrow.draw(window);

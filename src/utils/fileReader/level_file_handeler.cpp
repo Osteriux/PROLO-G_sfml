@@ -2,22 +2,29 @@
 
 std::vector<std::string> LevelFileHandeler::split(std::string str, char c)
 {
-	std::vector<std::string> v;
-    if(c == '\0'){
+    std::vector<std::string> v;
+    if (c == '\0')
+    {
         std::invalid_argument("delimiter can't be null character");
     }
 
     std::string buff{""};
-    for(auto n:str)
+    for (auto n : str)
     {
-        if(n != c) buff+=n; else
-        if(n == c && buff != "") { v.push_back(buff); buff = ""; }
+        if (n != c)
+            buff += n;
+        else if (n == c && buff != "")
+        {
+            v.push_back(buff);
+            buff = "";
+        }
     }
-    if(buff != ""){
+    if (buff != "")
+    {
         v.push_back(buff);
     }
-	
-	return v;
+
+    return v;
 }
 
 LevelFileData LevelFileHandeler::loadLevelFile(std::string filePath)
@@ -25,7 +32,8 @@ LevelFileData LevelFileHandeler::loadLevelFile(std::string filePath)
     std::ifstream file(filePath);
     LevelFileData data;
 
-    if(file.is_open()){
+    if (file.is_open())
+    {
         std::vector<std::string> splitLine;
         std::string line;
 
@@ -43,8 +51,10 @@ LevelFileData LevelFileHandeler::loadLevelFile(std::string filePath)
         std::cout << "number of door colors : " << line << std::endl;
         data.doorColorCount = std::stoi(line);
 
-        for(int i = 0; i < data.mapWidth; i++){
-            for(int j = 0; j < data.mapHeight; j++){
+        for (int i = 0; i < data.mapWidth; i++)
+        {
+            for (int j = 0; j < data.mapHeight; j++)
+            {
                 std::cout << "loading case : " << i << ":" << j << std::endl;
                 std::getline(file, line);
                 std::cout << "case data : " << line << std::endl;
@@ -55,7 +65,8 @@ LevelFileData LevelFileHandeler::loadLevelFile(std::string filePath)
                 std::vector<std::string> splitVoisins = split(voisinsStr, ',');
                 std::vector<int> neighbors;
                 std::cout << "neighbors : ";
-                for(auto v : splitVoisins){
+                for (auto v : splitVoisins)
+                {
                     std::cout << v << " ";
                     neighbors.push_back(std::stoi(v));
                 }
@@ -65,13 +76,14 @@ LevelFileData LevelFileHandeler::loadLevelFile(std::string filePath)
                 std::vector<std::string> splitDoors = split(doorsStr, ',');
                 std::vector<std::tuple<int, int>> doors;
                 std::cout << "doors : ";
-                for(auto p : splitDoors){
+                for (auto p : splitDoors)
+                {
                     std::cout << p << " ";
                     std::vector<std::string> splitDoor = split(p, ':');
                     doors.push_back(std::make_tuple(std::stoi(splitDoor[0]), std::stoi(splitDoor[1])));
                 }
                 std::cout << std::endl;
-                
+
                 data.casesData[std::make_pair(i, j)] = std::make_tuple(room, neighbors, doors);
             }
         }
@@ -85,7 +97,8 @@ LevelFileData LevelFileHandeler::loadLevelFile(std::string filePath)
         std::getline(file, line);
         std::cout << "number of enemies : " << line << std::endl;
         data.enemyCount = std::stoi(line);
-        for (int i = 0; i < data.enemyCount; i++){
+        for (int i = 0; i < data.enemyCount; i++)
+        {
             std::getline(file, line);
             std::cout << "enemy data : " << line << std::endl;
             std::vector<std::string> splitEnemy = split(line, ' ');
@@ -93,36 +106,41 @@ LevelFileData LevelFileHandeler::loadLevelFile(std::string filePath)
         }
 
         std::getline(file, line);
-        std::cout << "number of items : " << line << std::endl;
-        data.itemCount = std::stoi(line);
-        for(int i = 0; i < data.itemCount; i++){
+        std::cout << "number of pickups : " << line << std::endl;
+        data.pickupCount = std::stoi(line);
+        for (int i = 0; i < data.pickupCount; i++)
+        {
             std::getline(file, line);
-            std::cout << "item data : " << line << std::endl;
-            std::vector<std::string> splitItem = split(line, ' ');
-            data.itemsData[std::make_pair(std::stoi(splitItem[0]), std::stoi(splitItem[1]))] = std::vector<int>();
-            std::vector<std::string> splitItemTypes = split(splitItem[2], ',');
-            for(auto it : splitItemTypes){
-                data.itemsData[std::make_pair(std::stoi(splitItem[0]), std::stoi(splitItem[1]))].push_back(std::stoi(it));
+            std::cout << "pickup data : " << line << std::endl;
+            std::vector<std::string> splitPickup = split(line, ' ');
+            data.pickupsData[std::make_pair(std::stoi(splitPickup[0]), std::stoi(splitPickup[1]))] = std::vector<int>();
+            std::vector<std::string> splitPickupTypes = split(splitPickup[2], ',');
+            for (auto it : splitPickupTypes)
+            {
+                data.pickupsData[std::make_pair(std::stoi(splitPickup[0]), std::stoi(splitPickup[1]))].push_back(std::stoi(it));
             }
         }
 
         std::getline(file, line);
         std::cout << "number of levers : " << line << std::endl;
         data.leverCount = std::stoi(line);
-        for(int i = 0; i < data.leverCount; i++){
+        for (int i = 0; i < data.leverCount; i++)
+        {
             std::getline(file, line);
             std::cout << "lever data : " << line << std::endl;
             std::vector<std::string> splitLever = split(line, ' ');
             data.leversData[std::make_pair(std::stoi(splitLever[0]), std::stoi(splitLever[1]))] = std::vector<int>();
             std::vector<std::string> splitLeverColors = split(splitLever[2], ',');
-            for(auto lc : splitLeverColors){
+            for (auto lc : splitLeverColors)
+            {
                 data.leversData[std::make_pair(std::stoi(splitLever[0]), std::stoi(splitLever[1]))].push_back(std::stoi(lc));
             }
         }
 
         file.close();
     }
-    else{
+    else
+    {
         std::cerr << "Error loading file : " << filePath << std::endl;
     }
     return data;
