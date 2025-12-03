@@ -1,10 +1,10 @@
-#include "item_factory.h"
-#include "../game_object/static/pickup/mine.h"
-#include "../game_object/static/pickup/battery.h"
-#include "../game_object/static/pickup/bomb.h"
-#include "../game_object/static/pickup/detector.h"
+#include "item_factory.hpp"
+#include "../game_object/static/pickup/mine.hpp"
+#include "../game_object/static/pickup/battery.hpp"
+#include "../game_object/static/pickup/bomb.hpp"
+#include "../game_object/static/pickup/detector.hpp"
 
-std::unique_ptr<Pickup> PickupFactory::createPickup(int type, int x, int y)
+std::unique_ptr<Pickup> ItemFactory::createPickup(int type, int x, int y)
 {
     std::cout << "Creating pickup " << type << " at : " << x << "," << y << std::endl;
     Pickup::PickupType pickupType = Pickup::idToPickupType(type);
@@ -23,7 +23,7 @@ std::unique_ptr<Pickup> PickupFactory::createPickup(int type, int x, int y)
     }
 }
 
-std::unique_ptr<Lever> PickupFactory::createLever(sf::Color color, int x, int y, int doorId, int nb)
+std::unique_ptr<Lever> ItemFactory::createLever(sf::Color color, int x, int y, int doorId, int nb)
 {
     return std::make_unique<Lever>(color, x, y, doorId, nb);
 }

@@ -1,6 +1,6 @@
 #pragma once
 #include <memory>
-#include "../game_object/dynamic/monster/monster.h"
+#include "../game_object/dynamic/monster/monster.hpp"
 
 class MonsterFactory
 {

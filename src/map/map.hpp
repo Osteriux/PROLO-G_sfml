@@ -2,11 +2,11 @@
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include <vector>
-#include "case.h"
-#include "../factory/item_factory.h"
-#include "../factory/monster_factory.h"
-#include "../utils/color/color_generator.h"
-#include "../utils/fileReader/level_file_handeler.h"
+#include "case.hpp"
+#include "../factory/item_factory.hpp"
+#include "../factory/monster_factory.hpp"
+#include "../utils/color/color_generator.hpp"
+#include "../utils/fileReader/level_file_handeler.hpp"
 
 class GameManager;
 

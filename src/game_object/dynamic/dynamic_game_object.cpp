@@ -1,7 +1,7 @@
-#include "../../manager/game_manager.h"
-#include "../../map/map.h"
-#include "../../map/case.h"
-#include "dynamic_game_object.h"
+#include "../../manager/game_manager.hpp"
+#include "../../map/map.hpp"
+#include "../../map/case.hpp"
+#include "dynamic_game_object.hpp"
 
 DynamicGameObject::DynamicGameObject(int health, int speed ,std::unique_ptr<MultiTexture> animation, int x, int y)
     : GameObject(std::move(animation), x, y), health(health), speed(speed)

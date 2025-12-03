@@ -1,4 +1,4 @@
-#include "color_generator.h"
+#include "color_generator.hpp"
 
 sf::Color ColorGenerator::hexToColor(const std::string &hex)
 {

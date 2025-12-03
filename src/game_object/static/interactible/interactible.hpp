@@ -1,5 +1,5 @@
 #pragma once
-#include "../static_game_object.h"
+#include "../static_game_object.hpp"
 
 class Interactible : public StaticGameObject
 {
@@ -16,6 +16,7 @@ public:
     static std::vector<InteractibleType> getAllInteractibleTypes();
 
     Interactible(std::unique_ptr<MultiTexture> animation, int x, int y);
+    InteractibleType getType() const;
     void action(DynamicGameObject *user) override;
     virtual void interact(DynamicGameObject *user) = 0;
     ~Interactible() = default;

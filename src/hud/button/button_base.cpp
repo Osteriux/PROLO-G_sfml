@@ -1,4 +1,4 @@
-#include "button_base.h"
+#include "button_base.hpp"
 
 ButtonBase::ButtonBase(sf::Vector2f position, sf::Vector2f size, sf::Color backgroundColor)
     : position(position), size(size)

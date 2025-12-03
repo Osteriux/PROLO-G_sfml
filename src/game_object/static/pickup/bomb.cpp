@@ -1,5 +1,5 @@
-#include "bomb.h"
-#include "../../dynamic/player/player.h"
+#include "bomb.hpp"
+#include "../../dynamic/player/player.hpp"
 
 Bomb::Bomb(int x, int y)
     : Pickup(std::make_unique<MultiTexture>(Pickup::texturePath(Pickup::BOMB), 2), x, y)

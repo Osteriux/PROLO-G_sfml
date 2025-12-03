@@ -1,7 +1,9 @@
-#include "lever.h"
+#include "lever.hpp"
+#include "../../../map/case.hpp"
+#include "../../../manager/game_manager.hpp"
 
 Lever::Lever(sf::Color color, int x, int y, int doorId, int nb)
-    : Interactible(createRect(color, nb), x, y), activated(false), doorId(doorId)
+    : Interactible(createRect(color, nb), x, y), activated(false), doorId(doorId), color(color)
 {
     type = InteractibleType::LEVER;
 }
@@ -9,14 +11,23 @@ Lever::Lever(sf::Color color, int x, int y, int doorId, int nb)
 void Lever::interact(DynamicGameObject *user)
 {
     activated = !activated;
+    std::string message = "Lever at (" + std::to_string(currCase->getX()) + ", " + std::to_string(currCase->getY()) + ") ";
     if (activated)
     {
         std::cout << "Door " << doorId << " opened" << std::endl;
+        message += "activated.";
     }
     else
     {
         std::cout << "Door " << doorId << " closed" << std::endl;
+        message += "deactivated.";
     }
+    GameManager::getInstance().addLogMessage(message);
+}
+
+sf::Color Lever::getColor() const
+{
+    return color;
 }
 
 std::string Lever::getDescription() const

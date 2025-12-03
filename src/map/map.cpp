@@ -1,7 +1,7 @@
-#include "../game_object/dynamic/dynamic_game_object.h"
-#include "../game_object/static/static_game_object.h"
-#include "../manager/game_manager.h"
-#include "map.h"
+#include "../game_object/dynamic/dynamic_game_object.hpp"
+#include "../game_object/static/static_game_object.hpp"
+#include "../manager/game_manager.hpp"
+#include "map.hpp"
 
 Map::Map(int lineCount, int columnCount, sf::Vector2f origin, sf::Vector2u regionSize, LevelFileData levelData)
     : origin(origin), regionSize(regionSize), scale(1, 1)
@@ -53,7 +53,7 @@ void Map::populate(LevelFileData levelData)
     {
         for (int pickupTypeId : pickupData.second)
         {
-            cases[pickupData.first.first][pickupData.first.second]->addPickup(PickupFactory::createPickup(pickupData.first.first, pickupData.first.second, pickupTypeId));
+            cases[pickupData.first.first][pickupData.first.second]->addPickup(ItemFactory::createPickup(pickupData.first.first, pickupData.first.second, pickupTypeId));
         }
     }
     for (auto leverData : levelData.leversData)
@@ -61,7 +61,7 @@ void Map::populate(LevelFileData levelData)
         int i = 0;
         for (int doorId : leverData.second)
         {
-            cases[leverData.first.first][leverData.first.second]->addPickup(PickupFactory::createLever(doorColors[doorId], leverData.first.first, leverData.first.second, doorId, i));
+            cases[leverData.first.first][leverData.first.second]->addInteractible(ItemFactory::createLever(doorColors[doorId], leverData.first.first, leverData.first.second, doorId, i));
             i++;
         }
     }

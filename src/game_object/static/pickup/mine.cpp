@@ -1,4 +1,4 @@
-#include "mine.h"
+#include "mine.hpp"
 
 Mine::Mine(int x, int y)
     : Pickup(std::make_unique<MultiTexture>(Pickup::texturePath(Pickup::MINE), 2), x, y)

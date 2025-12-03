@@ -1,9 +1,9 @@
 #pragma once
 #include <memory>
-#include "../game_object/static/pickup/pickup.h"
-#include "../game_object/static/interactible/lever.h"
+#include "../game_object/static/pickup/pickup.hpp"
+#include "../game_object/static/interactible/lever.hpp"
 
-class PickupFactory
+class ItemFactory
 {
 public:
     static std::unique_ptr<Pickup> createPickup(int x, int y, int type);

@@ -3,7 +3,7 @@
 #include <memory>
 #include <string>
 #include <SFML/Graphics.hpp>
-#include "../animation/multi_texture.h"
+#include "../animation/multi_texture.hpp"
 
 class GameManager;
 class Case;

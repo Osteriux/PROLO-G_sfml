@@ -1,4 +1,4 @@
-#include "button_text.h"
+#include "button_text.hpp"
 
 ButtonText::ButtonText(sf::Vector2f position, sf::Vector2f size, std::string text, sf::Color backgroundColor, sf::Color textColor)
     : ButtonBase(position, size, backgroundColor)

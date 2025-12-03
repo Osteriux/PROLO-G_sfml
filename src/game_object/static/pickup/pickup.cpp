@@ -1,6 +1,6 @@
-#include "../../dynamic/player/player.h"
-#include "../../../manager/game_manager.h"
-#include "pickup.h"
+#include "../../dynamic/player/player.hpp"
+#include "../../../manager/game_manager.hpp"
+#include "pickup.hpp"
 
 Pickup::Pickup(std::unique_ptr<MultiTexture> tex, int x, int y)
     : StaticGameObject(std::move(tex), x, y)
@@ -10,6 +10,11 @@ Pickup::Pickup(std::unique_ptr<MultiTexture> tex, int x, int y)
 void Pickup::pickup(Player *user)
 {
     user->getInventory().addPickup(type);
+}
+
+Pickup::PickupType Pickup::getType() const
+{
+    return type;
 }
 
 std::vector<Pickup::PickupType> Pickup::getAllPickupTypes()

@@ -1,5 +1,5 @@
 #pragma once
-#include "../game_object.h"
+#include "../game_object.hpp"
 
 class DynamicGameObject;
 

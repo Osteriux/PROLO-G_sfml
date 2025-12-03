@@ -1,4 +1,4 @@
-#include "button_image.h"
+#include "button_image.hpp"
 
 ButtonImage::ButtonImage(sf::Vector2f position, sf::Vector2f size, std::string texturePath, sf::Color backgroundColor)
     : ButtonBase(position, size, backgroundColor)

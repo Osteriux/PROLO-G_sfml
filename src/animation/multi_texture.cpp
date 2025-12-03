@@ -1,4 +1,4 @@
-#include "multi_texture.h"
+#include "multi_texture.hpp"
 
 MultiTexture::MultiTexture(std::string texture_path, int lineCount, int columnCount, std::vector<int> columnsSize)
     : lineCount(lineCount), columnCount(columnCount), columnsSize(columnsSize)

@@ -4,18 +4,20 @@
 #include <vector>
 #include <map>
 #include <string>
-#include "direction.h"
-#include "door.h"
+#include "direction.hpp"
+#include "door.hpp"
 
 class DynamicGameObject;
-class StaticGameObject;
+class Pickup;
+class Interactible;
 
 class Case : public sf::Sprite
 {
 private:
     sf::Texture texture;
     std::unique_ptr<DynamicGameObject> entity;
-    std::vector<std::unique_ptr<StaticGameObject>> pickups;
+    std::vector<std::unique_ptr<Pickup>> pickups;
+    std::vector<std::unique_ptr<Interactible>> interactibles;
     std::vector<Direction::Dir> passages;
     std::map<Direction::Dir, std::unique_ptr<Door>> doors;
     sf::Vector2f position;
@@ -34,8 +36,12 @@ public:
     void setScale(sf::Vector2f scale);
     void transferEntity(Case *nextCase);
     void setEntity(std::unique_ptr<DynamicGameObject> entity);
-    void addPickup(std::unique_ptr<StaticGameObject> pickup);
+    void addPickup(std::unique_ptr<Pickup> pickup);
     void removePickup(int index);
+    const std::vector<std::unique_ptr<Pickup>> &getPickups() const;
+    void addInteractible(std::unique_ptr<Interactible> interactible);
+    void removeInteractible(int index);
+    const std::vector<std::unique_ptr<Interactible>> &getInteractibles() const;
     void update(float dt);
     void draw(sf::RenderTarget &target);
     ~Case() = default;

@@ -1,4 +1,4 @@
-#include "detector.h"
+#include "detector.hpp"
 
 Detector::Detector(int x, int y)
     : Pickup(std::make_unique<MultiTexture>(Pickup::texturePath(Pickup::DETECTOR), 2, 3, std::vector({3, 3})), x, y)

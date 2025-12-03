@@ -1,6 +1,6 @@
-#include "event_manager.h"
-#include "game_manager.h"
-#include "../map/case.h"
+#include "event_manager.hpp"
+#include "game_manager.hpp"
+#include "../map/case.hpp"
 
 EventManager::EventManager()
 {

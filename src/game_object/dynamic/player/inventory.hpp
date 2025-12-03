@@ -1,9 +1,10 @@
 #pragma once
-#include "../../static/pickup/pickup.h"
+#include "../../static/pickup/pickup.hpp"
 #include <unordered_map>
 
 class Inventory
 {
+private:
     std::unordered_map<Pickup::PickupType, int> pickups;
 
 public:

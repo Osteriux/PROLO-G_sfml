@@ -1,11 +1,11 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <memory>
-#include "../hud/hud.h"
-#include "../hud/log.h"
-#include "../game_object/dynamic/player/player.h"
-#include "../utils/fileReader/level_file_handeler.h"
-#include "../map/map.h"
+#include "../hud/hud.hpp"
+#include "../hud/log.hpp"
+#include "../game_object/dynamic/player/player.hpp"
+#include "../utils/fileReader/level_file_handeler.hpp"
+#include "../map/map.hpp"
 
 class GameManager
 {
@@ -29,6 +29,7 @@ public:
     Player *getPlayer();
     Map *getMap();
     HUD &getHUD();
+    void addLogMessage(std::string message);
     void update(float dt);
     void draw(sf::RenderWindow &window);
     ~GameManager() = default;

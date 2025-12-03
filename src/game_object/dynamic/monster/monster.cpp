@@ -1,5 +1,5 @@
-#include "monster.h"
-#include "../../../manager/game_manager.h"
+#include "monster.hpp"
+#include "../../../manager/game_manager.hpp"
 
 Monster::Monster(std::string type, int health, int speed, int x, int y)
     : DynamicGameObject(health, speed, std::make_unique<MultiTexture>("assets/dynamic/" + type + ".png", 1), x, y)

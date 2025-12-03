@@ -30,7 +30,7 @@ class GameManager;
 class DynamicGameObject;
 
 // In cpp files - include full headers
-#include "../manager/game_manager.h"
+#include "../manager/game_manager.hpp"
 ```
 
 **Exception**: `static_game_object.h` includes `game_object.h` but forward declares `DynamicGameObject`.
@@ -38,9 +38,9 @@ class DynamicGameObject;
 ### 2. Factory Pattern for Object Creation
 
 ```cpp
-// PickupFactory - no GameManager parameter needed
-auto pickup = PickupFactory::createPickup(x, y, pickupTypeId);
-auto lever = PickupFactory::createLever(color, x, y, doorId, nb);
+// ItemFactory - no GameManager parameter needed
+auto pickup = ItemFactory::createPickup(x, y, pickupTypeId);
+auto lever = ItemFactory::createLever(color, x, y, doorId, nb);
 
 // MonsterFactory - no GameManager parameter
 auto monster = MonsterFactory::createMonster(monsterType, x, y);
@@ -125,7 +125,7 @@ Use `#pragma once` exclusively (modern compiler support assumed).
 1. Add enum to `Pickup::PickupType` in `pickup.h`
 2. Create subclass in `src/game_object/static/pickup/` inheriting from `Pickup`
 3. Implement `getDescription()` and `action(DynamicGameObject* user)` overrides
-4. Add case to `PickupFactory::createPickup()` switch in `src/factory/item_factory.cpp`
+4. Add case to `ItemFactory::createPickup()` switch in `src/factory/item_factory.cpp`
 5. Add texture path to `Pickup::texturePath()` static method
 6. Add corresponding PNG file to `assets/static/`
 
@@ -134,7 +134,7 @@ Use `#pragma once` exclusively (modern compiler support assumed).
 1. Add enum to `Interactible::InteractibleType` in `interactible.h`
 2. Create subclass in `src/game_object/static/interactible/` inheriting from `Interactible`
 3. Implement `getDescription()` and `interact(DynamicGameObject* user)` overrides
-4. Add factory method to `PickupFactory` in `src/factory/item_factory.h/cpp` if needed
+4. Add factory method to `ItemFactory` in `src/factory/item_factory.h/cpp` if needed
 5. Interactibles are triggered by player interaction, while Pickups are collected automatically
 
 ### Modifying Game State Access
@@ -161,7 +161,7 @@ Doxygen HTML docs in `doc/html/` - regenerate with `doxygen Doxyfile`.
    - **Pickup**: Collectible items (Mine, Battery, Bomb, Detector) - automatically picked up on contact
    - **Interactible**: Environmental objects (Lever) - require player interaction via `interact()`
    - Both inherit from `StaticGameObject` with `action(DynamicGameObject*)` interface
-   - Factory renamed: `ItemFactory` class name → `PickupFactory` (file still named `item_factory.h/cpp`)
+   - Factory renamed: `ItemFactory` class name → `ItemFactory` (file still named `item_factory.h/cpp`)
    - Directory structure: `src/game_object/static/{pickup/,interactible/}`
 
 3. **French to English Translation** (Dec 2025): Complete codebase translation including classes, methods, variables, enums, and asset files. All naming now follows English conventions.

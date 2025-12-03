@@ -1,5 +1,5 @@
 #pragma once
-#include "button_base.h"
+#include "button_base.hpp"
 
 class ButtonText : public ButtonBase {
 private:

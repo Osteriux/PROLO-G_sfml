@@ -1,6 +1,7 @@
-#include "case.h"
-#include "../game_object/dynamic/dynamic_game_object.h"
-#include "../game_object/static/static_game_object.h"
+#include "case.hpp"
+#include "../game_object/dynamic/dynamic_game_object.hpp"
+#include "../game_object/static/pickup/pickup.hpp"
+#include "../game_object/static/interactible/interactible.hpp"
 
 Case::Case(int x, int y, int room, sf::Vector2f position, std::vector<Direction::Dir> passages, std::map<Direction::Dir, sf::Color> doors)
     : x(x), y(y), room(room), position(position), passages(passages)
@@ -13,6 +14,7 @@ Case::Case(int x, int y, int room, sf::Vector2f position, std::vector<Direction:
     this->setTexture(texture);
     this->entity = std::move(entity);
     this->pickups = std::move(pickups);
+    this->interactibles = std::move(interactibles);
     this->setPosition(position);
 }
 
@@ -64,6 +66,10 @@ void Case::setPosition(sf::Vector2f position)
     {
         pickup->setSpritePosition(position);
     }
+    for (auto &interactible : interactibles)
+    {
+        interactible->setSpritePosition(position);
+    }
     if (entity)
     {
         entity->setSpritePosition(position);
@@ -80,6 +86,10 @@ void Case::setScale(sf::Vector2f scale)
     for (auto &pickup : pickups)
     {
         pickup->setSpriteScale(scale);
+    }
+    for (auto &interactible : interactibles)
+    {
+        interactible->setSpriteScale(scale);
     }
     if (entity)
     {
@@ -100,7 +110,7 @@ void Case::setEntity(std::unique_ptr<DynamicGameObject> entity)
     this->entity = std::move(entity);
 }
 
-void Case::addPickup(std::unique_ptr<StaticGameObject> pickup)
+void Case::addPickup(std::unique_ptr<Pickup> pickup)
 {
     pickup->setSpriteScale(this->getScale());
     pickup->setSpritePosition(position);
@@ -110,6 +120,28 @@ void Case::addPickup(std::unique_ptr<StaticGameObject> pickup)
 void Case::removePickup(int index)
 {
     pickups.erase(pickups.begin() + index);
+}
+
+const std::vector<std::unique_ptr<Pickup>> &Case::getPickups() const
+{
+    return pickups;
+}
+
+void Case::addInteractible(std::unique_ptr<Interactible> interactible)
+{
+    interactible->setSpriteScale(this->getScale());
+    interactible->setSpritePosition(position);
+    interactibles.push_back(std::move(interactible));
+}
+
+void Case::removeInteractible(int index)
+{
+    interactibles.erase(interactibles.begin() + index);
+}
+
+const std::vector<std::unique_ptr<Interactible>> &Case::getInteractibles() const
+{
+    return interactibles;
 }
 
 void Case::update(float dt)
@@ -137,6 +169,11 @@ void Case::draw(sf::RenderTarget &target)
     for (auto &pickup : pickups)
     {
         pickup->draw(target);
+    }
+    // dessin des interactibles
+    for (auto &interactible : interactibles)
+    {
+        interactible->draw(target);
     }
     // dessin de l'entité si elle existe
     if (entity)

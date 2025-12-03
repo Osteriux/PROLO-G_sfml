@@ -1,11 +1,11 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <vector>
-#include "../game_object/dynamic/player/player.h"
-#include "../game_object/static/pickup/pickup.h"
-#include "button/button_text.h"
-#include "button/button_image.h"
-#include "button/button_lever.h"
+#include "../game_object/dynamic/player/player.hpp"
+#include "../game_object/static/pickup/pickup.hpp"
+#include "button/button_text.hpp"
+#include "button/button_image.hpp"
+#include "button/button_lever.hpp"
 
 class HUD
 {
@@ -34,10 +34,10 @@ private:
     ButtonImage useRadar;
 
     sf::Text ramasserText;
-    std::vector<ButtonImage> ramasserActions;
+    std::vector<ButtonImage> pickupActions;
 
     sf::Text interagireText;
-    std::vector<ButtonImage> interagireActions;
+    std::vector<ButtonImage> interactActions;
 
     sf::Text buttonsText;
     std::vector<ButtonLever> buttonsActions;

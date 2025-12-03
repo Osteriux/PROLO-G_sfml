@@ -1,4 +1,8 @@
-#include "hud.h"
+#include "hud.hpp"
+#include "../map/case.hpp"
+#include "../game_object/static/pickup/pickup.hpp"
+#include "../game_object/static/interactible/interactible.hpp"
+#include "../game_object/static/interactible/lever.hpp"
 
 HUD::HUD(sf::Vector2u origin, sf::Vector2u size, Player *player)
     : origin(origin), size(size), player(player),
@@ -55,14 +59,14 @@ HUD::HUD(sf::Vector2u origin, sf::Vector2u size, Player *player)
     ramasserText.setFillColor(sf::Color::White);
     ramasserText.setPosition(sf::Vector2f(origin.x + 10, origin.y + 190));
     ramasserText.setString("Ramasser :");
-    // ramasserActions.push_back(ButtonImage(sf::Vector2f(origin.x + 10, origin.y + 310), sf::Vector2f(32,32), "assets/button/ITEM.png"));
+    // pickupActions.push_back(ButtonImage(sf::Vector2f(origin.x + 10, origin.y + 310), sf::Vector2f(32,32), "assets/button/ITEM.png"));
 
     interagireText.setFont(font);
     interagireText.setCharacterSize(24);
     interagireText.setFillColor(sf::Color::White);
     interagireText.setPosition(sf::Vector2f(origin.x + 10, origin.y + 350));
     interagireText.setString("Interagir :");
-    // interagireActions.push_back(ButtonImage(sf::Vector2f(origin.x + 10, origin.y + 390), sf::Vector2f(32,32), "assets/button/ITEM.png"));
+    // interactActions.push_back(ButtonImage(sf::Vector2f(origin.x + 10, origin.y + 390), sf::Vector2f(32,32), "assets/button/ITEM.png"));
 
     buttonsText.setFont(font);
     buttonsText.setCharacterSize(24);
@@ -119,14 +123,62 @@ void HUD::onClic(sf::Vector2f mousePosition)
         std::cout << "detector" << std::endl;
         // player->usePickup(Pickup::PickupType::DETECTOR);
     }
+    else
+    {
+        // Check pickup actions
+        /// TODO
+
+        // check interact actions
+        /// TODO
+
+        // check button actions
+        for (auto &action : buttonsActions)
+        {
+            if (action.isClicked(mousePosition))
+            {
+                std::cout << "button lever clicked" << std::endl;
+                // Find corresponding lever and interact
+            }
+        }
+    }
 }
 
 void HUD::update(float dt)
 {
+    // Met à jour les quantités des pickups dans l'inventaire du joueur
     mineT.setString(std::to_string(player->getInventory().getQuantity(Pickup::PickupType::MINE)));
     batterieT.setString(std::to_string(player->getInventory().getQuantity(Pickup::PickupType::BATTERY)));
     bombeT.setString(std::to_string(player->getInventory().getQuantity(Pickup::PickupType::BOMB)));
     detecteurT.setString(std::to_string(player->getInventory().getQuantity(Pickup::PickupType::DETECTOR)));
+
+    // Met à jour les actions de ramassage
+    pickupActions.clear();
+    int offsetY = 0;
+    for (const auto &pickup : player->getCase()->getPickups())
+    {
+        pickupActions.emplace_back(
+            sf::Vector2f(origin.x + 10, origin.y + 220 + offsetY),
+            sf::Vector2f(32, 32),
+            Pickup::texturePath(pickup->getType()));
+        offsetY += 40;
+    }
+
+    // Met à jour les actions des leviers
+    buttonsActions.clear();
+    offsetY = 0;
+    for (const auto &interactible : player->getCase()->getInteractibles())
+    {
+        if (interactible->getType() == Interactible::InteractibleType::LEVER)
+        {
+            {
+                buttonsActions.emplace_back(
+                    sf::Vector2f(origin.x + 10, origin.y + 460 + offsetY),
+                    sf::Vector2f(32, 32),
+                    static_cast<Lever *>(interactible.get())->getColor());
+                offsetY += 40;
+            }
+        }
+    }
 }
 
 void HUD::draw(sf::RenderWindow &window)
@@ -151,12 +203,12 @@ void HUD::draw(sf::RenderWindow &window)
     detecteurB.draw(window);
     window.draw(detecteurT);
     window.draw(ramasserText);
-    for (auto &action : ramasserActions)
+    for (auto &action : pickupActions)
     {
         action.draw(window);
     }
     window.draw(interagireText);
-    for (auto &action : interagireActions)
+    for (auto &action : interactActions)
     {
         action.draw(window);
     }

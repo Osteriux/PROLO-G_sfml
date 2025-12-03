@@ -1,4 +1,4 @@
-#include "direction.h"
+#include "direction.hpp"
 
 std::string Direction::directionToString(Dir direction)
 {

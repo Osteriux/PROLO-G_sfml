@@ -1,4 +1,4 @@
-#include "log.h"
+#include "log.hpp"
 
 Log::Log(int maxMessages, sf::Vector2u origin, sf::Vector2u size)
     : maxMessages(maxMessages), origin(origin), rect(sf::FloatRect(origin.x, origin.y, size.x, size.y))

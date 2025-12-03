@@ -1,8 +1,13 @@
-#include "interactible.h"
+#include "interactible.hpp"
 
 Interactible::Interactible(std::unique_ptr<MultiTexture> animation, int x, int y)
     : StaticGameObject(std::move(animation), x, y)
 {
+}
+
+Interactible::InteractibleType Interactible::getType() const
+{
+    return type;
 }
 
 void Interactible::action(DynamicGameObject *user)

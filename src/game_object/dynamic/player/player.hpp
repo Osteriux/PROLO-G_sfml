@@ -1,6 +1,6 @@
 #pragma once
-#include "../dynamic_game_object.h"
-#include "inventory.h"
+#include "../dynamic_game_object.hpp"
+#include "inventory.hpp"
 
 class GameManager;
 

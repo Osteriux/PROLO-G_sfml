@@ -1,5 +1,5 @@
-#include "../game_object/game_object.h"
-#include "door.h"
+#include "../game_object/game_object.hpp"
+#include "door.hpp"
 
 Door::Door(sf::Color color, Direction::Dir dir, sf::Vector2f position)
     : ouverte(false), dir(dir), color(color), bgOffset(0, 0), texture(texturePath(dir), 2)

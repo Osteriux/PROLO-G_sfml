@@ -3,7 +3,7 @@
 #include <map>
 #include <cmath>
 #include <functional>
-#include "../dynamic_game_object.h"
+#include "../dynamic_game_object.hpp"
 
 // Forward declaration to avoid circular dependency with GameManager -> Map -> MonsterFactory -> Monster
 class GameManager;

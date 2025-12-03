@@ -1,7 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
-#include "src/manager/game_manager.h"
-#include "src/manager/event_manager.h"
+#include "src/manager/game_manager.hpp"
+#include "src/manager/event_manager.hpp"
 
 int main()
 {

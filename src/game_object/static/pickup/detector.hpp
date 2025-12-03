@@ -1,5 +1,5 @@
 #pragma once
-#include "pickup.h"
+#include "pickup.hpp"
 
 class Detector : public Pickup
 {

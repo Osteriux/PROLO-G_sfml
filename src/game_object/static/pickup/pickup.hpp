@@ -1,5 +1,5 @@
 #pragma once
-#include "../static_game_object.h"
+#include "../static_game_object.hpp"
 
 class GameManager;
 
@@ -24,12 +24,13 @@ public:
     static int pickupTypeToId(PickupType type);
     static PickupType idToPickupType(int id);
     static std::vector<PickupType> getAllPickupTypes();
+    static std::string texturePath(PickupType type);
 
     Pickup(std::unique_ptr<MultiTexture> tex, int x, int y);
+    PickupType getType() const;
     void pickup(Player *user);
     ~Pickup() = default;
 
 protected:
     PickupType type;
-    static std::string texturePath(PickupType type);
 };

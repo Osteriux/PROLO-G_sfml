@@ -1,4 +1,4 @@
-#include "matrix_animation.h"
+#include "matrix_animation.hpp"
 
 MatrixAnimation::MatrixAnimation(std::string texture_path, int lineCount, int columnCount, std::vector<int> columnsSize, float switchTime)
     : MultiTexture(texture_path, lineCount, columnCount, columnsSize), switchTime(switchTime)

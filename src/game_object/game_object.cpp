@@ -1,26 +1,26 @@
-#include "../manager/game_manager.h"
-#include "../map/map.h"
-#include "../map/case.h"
-#include "game_object.h"
+#include "../manager/game_manager.hpp"
+#include "../map/map.hpp"
+#include "../map/case.hpp"
+#include "game_object.hpp"
 
 GameObject::GameObject(std::unique_ptr<MultiTexture> animation, int x, int y)
 {
     this->animation = std::move(animation);
 }
 
-Case* GameObject::getCase()
+Case *GameObject::getCase()
 {
     return currCase;
 }
 
-void GameObject::setCase(Case* newCase)
+void GameObject::setCase(Case *newCase)
 {
     currCase = newCase;
 }
 
 void GameObject::setSpritePosition(sf::Vector2f position)
 {
-    if(animation == nullptr)
+    if (animation == nullptr)
     {
         throw std::runtime_error("GameObject::setSpritePosition: animation is nullptr");
     }
@@ -29,7 +29,7 @@ void GameObject::setSpritePosition(sf::Vector2f position)
 
 void GameObject::setSpriteScale(sf::Vector2f scale)
 {
-    if(!animation)
+    if (!animation)
     {
         std::cerr << "GameObject::setSpritePosition: animation is nullptr" << std::endl;
     }

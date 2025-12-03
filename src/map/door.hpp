@@ -1,7 +1,7 @@
 #pragma once
 #include <sstream>
-#include "../animation/multi_texture.h"
-#include "direction.h"
+#include "../animation/multi_texture.hpp"
+#include "direction.hpp"
 
 class GameObject;
 

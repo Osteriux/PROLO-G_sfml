@@ -1,5 +1,5 @@
 #pragma once
-#include "multi_texture.h"
+#include "multi_texture.hpp"
 
 class MatrixAnimation : public MultiTexture
 {

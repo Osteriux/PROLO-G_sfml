@@ -1,5 +1,5 @@
-#include "battery.h"
-#include "../../dynamic/player/player.h"
+#include "battery.hpp"
+#include "../../dynamic/player/player.hpp"
 
 Battery::Battery(int x, int y)
     : Pickup(std::make_unique<MultiTexture>(Pickup::texturePath(Pickup::BATTERY), 1), x, y)
