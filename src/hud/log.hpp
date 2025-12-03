@@ -2,8 +2,9 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <iostream>
+#include "../manager/game_event_system.hpp"
 
-class Log
+class Log : public IEventListener
 {
 private:
     sf::RectangleShape outline;
@@ -14,9 +15,11 @@ private:
     sf::FloatRect rect;
 public:
     Log(int maxMessages, sf::Vector2u origin, sf::Vector2u size);
+    void init();  // Subscribe to events after GameManager is ready
     void scrollUp();
     void scrollDown();
     void addMessage(std::string message);
     void draw(sf::RenderWindow &window);
-    ~Log() = default;
+    void onEvent(const GameEvent &event) override;
+    ~Log();
 };

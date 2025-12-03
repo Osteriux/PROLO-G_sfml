@@ -1,6 +1,7 @@
 #include "lever.hpp"
 #include "../../../map/case.hpp"
 #include "../../../manager/game_manager.hpp"
+#include "../../../manager/game_event.hpp"
 
 Lever::Lever(sf::Color color, int x, int y, int doorId, int nb)
     : Interactible(createRect(color, nb), x, y), activated(false), doorId(doorId), color(color)
@@ -23,6 +24,10 @@ void Lever::interact(DynamicGameObject *user)
         message += "deactivated.";
     }
     GameManager::getInstance().addLogMessage(message);
+    
+    // Emit lever toggled event
+    LeverToggledEvent event(doorId, activated, currCase->getX(), currCase->getY());
+    GameManager::getInstance().getEventSystem().dispatch(event);
 }
 
 sf::Color Lever::getColor() const

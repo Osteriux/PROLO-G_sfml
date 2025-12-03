@@ -65,6 +65,124 @@ Player* player = GameManager::getInstance().getPlayer();
 HUD& hud = GameManager::getInstance().getHUD();
 ```
 
+### 5. Event System (Event-Driven Architecture)
+
+The codebase uses a **pub/sub event system** to decouple components. Components communicate via events rather than direct calls.
+
+#### Event System Components
+
+- **GameEventSystem**: Singleton event dispatcher (`GameEventSystem::getInstance()`)
+- **IEventListener**: Interface for components that react to events
+- **GameEvent**: Base class for all events with `Type` enum and `getType()` method
+
+#### Creating New Events
+
+When adding new game actions or state changes, create events to maintain decoupling:
+
+```cpp
+// 1. Add event type to GameEvent::Type enum in game_event.hpp
+enum class Type {
+    // ... existing types
+    MY_NEW_EVENT
+};
+
+// 2. Create event class inheriting from GameEvent
+class MyNewEvent : public GameEvent {
+private:
+    int someData;
+    std::string moreData;
+
+public:
+    MyNewEvent(int data, const std::string& more)
+        : someData(data), moreData(more) {}
+
+    Type getType() const override { return Type::MY_NEW_EVENT; }
+    int getSomeData() const { return someData; }
+    const std::string& getMoreData() const { return moreData; }
+};
+```
+
+#### Using Events
+
+**Emitting Events:**
+
+```cpp
+// After state changes, dispatch event
+void Player::performAction() {
+    // ... perform action logic ...
+
+    MyNewEvent event(42, "action completed");
+    GameManager::getInstance().getEventSystem().dispatch(event);
+}
+```
+
+**Listening to Events:**
+
+```cpp
+// 1. Inherit from IEventListener
+class MyComponent : public IEventListener {
+public:
+    MyComponent() {
+        // Subscribe in constructor or init()
+        GameEventSystem::getInstance().subscribe(GameEvent::Type::MY_NEW_EVENT, this);
+    }
+
+    void onEvent(const GameEvent &event) override {
+        if (event.getType() == GameEvent::Type::MY_NEW_EVENT) {
+            const auto &myEvent = static_cast<const MyNewEvent &>(event);
+            // React to event
+        }
+    }
+
+    ~MyComponent() {
+        // Always unsubscribe!
+        GameEventSystem::getInstance().unsubscribeAll(this);
+    }
+};
+```
+
+#### Event Categories
+
+**Player State Events:**
+
+- `PlayerMovedEvent`: Position changed
+- `PlayerDamagedEvent`: Health decreased
+- `PlayerHealedEvent`: Health increased
+- `PlayerInventoryChangedEvent`: Inventory counts changed
+- `PlayerContextChangedEvent`: Case changed (new pickups/levers available)
+
+**Item Events:**
+
+- `ItemPickedUpEvent`: Pickup collected
+- `ItemUsedEvent`: Item used from inventory
+
+**Interaction Events:**
+
+- `LeverToggledEvent`: Lever activated/deactivated
+- `DoorOpenedEvent` / `DoorClosedEvent`: Door state changed
+
+**UI Events:**
+
+- `HUDActionEvent`: User clicked HUD button (movement, item use, etc.)
+
+#### Event Flow Pattern
+
+```
+User Action → HUD emits HUDActionEvent
+           → GameManager listens, translates to game command
+           → Player/GameObject executes, emits state event
+           → HUD/Log listen, update display
+```
+
+#### Best Practices
+
+- **Emit after state changes**: Only dispatch events after the action completes
+- **Immutable events**: Events should be const references, data copied at creation
+- **Avoid recursion**: Don't dispatch events during event handling
+- **Always unsubscribe**: Call `unsubscribeAll(this)` in destructor
+- **Use specific events**: Create new event types rather than generic "StateChanged"
+- **Init order**: Components subscribing to events need `init()` method called after GameManager exists
+
 ## Build System (CMake + MinGW)
 
 ### Configuration
@@ -165,3 +283,13 @@ Doxygen HTML docs in `doc/html/` - regenerate with `doxygen Doxyfile`.
    - Directory structure: `src/game_object/static/{pickup/,interactible/}`
 
 3. **French to English Translation** (Dec 2025): Complete codebase translation including classes, methods, variables, enums, and asset files. All naming now follows English conventions.
+
+4. **Event System Implementation** (Dec 2025): Added pub/sub event system for component decoupling:
+   - **GameEventSystem**: Singleton event dispatcher with subscribe/dispatch pattern
+   - **IEventListener**: Interface for event-reactive components
+   - **Component Decoupling**: HUD, Log, GameManager now communicate via events
+   - **HUD Refactoring**: Removed direct Player pointer, maintains internal state via events
+   - **Event Flow**: HUD emits `HUDActionEvent` → GameManager translates to commands → Player executes and emits state events → Components update
+   - **Files**: `src/manager/game_event.hpp`, `game_event_system.hpp/cpp`
+   - **Documentation**: See `doc/markdown/event_system.md` for detailed guide
+   - **Extensible**: Create new events by adding to `GameEvent::Type` enum and implementing event class

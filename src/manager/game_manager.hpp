@@ -6,8 +6,9 @@
 #include "../game_object/dynamic/player/player.hpp"
 #include "../utils/fileReader/level_file_handeler.hpp"
 #include "../map/map.hpp"
+#include "game_event_system.hpp"
 
-class GameManager
+class GameManager : public IEventListener
 {
 private:
     sf::Vector2u windowSize;
@@ -26,12 +27,14 @@ public:
     static void initialize(sf::Vector2u windowSize, std::string filePath);
     static GameManager &getInstance();
     static void destroy();
+    GameEventSystem &getEventSystem();
     Player *getPlayer();
     Map *getMap();
     HUD &getHUD();
     void addLogMessage(std::string message);
     void update(float dt);
     void draw(sf::RenderWindow &window);
+    void onEvent(const GameEvent &event) override;
     ~GameManager() = default;
     void debug();
 };

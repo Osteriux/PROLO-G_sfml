@@ -3,9 +3,12 @@
 #include "../game_object/static/pickup/pickup.hpp"
 #include "../game_object/static/interactible/interactible.hpp"
 #include "../game_object/static/interactible/lever.hpp"
+#include "../manager/game_manager.hpp"
+#include "../manager/game_event.hpp"
 
-HUD::HUD(sf::Vector2u origin, sf::Vector2u size, Player *player)
-    : origin(origin), size(size), player(player),
+HUD::HUD(sf::Vector2u origin, sf::Vector2u size)
+    : origin(origin), size(size),
+      playerHealth(0), availableLeversOnCase(0),
       leftArrow(sf::Vector2f(origin.x + 10, origin.y + 110), sf::Vector2f(32, 32), "assets/button/LEFT.png"),
       downArrow(sf::Vector2f(origin.x + 50, origin.y + 150), sf::Vector2f(32, 32), "assets/button/DOWN.png"),
       rightArrow(sf::Vector2f(origin.x + 90, origin.y + 110), sf::Vector2f(32, 32), "assets/button/RIGHT.png"),
@@ -58,133 +61,121 @@ HUD::HUD(sf::Vector2u origin, sf::Vector2u size, Player *player)
     ramasserText.setCharacterSize(20);
     ramasserText.setFillColor(sf::Color::White);
     ramasserText.setPosition(sf::Vector2f(origin.x + 10, origin.y + 190));
-    ramasserText.setString("Ramasser :");
+    ramasserText.setString("Pick up:");
     // pickupActions.push_back(ButtonImage(sf::Vector2f(origin.x + 10, origin.y + 310), sf::Vector2f(32,32), "assets/button/ITEM.png"));
 
     interagireText.setFont(font);
     interagireText.setCharacterSize(24);
     interagireText.setFillColor(sf::Color::White);
     interagireText.setPosition(sf::Vector2f(origin.x + 10, origin.y + 350));
-    interagireText.setString("Interagir :");
+    interagireText.setString("Interact:");
     // interactActions.push_back(ButtonImage(sf::Vector2f(origin.x + 10, origin.y + 390), sf::Vector2f(32,32), "assets/button/ITEM.png"));
 
     buttonsText.setFont(font);
     buttonsText.setCharacterSize(24);
     buttonsText.setFillColor(sf::Color::White);
     buttonsText.setPosition(sf::Vector2f(origin.x + 10, origin.y + 430));
-    buttonsText.setString("Boutons : ON/OFF");
+    buttonsText.setString("Buttons: ON/OFF");
     // buttonsActions.push_back(ButtonLever(sf::Vector2f(origin.x + 10, origin.y + 470), sf::Vector2f(32,32), "assets/button/ITEM.png"));
+}
+
+void HUD::init()
+{
+    // Subscribe to relevant game events
+    GameEventSystem::getInstance().subscribe(GameEvent::Type::PLAYER_INVENTORY_CHANGED, this);
+    GameEventSystem::getInstance().subscribe(GameEvent::Type::PLAYER_CONTEXT_CHANGED, this);
+    GameEventSystem::getInstance().subscribe(GameEvent::Type::ITEM_PICKED_UP, this);
+    GameEventSystem::getInstance().subscribe(GameEvent::Type::ITEM_USED, this);
+    GameEventSystem::getInstance().subscribe(GameEvent::Type::PLAYER_DAMAGED, this);
+    GameEventSystem::getInstance().subscribe(GameEvent::Type::PLAYER_HEALED, this);
 }
 
 void HUD::onClic(sf::Vector2f mousePosition)
 {
+    HUDActionEvent event(HUDActionEvent::ActionType::NONE); // Dummy init
+
     if (leftArrow.isClicked(mousePosition))
     {
         std::cout << "left" << std::endl;
-        player->move(Direction::LEFT);
+        event = HUDActionEvent(HUDActionEvent::ActionType::MOVE_LEFT);
     }
     else if (downArrow.isClicked(mousePosition))
     {
         std::cout << "down" << std::endl;
-        player->move(Direction::DOWN);
+        event = HUDActionEvent(HUDActionEvent::ActionType::MOVE_DOWN);
     }
     else if (rightArrow.isClicked(mousePosition))
     {
         std::cout << "right" << std::endl;
-        player->move(Direction::RIGHT);
+        event = HUDActionEvent(HUDActionEvent::ActionType::MOVE_RIGHT);
     }
     else if (upArrow.isClicked(mousePosition))
     {
         std::cout << "up" << std::endl;
-        player->move(Direction::UP);
+        event = HUDActionEvent(HUDActionEvent::ActionType::MOVE_UP);
     }
     else if (useRadar.isClicked(mousePosition))
     {
         std::cout << "radar" << std::endl;
-        // player->useRadar();
+        event = HUDActionEvent(HUDActionEvent::ActionType::USE_RADAR);
     }
     else if (mineB.isClicked(mousePosition))
     {
         std::cout << "mine" << std::endl;
-        // player->usePickup(Pickup::PickupType::MINE);
+        event = HUDActionEvent(HUDActionEvent::ActionType::USE_MINE);
     }
     else if (batterieB.isClicked(mousePosition))
     {
         std::cout << "battery" << std::endl;
-        // player->usePickup(Pickup::PickupType::BATTERY);
+        event = HUDActionEvent(HUDActionEvent::ActionType::USE_BATTERY);
     }
     else if (bombeB.isClicked(mousePosition))
     {
         std::cout << "bomb" << std::endl;
-        // player->usePickup(Pickup::PickupType::BOMB);
+        event = HUDActionEvent(HUDActionEvent::ActionType::USE_BOMB);
     }
     else if (detecteurB.isClicked(mousePosition))
     {
         std::cout << "detector" << std::endl;
-        // player->usePickup(Pickup::PickupType::DETECTOR);
+        event = HUDActionEvent(HUDActionEvent::ActionType::USE_DETECTOR);
     }
     else
     {
         // Check pickup actions
-        /// TODO
-
-        // check interact actions
-        /// TODO
-
-        // check button actions
-        for (auto &action : buttonsActions)
+        for (size_t i = 0; i < pickupActions.size(); i++)
         {
-            if (action.isClicked(mousePosition))
+            if (pickupActions[i].isClicked(mousePosition))
             {
-                std::cout << "button lever clicked" << std::endl;
-                // Find corresponding lever and interact
+                std::cout << "pickup item " << i << std::endl;
+                event = HUDActionEvent(HUDActionEvent::ActionType::PICKUP_ITEM, i);
+                break;
+            }
+        }
+
+        // Check lever actions
+        for (size_t i = 0; i < buttonsActions.size(); i++)
+        {
+            if (buttonsActions[i].isClicked(mousePosition))
+            {
+                std::cout << "button lever " << i << std::endl;
+                event = HUDActionEvent(HUDActionEvent::ActionType::INTERACT_LEVER, i);
+                break;
             }
         }
     }
+
+    GameManager::getInstance().getEventSystem().dispatch(event);
 }
 
 void HUD::update(float dt)
 {
-    // Met à jour les quantités des pickups dans l'inventaire du joueur
-    mineT.setString(std::to_string(player->getInventory().getQuantity(Pickup::PickupType::MINE)));
-    batterieT.setString(std::to_string(player->getInventory().getQuantity(Pickup::PickupType::BATTERY)));
-    bombeT.setString(std::to_string(player->getInventory().getQuantity(Pickup::PickupType::BOMB)));
-    detecteurT.setString(std::to_string(player->getInventory().getQuantity(Pickup::PickupType::DETECTOR)));
-
-    // Met à jour les actions de ramassage
-    pickupActions.clear();
-    int offsetY = 0;
-    for (const auto &pickup : player->getCase()->getPickups())
-    {
-        pickupActions.emplace_back(
-            sf::Vector2f(origin.x + 10, origin.y + 220 + offsetY),
-            sf::Vector2f(32, 32),
-            Pickup::texturePath(pickup->getType()));
-        offsetY += 40;
-    }
-
-    // Met à jour les actions des leviers
-    buttonsActions.clear();
-    offsetY = 0;
-    for (const auto &interactible : player->getCase()->getInteractibles())
-    {
-        if (interactible->getType() == Interactible::InteractibleType::LEVER)
-        {
-            {
-                buttonsActions.emplace_back(
-                    sf::Vector2f(origin.x + 10, origin.y + 460 + offsetY),
-                    sf::Vector2f(32, 32),
-                    static_cast<Lever *>(interactible.get())->getColor());
-                offsetY += 40;
-            }
-        }
-    }
+    // Currently no dynamic elements needing per-frame updates
 }
 
 void HUD::draw(sf::RenderWindow &window)
 {
     window.draw(outline);
-    for (int h = 0; h < player->getHealth(); h++)
+    for (int h = 0; h < playerHealth; h++)
     {
         heart.setPosition(sf::Vector2f(origin.x + 10 + h * 50, origin.y + 10));
         window.draw(heart);
@@ -216,5 +207,76 @@ void HUD::draw(sf::RenderWindow &window)
     for (auto &action : buttonsActions)
     {
         action.draw(window);
+    }
+}
+
+HUD::~HUD()
+{
+    // Note: GameManager::destroy() handles unsubscription before destroying event system
+    // This is just a safety check if HUD is destroyed independently
+}
+
+void HUD::onEvent(const GameEvent &event)
+{
+    switch (event.getType())
+    {
+    case GameEvent::Type::PLAYER_INVENTORY_CHANGED:
+    {
+        const auto &invEvent = static_cast<const PlayerInventoryChangedEvent &>(event);
+        mineT.setString(std::to_string(invEvent.getMineCount()));
+        batterieT.setString(std::to_string(invEvent.getBatteryCount()));
+        bombeT.setString(std::to_string(invEvent.getBombCount()));
+        detecteurT.setString(std::to_string(invEvent.getDetectorCount()));
+        break;
+    }
+    case GameEvent::Type::PLAYER_CONTEXT_CHANGED:
+    {
+        const auto &ctxEvent = static_cast<const PlayerContextChangedEvent &>(event);
+        availablePickupsOnCase = ctxEvent.getAvailablePickups();
+        availableLeversOnCase = ctxEvent.getLeverCount();
+
+        // Update pickup actions from new context
+        pickupActions.clear();
+        int offsetY = 0;
+        for (const auto &pickupType : availablePickupsOnCase)
+        {
+            pickupActions.emplace_back(
+                sf::Vector2f(origin.x + 10, origin.y + 220 + offsetY),
+                sf::Vector2f(32, 32),
+                Pickup::texturePath(pickupType));
+            offsetY += 40;
+        }
+
+        // Update lever buttons from new context
+        buttonsActions.clear();
+        for (int i = 0; i < availableLeversOnCase; i++)
+        {
+            buttonsActions.emplace_back(
+                sf::Vector2f(origin.x + 10, origin.y + 460 + (i * 40)),
+                sf::Vector2f(32, 32),
+                sf::Color::White); // Default color - would need more event data for actual colors
+        }
+        break;
+    }
+    case GameEvent::Type::PLAYER_DAMAGED:
+    {
+        const auto &dmgEvent = static_cast<const PlayerDamagedEvent &>(event);
+        playerHealth = dmgEvent.getCurrentHealth();
+        break;
+    }
+    case GameEvent::Type::PLAYER_HEALED:
+    {
+        const auto &healEvent = static_cast<const PlayerHealedEvent &>(event);
+        playerHealth = healEvent.getCurrentHealth();
+        break;
+    }
+    case GameEvent::Type::ITEM_PICKED_UP:
+    case GameEvent::Type::ITEM_USED:
+    {
+        // Could show feedback animation here
+        break;
+    }
+    default:
+        break;
     }
 }
