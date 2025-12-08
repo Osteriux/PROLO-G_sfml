@@ -33,20 +33,23 @@ void GameManager::initialize(sf::Vector2u windowSize, std::string filePath)
     // Now that GameManager instance exists, init components that need event system
     instance->hud->init();
     instance->log->init();
-    
+
     // Subscribe GameManager to HUD actions
     instance->getEventSystem().subscribe(GameEvent::Type::HUD_ACTION, instance);
-    
+
     // Emit initial player state so HUD gets synchronized
     instance->player->emitInventoryChanged();
     instance->player->emitContextChanged();
-}void GameManager::destroy()
+    instance->player->takeDamage(0, "Initialization");
+}
+
+void GameManager::destroy()
 {
     if (instance != nullptr)
     {
         // Unsubscribe GameManager from events
         GameEventSystem::getInstance().unsubscribeAll(instance);
-        
+
         // Manually unsubscribe HUD and Log to avoid calling getInstance() after destruction
         if (instance->hud)
         {
@@ -57,11 +60,11 @@ void GameManager::initialize(sf::Vector2u windowSize, std::string filePath)
             GameEventSystem::getInstance().unsubscribeAll(instance->log.get());
         }
     }
-    
+
     // Now safe to delete instance (won't call GameEventSystem in destructors)
     delete instance;
     instance = nullptr;
-    
+
     // Destroy event system last
     GameEventSystem::destroy();
 }
@@ -118,7 +121,7 @@ void GameManager::onEvent(const GameEvent &event)
     if (event.getType() == GameEvent::Type::HUD_ACTION)
     {
         const auto &hudEvent = static_cast<const HUDActionEvent &>(event);
-        
+
         switch (hudEvent.getAction())
         {
         case HUDActionEvent::ActionType::MOVE_LEFT:
