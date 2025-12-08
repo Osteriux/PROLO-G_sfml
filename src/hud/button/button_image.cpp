@@ -17,3 +17,9 @@ void ButtonImage::draw(sf::RenderWindow &window)
     ButtonBase::draw(window);
     window.draw(sprite);
 }
+
+void ButtonImage::setPosition(sf::Vector2f newPosition)
+{
+    ButtonBase::setPosition(newPosition);
+    sprite.setPosition(newPosition);
+}

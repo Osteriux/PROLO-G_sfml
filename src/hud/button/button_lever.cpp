@@ -33,3 +33,9 @@ void ButtonLever::draw(sf::RenderWindow &window)
     ButtonBase::draw(window);
     window.draw(outline);
 }
+
+void ButtonLever::setPosition(sf::Vector2f newPosition)
+{
+    ButtonBase::setPosition(newPosition);
+    outline.setPosition(newPosition);
+}

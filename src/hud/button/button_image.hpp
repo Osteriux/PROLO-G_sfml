@@ -9,5 +9,6 @@ private:
 public:
     ButtonImage(sf::Vector2f position, sf::Vector2f size, std::string texturePath, sf::Color backgroundColor = sf::Color::Transparent);
     void draw(sf::RenderWindow &window) override;
+    void setPosition(sf::Vector2f newPosition);
     ~ButtonImage() = default;
 };

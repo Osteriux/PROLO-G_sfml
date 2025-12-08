@@ -9,15 +9,16 @@
 HUD::HUD(sf::Vector2u origin, sf::Vector2u size)
     : origin(origin), size(size),
       playerHealth(0), availableLeversOnCase(0),
-      leftArrow(sf::Vector2f(origin.x + 10, origin.y + 110), sf::Vector2f(32, 32), "assets/button/LEFT.png"),
-      downArrow(sf::Vector2f(origin.x + 50, origin.y + 150), sf::Vector2f(32, 32), "assets/button/DOWN.png"),
-      rightArrow(sf::Vector2f(origin.x + 90, origin.y + 110), sf::Vector2f(32, 32), "assets/button/RIGHT.png"),
-      upArrow(sf::Vector2f(origin.x + 50, origin.y + 70), sf::Vector2f(32, 32), "assets/button/UP.png"),
-      useRadar(sf::Vector2f(origin.x + 50, origin.y + 110), sf::Vector2f(32, 32), "assets/button/RADAR.png"),
-      mineB(sf::Vector2f(origin.x + 140, origin.y + 90), sf::Vector2f(32, 32), "assets/hud/MINE.png"),
-      batterieB(sf::Vector2f(origin.x + 200, origin.y + 90), sf::Vector2f(32, 32), "assets/hud/BATTERY.png"),
-      bombeB(sf::Vector2f(origin.x + 140, origin.y + 130), sf::Vector2f(32, 32), "assets/hud/BOMB.png"),
-      detecteurB(sf::Vector2f(origin.x + 200, origin.y + 130), sf::Vector2f(32, 32), "assets/hud/DETECTOR.png")
+      grid(sf::Vector2f(static_cast<float>(origin.x + 1), static_cast<float>(origin.y + 1)), 40, 40, 8, 25),
+      leftArrow(grid.getCellPosition(0, 3), sf::Vector2f(32, 32), "assets/button/LEFT.png"),
+      downArrow(grid.getCellPosition(1, 4), sf::Vector2f(32, 32), "assets/button/DOWN.png"),
+      rightArrow(grid.getCellPosition(2, 3), sf::Vector2f(32, 32), "assets/button/RIGHT.png"),
+      upArrow(grid.getCellPosition(1, 2), sf::Vector2f(32, 32), "assets/button/UP.png"),
+      useRadar(grid.getCellPosition(1, 3), sf::Vector2f(32, 32), "assets/button/RADAR.png"),
+      mineB(grid.getCellPosition(4, 2), sf::Vector2f(32, 32), "assets/hud/MINE.png"),
+      batterieB(grid.getCellPosition(5, 2), sf::Vector2f(32, 32), "assets/hud/BATTERY.png"),
+      bombeB(grid.getCellPosition(4, 3), sf::Vector2f(32, 32), "assets/hud/BOMB.png"),
+      detecteurB(grid.getCellPosition(5, 3), sf::Vector2f(32, 32), "assets/hud/DETECTOR.png")
 {
     if (!font.loadFromFile("assets/font/arial.ttf"))
     {
@@ -36,47 +37,69 @@ HUD::HUD(sf::Vector2u origin, sf::Vector2u size)
     mineT.setFont(font);
     mineT.setCharacterSize(20);
     mineT.setFillColor(sf::Color::White);
-    mineT.setPosition(sf::Vector2f(origin.x + 180, origin.y + 100));
+    mineT.setPosition(grid.getCellPosition(6, 2) + sf::Vector2f(8, 10));
     mineT.setString("0");
 
     batterieT.setFont(font);
     batterieT.setCharacterSize(20);
     batterieT.setFillColor(sf::Color::White);
-    batterieT.setPosition(sf::Vector2f(origin.x + 240, origin.y + 100));
+    batterieT.setPosition(grid.getCellPosition(7, 2) + sf::Vector2f(8, 10));
     batterieT.setString("0");
 
     bombeT.setFont(font);
     bombeT.setCharacterSize(20);
     bombeT.setFillColor(sf::Color::White);
-    bombeT.setPosition(sf::Vector2f(origin.x + 180, origin.y + 140));
+    bombeT.setPosition(grid.getCellPosition(6, 3) + sf::Vector2f(8, 10));
     bombeT.setString("0");
 
     detecteurT.setFont(font);
     detecteurT.setCharacterSize(20);
     detecteurT.setFillColor(sf::Color::White);
-    detecteurT.setPosition(sf::Vector2f(origin.x + 240, origin.y + 140));
+    detecteurT.setPosition(grid.getCellPosition(7, 3) + sf::Vector2f(8, 10));
     detecteurT.setString("0");
 
     ramasserText.setFont(font);
     ramasserText.setCharacterSize(20);
     ramasserText.setFillColor(sf::Color::White);
-    ramasserText.setPosition(sf::Vector2f(origin.x + 10, origin.y + 190));
+    ramasserText.setPosition(grid.getCellPosition(0, 5));
     ramasserText.setString("Pick up:");
-    // pickupActions.push_back(ButtonImage(sf::Vector2f(origin.x + 10, origin.y + 310), sf::Vector2f(32,32), "assets/button/ITEM.png"));
 
     interagireText.setFont(font);
     interagireText.setCharacterSize(24);
     interagireText.setFillColor(sf::Color::White);
-    interagireText.setPosition(sf::Vector2f(origin.x + 10, origin.y + 350));
+    interagireText.setPosition(grid.getCellPosition(0, 14));
     interagireText.setString("Interact:");
-    // interactActions.push_back(ButtonImage(sf::Vector2f(origin.x + 10, origin.y + 390), sf::Vector2f(32,32), "assets/button/ITEM.png"));
 
     buttonsText.setFont(font);
     buttonsText.setCharacterSize(24);
     buttonsText.setFillColor(sf::Color::White);
-    buttonsText.setPosition(sf::Vector2f(origin.x + 10, origin.y + 430));
+    buttonsText.setPosition(grid.getCellPosition(0, 18));
     buttonsText.setString("Buttons: ON/OFF");
-    // buttonsActions.push_back(ButtonLever(sf::Vector2f(origin.x + 10, origin.y + 470), sf::Vector2f(32,32), "assets/button/ITEM.png"));
+
+    // Configure dynamic containers using grid regions
+    sf::FloatRect pickupRegion = grid.getRegion(0, 6, 8, 8); // 8 cols x 8 rows for pickups
+    pickupActions.configure(
+        sf::Vector2f(pickupRegion.left, pickupRegion.top),
+        sf::Vector2f(pickupRegion.width, pickupRegion.height),
+        sf::Vector2f(32, 32),
+        8,
+        LayoutMode::VERTICAL_LIST);
+
+    sf::FloatRect interactRegion = grid.getRegion(0, 15, 8, 3); // 8 cols x 3 rows for interactions
+    interactActions.configure(
+        sf::Vector2f(interactRegion.left, interactRegion.top),
+        sf::Vector2f(interactRegion.width, interactRegion.height),
+        sf::Vector2f(32, 32),
+        8,
+        LayoutMode::VERTICAL_LIST);
+
+    sf::FloatRect leverRegion = grid.getRegion(0, 19, 8, 6); // 8 cols x 6 rows for levers
+    buttonsActions.configure(
+        sf::Vector2f(leverRegion.left, leverRegion.top),
+        sf::Vector2f(leverRegion.width, leverRegion.height),
+        sf::Vector2f(32, 32),
+        8,
+        LayoutMode::VERTICAL_LIST);
 }
 
 void HUD::init()
@@ -141,26 +164,18 @@ void HUD::onClic(sf::Vector2f mousePosition)
     }
     else
     {
-        // Check pickup actions
-        for (size_t i = 0; i < pickupActions.size(); i++)
+        // Check pickup actions using container
+        int clickedIndex = -1;
+        if (pickupActions.handleClick(mousePosition, clickedIndex))
         {
-            if (pickupActions[i].isClicked(mousePosition))
-            {
-                std::cout << "pickup item " << i << std::endl;
-                event = HUDActionEvent(HUDActionEvent::ActionType::PICKUP_ITEM, i);
-                break;
-            }
+            std::cout << "pickup item " << clickedIndex << std::endl;
+            event = HUDActionEvent(HUDActionEvent::ActionType::PICKUP_ITEM, clickedIndex);
         }
-
-        // Check lever actions
-        for (size_t i = 0; i < buttonsActions.size(); i++)
+        // Check lever actions using container
+        else if (buttonsActions.handleClick(mousePosition, clickedIndex))
         {
-            if (buttonsActions[i].isClicked(mousePosition))
-            {
-                std::cout << "button lever " << i << std::endl;
-                event = HUDActionEvent(HUDActionEvent::ActionType::INTERACT_LEVER, i);
-                break;
-            }
+            std::cout << "button lever " << clickedIndex << std::endl;
+            event = HUDActionEvent(HUDActionEvent::ActionType::INTERACT_LEVER, clickedIndex);
         }
     }
 
@@ -177,7 +192,7 @@ void HUD::draw(sf::RenderWindow &window)
     window.draw(outline);
     for (int h = 0; h < playerHealth; h++)
     {
-        heart.setPosition(sf::Vector2f(origin.x + 10 + h * 50, origin.y + 10));
+        heart.setPosition(grid.getCellPosition(h, 0) + sf::Vector2f(4, 4));
         window.draw(heart);
     }
     leftArrow.draw(window);
@@ -194,20 +209,11 @@ void HUD::draw(sf::RenderWindow &window)
     detecteurB.draw(window);
     window.draw(detecteurT);
     window.draw(ramasserText);
-    for (auto &action : pickupActions)
-    {
-        action.draw(window);
-    }
+    pickupActions.draw(window);
     window.draw(interagireText);
-    for (auto &action : interactActions)
-    {
-        action.draw(window);
-    }
+    interactActions.draw(window);
     window.draw(buttonsText);
-    for (auto &action : buttonsActions)
-    {
-        action.draw(window);
-    }
+    buttonsActions.draw(window);
 }
 
 HUD::~HUD()
@@ -235,26 +241,28 @@ void HUD::onEvent(const GameEvent &event)
         availablePickupsOnCase = ctxEvent.getAvailablePickups();
         availableLeversOnCase = ctxEvent.getLeverCount();
 
-        // Update pickup actions from new context
+        // Update pickup actions from new context - container handles positioning
         pickupActions.clear();
-        int offsetY = 0;
         for (const auto &pickupType : availablePickupsOnCase)
         {
-            pickupActions.emplace_back(
-                sf::Vector2f(origin.x + 10, origin.y + 220 + offsetY),
-                sf::Vector2f(32, 32),
-                Pickup::texturePath(pickupType));
-            offsetY += 40;
+            pickupActions.addButton(
+                ButtonImage(
+                    sf::Vector2f(0, 0), // Position managed by container
+                    sf::Vector2f(32, 32),
+                    Pickup::texturePath(pickupType, true) // HUD-specific texture path
+                    ));
         }
 
-        // Update lever buttons from new context
+        // Update lever buttons from new context - container handles positioning
         buttonsActions.clear();
         for (int i = 0; i < availableLeversOnCase; i++)
         {
-            buttonsActions.emplace_back(
-                sf::Vector2f(origin.x + 10, origin.y + 460 + (i * 40)),
-                sf::Vector2f(32, 32),
-                sf::Color::White); // Default color - would need more event data for actual colors
+            buttonsActions.addButton(
+                ButtonLever(
+                    sf::Vector2f(0, 0), // Position managed by container
+                    sf::Vector2f(32, 32),
+                    sf::Color::White // Default color - would need more event data for actual colors
+                    ));
         }
         break;
     }

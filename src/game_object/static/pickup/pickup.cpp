@@ -87,7 +87,8 @@ Pickup::PickupType Pickup::idToPickupType(int id)
     }
 }
 
-std::string Pickup::texturePath(PickupType type)
+std::string Pickup::texturePath(PickupType type, bool hud)
 {
-    return "assets/static/" + pickupTypeToString(type) + ".png";
+    std::string basePath = hud ? "assets/hud/" : "assets/static/";
+    return basePath + pickupTypeToString(type) + ".png";
 }

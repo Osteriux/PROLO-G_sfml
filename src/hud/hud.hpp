@@ -6,6 +6,8 @@
 #include "button/button_text.hpp"
 #include "button/button_image.hpp"
 #include "button/button_lever.hpp"
+#include "hud_grid.hpp"
+#include "dynamic_button_container.hpp"
 
 class HUD : public IEventListener
 {
@@ -14,6 +16,7 @@ private:
     sf::Vector2u origin;
     sf::Vector2u size;
     sf::Font font;
+    HUDGrid grid;
 
     // HUD State (replaces direct Player access)
     int playerHealth;
@@ -38,13 +41,13 @@ private:
     ButtonImage useRadar;
 
     sf::Text ramasserText;
-    std::vector<ButtonImage> pickupActions;
+    DynamicButtonContainer<ButtonImage> pickupActions;
 
     sf::Text interagireText;
-    std::vector<ButtonImage> interactActions;
+    DynamicButtonContainer<ButtonImage> interactActions;
 
     sf::Text buttonsText;
-    std::vector<ButtonLever> buttonsActions;
+    DynamicButtonContainer<ButtonLever> buttonsActions;
 
 public:
     HUD(sf::Vector2u origin, sf::Vector2u size);

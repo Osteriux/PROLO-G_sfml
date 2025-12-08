@@ -24,7 +24,7 @@ public:
     static int pickupTypeToId(PickupType type);
     static PickupType idToPickupType(int id);
     static std::vector<PickupType> getAllPickupTypes();
-    static std::string texturePath(PickupType type);
+    static std::string texturePath(PickupType type, bool hud = false);
 
     Pickup(std::unique_ptr<MultiTexture> tex, int x, int y);
     PickupType getType() const;
