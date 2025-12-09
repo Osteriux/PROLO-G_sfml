@@ -1,3 +1,4 @@
+#ifndef _RELEASE
 #include "debug_console.hpp"
 #include "../manager/game_manager.hpp"
 #include <iostream>
@@ -193,3 +194,4 @@ void DebugConsole::quickFireDoorToggle(int doorId)
     GameEventSystem::getInstance().dispatch(event);
     std::cout << "[DEBUG] Fired DoorOpenedEvent: Door " << doorId << "\n";
 }
+#endif // _RELEASE

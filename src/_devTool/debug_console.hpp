@@ -1,3 +1,4 @@
+#ifndef _RELEASE
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <functional>
@@ -55,3 +56,4 @@ public:
     void quickFireItemPickup(Pickup::PickupType type);
     void quickFireDoorToggle(int doorId);
 };
+#endif // _RELEASE

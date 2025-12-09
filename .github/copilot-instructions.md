@@ -189,25 +189,60 @@ User Action → HUD emits HUDActionEvent
 
 - CMake 3.10+ with MinGW Makefiles generator
 - SFML 2.6.2 installed at `C:/Program Files/SFML-2.6.2`
-- Preset: `prolo-g_preset` (see `CMakePresets.json`)
-- Build output: `out/build/prolo-g_preset/`
+- MinGW 13.1.0 at `C:/ProgramData/mingw64/mingw64/bin`
+- Two build presets (see `CMakePresets.json`):
+  - `prolo-g_preset`: Debug build with all dev tools
+  - `prolo-g_release`: Optimized release build, excludes debug code
+- Build outputs: `out/build/prolo-g_preset/` (Debug) or `out/build/prolo-g_release/` (Release)
 
 ### Build Commands
 
+**Using the Helper Script (Recommended):**
+
 ```bash
-# Configure (first time or after CMakeLists.txt changes)
-cmake --preset prolo-g_preset
+# Display help
+./prolog.sh help
 
-# Build
-cmake --build out/build/prolo-g_preset
+# Build and run development version
+./prolog.sh build    # Build dev version
+./prolog.sh run      # Run dev version
 
-# Run
-./out/build/prolo-g_preset/prolog.exe
+# run release version
+./prolog.sh release  # Run release build
+
+# Create distribution package
+./prolog.sh package  # Builds release and creates zip in releases/
+
+# Clean build files
+./prolog.sh clean
 ```
+
+**Manual CMake Commands:**
+
+do not use refer to the helper script above for simplicity.
+
+### Automatic DLL Handling
+
+CMakeLists.txt automatically copies required DLLs to build directory:
+
+- **SFML DLLs**: Debug builds get `-d-2.dll` versions, Release gets `-2.dll`
+  - `sfml-graphics`, `sfml-window`, `sfml-system`
+- **MinGW Runtime DLLs**: `libgcc_s_seh-1.dll`, `libstdc++-6.dll`
+
+No manual DLL copying needed - everything works out of the box.
+
+### Debug Code Exclusion Convention
+
+**Folders starting with `_` are debug-only** and excluded from Release builds:
+
+- `src/_devTool/`: Development tools, debug console
+- Any future `src/_*/` folder will be automatically excluded
+
+Use `#ifndef _RELEASE` in code for conditional debug features. The `_RELEASE` preprocessor macro is automatically defined in Release builds.
 
 ### Asset Handling
 
-Assets auto-copy from `assets/` to build directory post-build. Level files are in `assets/font/*.txt` with custom format parsed by `LevelFileHandeler`.
+Assets auto-copy from `assets/` to build directory post-build. Level files are in `assets/level/*.txt` with custom format parsed by `LevelFileHandeler`.
 
 ## Code Conventions
 
@@ -216,6 +251,7 @@ Assets auto-copy from `assets/` to build directory post-build. Level files are i
 - **Classes**: PascalCase (`GameManager`, `DynamicGameObject`, `Map`, `Player`)
 - **Members**: camelCase (`currCase`, `player`, `map`, `door`)
 - **Constants**: UPPER_SNAKE_CASE in class scope
+- **Folders**: Debug/dev-only folders start with `_` (e.g., `_devTool`, `_debug`)
 - **Language**: All code uses English naming conventions (previously had French names - fully translated as of Dec 2025).
 
 ### Header Guards
@@ -285,6 +321,7 @@ Doxygen HTML docs in `doc/html/` - regenerate with `doxygen Doxyfile`.
 3. **French to English Translation** (Dec 2025): Complete codebase translation including classes, methods, variables, enums, and asset files. All naming now follows English conventions.
 
 4. **Event System Implementation** (Dec 2025): Added pub/sub event system for component decoupling:
+
    - **GameEventSystem**: Singleton event dispatcher with subscribe/dispatch pattern
    - **IEventListener**: Interface for event-reactive components
    - **Component Decoupling**: HUD, Log, GameManager now communicate via events
@@ -293,3 +330,12 @@ Doxygen HTML docs in `doc/html/` - regenerate with `doxygen Doxyfile`.
    - **Files**: `src/manager/game_event.hpp`, `game_event_system.hpp/cpp`
    - **Documentation**: See `doc/markdown/event_system.md` for detailed guide
    - **Extensible**: Create new events by adding to `GameEvent::Type` enum and implementing event class
+
+5. **Build System Enhancements** (Dec 2025): Comprehensive build automation and DLL management:
+   - **Automatic DLL Copying**: SFML and MinGW runtime DLLs auto-copy to build directory
+   - **Debug/Release Configuration**: Separate presets with correct DLL versions (`-d-2.dll` for Debug, `-2.dll` for Release)
+   - **Debug Code Exclusion**: Folders starting with `_` (like `src/_devTool/`) automatically excluded from Release builds
+   - **`_RELEASE` Macro**: Preprocessor macro defined in Release builds for conditional compilation
+   - **Helper Script**: `prolog.sh` provides simple commands: `build`, `run`, `release`, `package`, `clean`
+   - **Release Packaging**: `package_release.sh` automates creating distributable zip with all dependencies
+   - **CMake Improvements**: Proper source filtering, asset copying, cross-build-type support

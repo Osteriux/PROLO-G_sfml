@@ -2,7 +2,9 @@
 #include <SFML/System.hpp>
 #include "src/manager/game_manager.hpp"
 #include "src/manager/event_manager.hpp"
+#ifndef _RELEASE
 #include "src/_devTool/debug_console.hpp"
+#endif // _RELEASE
 
 int main()
 {
@@ -15,11 +17,13 @@ int main()
     GameManager::initialize(windowSize, "assets/level/test3.txt");
     EventManager eventManager;
 
+    sf::Clock clock;
+
+#ifndef _RELEASE
     // Initialize debug console (F1 to toggle)
     DebugConsole debugConsole(sf::Vector2f(windowSize.x - 410, 10));
     debugConsole.loadFont("assets/font/arial.ttf");
-
-    sf::Clock clock;
+#endif // _RELEASE
 
     // on fait tourner le programme jusqu'à ce que la fenêtre soit fermée
     while (window.isOpen())
@@ -34,12 +38,16 @@ int main()
                 window.close();
             }
 
+#ifndef _RELEASE
             // Debug console handles input first (F1 and number keys when visible)
             if (!debugConsole.handleInput(event))
             {
                 // If console didn't handle it, pass to game
                 eventManager.handleEvents(event);
             }
+#else
+            eventManager.handleEvents(event);
+#endif // _RELEASE
         }
 
         sf::Time deltaTime = clock.restart();
@@ -53,8 +61,10 @@ int main()
 
         GameManager::getInstance().update(dt);
 
+#ifndef _RELEASE
         // Draw debug console overlay (if visible)
         debugConsole.draw(window);
+#endif // _RELEASE
 
         // fin de la frame courante, affichage de tout ce qu'on a dessiné
         window.display();

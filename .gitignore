@@ -12,8 +12,9 @@ _deps
 CMakeUserPresets.json
 CMakePresets.json
 .vscode
+.tools
 out
 build
 doc
 *.zip
-test_data.md
+releases
