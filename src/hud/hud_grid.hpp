@@ -13,6 +13,8 @@ private:
     sf::Vector2f origin; ///< Top-left corner of the grid
     int cellWidth;       ///< Width of each grid cell in pixels
     int cellHeight;      ///< Height of each grid cell in pixels
+    int offset;          ///< Offset from outer edges in pixels
+    int gap;             ///< Gap between cells in pixels
     int columns;         ///< Number of columns in the grid
     int rows;            ///< Number of rows in the grid
 
@@ -23,10 +25,12 @@ public:
      * @param origin Top-left corner position of the grid
      * @param cellWidth Width of each cell in pixels
      * @param cellHeight Height of each cell in pixels
+     * @param offset Offset from outer edges in pixels (default: 0)
+     * @param gap Gap between cells in pixels (default: 0)
      * @param columns Number of columns
      * @param rows Number of rows
      */
-    HUDGrid(sf::Vector2f origin, int cellWidth, int cellHeight, int columns, int rows);
+    HUDGrid(sf::Vector2f origin, int cellWidth, int cellHeight, int offset, int gap, int columns, int rows);
 
     /**
      * @brief Get the position of a specific grid cell

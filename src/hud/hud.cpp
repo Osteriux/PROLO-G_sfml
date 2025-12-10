@@ -9,7 +9,7 @@
 HUD::HUD(sf::Vector2u origin, sf::Vector2u size)
     : origin(origin), size(size),
       playerHealth(0), availableLeversOnCase(0),
-      grid(sf::Vector2f(static_cast<float>(origin.x + 1), static_cast<float>(origin.y + 1)), 40, 40, 8, 25),
+      grid(sf::Vector2f(static_cast<float>(origin.x + 1), static_cast<float>(origin.y + 1)), 32, 32, 5, 10, 8, 25),
       leftArrow(grid.getCellPosition(0, 3), sf::Vector2f(32, 32), "assets/button/LEFT.png"),
       downArrow(grid.getCellPosition(1, 4), sf::Vector2f(32, 32), "assets/button/DOWN.png"),
       rightArrow(grid.getCellPosition(2, 3), sf::Vector2f(32, 32), "assets/button/RIGHT.png"),
