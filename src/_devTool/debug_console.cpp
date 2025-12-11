@@ -1,7 +1,8 @@
-#ifndef _RELEASE
+#ifdef _DEV_MODE
 #include "debug_console.hpp"
 #include "../manager/game_manager.hpp"
 #include <iostream>
+#include "../utils/logger/logger.hpp"
 
 DebugConsole::DebugConsole(sf::Vector2f position) : isVisible(false), position(position)
 {
@@ -17,7 +18,7 @@ bool DebugConsole::loadFont(const std::string &fontPath)
 {
     if (!font.loadFromFile(fontPath))
     {
-        std::cerr << "Failed to load debug console font: " << fontPath << std::endl;
+        Logger::log("Failed to load debug console font: " + fontPath, Logger::ERROR);
         return false;
     }
 
@@ -47,7 +48,7 @@ bool DebugConsole::loadFont(const std::string &fontPath)
 void DebugConsole::toggle()
 {
     isVisible = !isVisible;
-    std::cout << "Debug Console: " << (isVisible ? "ON" : "OFF") << std::endl;
+    Logger::log("Debug Console toggled " + std::string(isVisible ? "ON" : "OFF"), Logger::INFO);
 }
 
 bool DebugConsole::handleInput(const sf::Event &event)
@@ -123,7 +124,7 @@ void DebugConsole::quickFirePlayerDamage(int damage)
         int currentHealth = player->getHealth();
         PlayerDamagedEvent event(damage, currentHealth - damage, "Debug Console");
         GameEventSystem::getInstance().dispatch(event);
-        std::cout << "[DEBUG] Fired PlayerDamagedEvent: " << damage << " damage\n";
+        Logger::log("[DEVTOOL] Fired PlayerDamagedEvent: " + std::to_string(damage) + " damage", Logger::INFO);
     }
 }
 
@@ -135,7 +136,7 @@ void DebugConsole::quickFirePlayerHeal(int healing)
         int currentHealth = player->getHealth();
         PlayerHealedEvent event(healing, currentHealth + healing);
         GameEventSystem::getInstance().dispatch(event);
-        std::cout << "[DEBUG] Fired PlayerHealedEvent: " << healing << " healing\n";
+        Logger::log("[DEVTOOL] Fired PlayerHealedEvent: " + std::to_string(healing) + " healing", Logger::INFO);
     }
 }
 
@@ -151,7 +152,7 @@ void DebugConsole::quickFireInventoryChange(int mine, int battery, int bomb, int
 
         PlayerInventoryChangedEvent event(currentMine, currentBattery, currentBomb, currentDetector);
         GameEventSystem::getInstance().dispatch(event);
-        std::cout << "[DEBUG] Fired PlayerInventoryChangedEvent\n";
+        Logger::log("[DEVTOOL] Fired PlayerInventoryChangedEvent", Logger::INFO);
     }
 }
 
@@ -183,8 +184,8 @@ void DebugConsole::quickFireItemPickup(Pickup::PickupType type)
             break;
         }
 
-        std::cout << "[DEBUG] Fired ItemPickedUpEvent: " << itemName << "\n";
-    }
+        Logger::log("[DEVTOOL] Fired ItemPickedUpEvent: " + itemName, Logger::INFO);
+        }
 }
 
 void DebugConsole::quickFireDoorToggle(int doorId)
@@ -192,6 +193,6 @@ void DebugConsole::quickFireDoorToggle(int doorId)
     // Fire door opened event
     DoorOpenedEvent event(doorId);
     GameEventSystem::getInstance().dispatch(event);
-    std::cout << "[DEBUG] Fired DoorOpenedEvent: Door " << doorId << "\n";
+    Logger::log("[DEVTOOL] Fired DoorOpenedEvent: Door " + std::to_string(doorId), Logger::INFO);
 }
-#endif // _RELEASE
+#endif // _DEV_MODE

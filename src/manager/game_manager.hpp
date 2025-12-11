@@ -36,5 +36,4 @@ public:
     void draw(sf::RenderWindow &window);
     void onEvent(const GameEvent &event) override;
     ~GameManager() = default;
-    void debug();
 };

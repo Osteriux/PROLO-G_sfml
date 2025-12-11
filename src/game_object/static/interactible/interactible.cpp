@@ -1,4 +1,5 @@
 #include "interactible.hpp"
+#include "../../../utils/logger/logger.hpp"
 
 Interactible::Interactible(std::unique_ptr<MultiTexture> animation, int x, int y)
     : StaticGameObject(std::move(animation), x, y)
@@ -27,6 +28,7 @@ std::string Interactible::interactibleTypeToString(InteractibleType type)
     case InteractibleType::LEVER:
         return "LEVER";
     default:
+        Logger::log("Invalid interactible type", Logger::ERROR);
         throw std::invalid_argument("Invalid interactible type");
     }
 }
@@ -36,7 +38,10 @@ Interactible::InteractibleType Interactible::stringToInteractibleType(std::strin
     if (type == "LEVER")
         return InteractibleType::LEVER;
     else
+    {
+        Logger::log("Invalid interactible type: " + type, Logger::ERROR);
         throw std::invalid_argument("Invalid interactible type");
+    }
 }
 
 int Interactible::interactibleTypeToId(InteractibleType type)
@@ -46,6 +51,7 @@ int Interactible::interactibleTypeToId(InteractibleType type)
     case InteractibleType::LEVER:
         return 0;
     default:
+        Logger::log("Invalid interactible id", Logger::ERROR);
         throw std::invalid_argument("Invalid interactible id");
     }
 }
@@ -57,6 +63,7 @@ Interactible::InteractibleType Interactible::idToInteractibleType(int id)
     case 0:
         return InteractibleType::LEVER;
     default:
+        Logger::log("Invalid interactible id: " + std::to_string(id), Logger::ERROR);
         throw std::invalid_argument("Invalid interactible id");
     }
 }

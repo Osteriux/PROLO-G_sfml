@@ -1,11 +1,12 @@
 #include "matrix_animation.hpp"
+#include "../utils/logger/logger.hpp"
 
 MatrixAnimation::MatrixAnimation(std::string texture_path, int lineCount, int columnCount, std::vector<int> columnsSize, float switchTime)
     : MultiTexture(texture_path, lineCount, columnCount, columnsSize), switchTime(switchTime)
 {
     if (!texture.loadFromFile(texture_path))
     {
-        std::cerr << "Error loading texture : " << texture_path << std::endl;
+        Logger::log("Error loading texture : " + texture_path, Logger::ERROR);
     }
     currLine = 0;
     currColumn = 0;

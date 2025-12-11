@@ -29,8 +29,8 @@ set(ASSETS_DIR "${CMAKE_SOURCE_DIR}/assets")
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
     set(RELEASE_BUILD TRUE)
     
-    # Define _RELEASE macro for Release builds
-    target_compile_definitions(prolog PRIVATE _RELEASE)
+    # Define _DEV_MODE macro for Release builds
+    target_compile_definitions(prolog PRIVATE _DEV_MODE)
 
     message("Building in release mode")
 else()

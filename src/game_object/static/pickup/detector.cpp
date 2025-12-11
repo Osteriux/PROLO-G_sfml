@@ -1,4 +1,5 @@
 #include "detector.hpp"
+#include "../../../utils/logger/logger.hpp"
 
 Detector::Detector(int x, int y)
     : Pickup(std::make_unique<MultiTexture>(Pickup::texturePath(Pickup::DETECTOR), 2, 3, std::vector({3, 3})), x, y)
@@ -15,5 +16,5 @@ std::string Detector::getDescription() const
 
 void Detector::action(DynamicGameObject *user)
 {
-    std::cout << "Detector action" << std::endl;
+    Logger::log("Detector action", Logger::INFO);
 }

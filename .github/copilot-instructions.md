@@ -8,6 +8,7 @@ PROLO-G is a dungeon-exploration game using C++17 and SFML 2.6.2 with a **Single
 
 - **GameManager** (Singleton): Central coordinator accessed via `GameManager::getInstance()`. Initialize with `GameManager::initialize(windowSize, levelPath)` before use, destroy with `GameManager::destroy()` on cleanup.
 - **EventManager**: Handles SFML input events, delegates to GameManager singleton (no member reference needed).
+- **Logger** (Singleton): Centralized logging system for debugging and error tracking. Must be initialized with `Logger::initialize(level, filePath)` before use.
 - **Map**: Grid-based map system with `Case` cells, handles rendering/scaling/visibility.
 - **GameObject Hierarchy**: `GameObject` → `DynamicGameObject` (Player, Monster) / `StaticGameObject` → `Pickup` (Mine, Battery, Bomb, Detector) / `Interactible` (Lever).
 
@@ -238,7 +239,7 @@ No manual DLL copying needed - everything works out of the box.
 - `src/_devTool/`: Development tools, debug console
 - Any future `src/_*/` folder will be automatically excluded
 
-Use `#ifndef _RELEASE` in code for conditional debug features. The `_RELEASE` preprocessor macro is automatically defined in Release builds.
+Use `#ifdef _DEV_MODE` in code for conditional debug features. The `_DEV_MODE` preprocessor macro is automatically defined in developpement builds.
 
 ### Asset Handling
 
@@ -258,11 +259,38 @@ Assets auto-copy from `assets/` to build directory post-build. Level files are i
 
 Use `#pragma once` exclusively (modern compiler support assumed).
 
-### Error Handling
+### Logging and Error Handling
 
+**Logger Singleton** - Centralized logging system in `src/utils/logger/`:
+
+```cpp
+// Initialize once at application startup (in main or GameManager::initialize)
+Logger::initialize(Logger::INFO, "log/prolo-g.log");
+
+// Use throughout codebase for structured logging
+Logger::log("Player moved to position (5, 3)", Logger::INFO);
+Logger::log("Failed to load texture: missing file", Logger::ERROR);
+Logger::log("Health low, consider healing", Logger::WARNING);
+```
+
+**Log Levels** (in order of severity):
+- `Logger::DEBUG` (0): Detailed debug information, verbose output
+- `Logger::INFO` (10): General informational messages
+- `Logger::WARNING` (20): Warning messages for non-critical issues
+- `Logger::ERROR` (30): Error messages for failures
+
+**Configuration:**
+- Set minimum level at initialization: `Logger::initialize(Logger::WARNING, ...)`
+- Messages below the threshold are ignored (e.g., INFO not logged if level is WARNING)
+- Log file path is optional: empty string `""` logs to stdout
+- Log directory is created automatically if it doesn't exist
+- Log file opens in append mode to preserve history
+
+**Error Handling Guidelines:**
+- **Logger::log()**: Use for all logging needs instead of raw `std::cerr` or `std::cout`
 - **Exceptions**: Use for exceptional conditions (file loading failures, invalid types)
-- **std::cerr**: Console warnings for non-critical issues
-- **Avoid silent failures**: Log or throw, don't ignore errors
+- **Avoid silent failures**: Always log or throw, don't ignore errors
+- **Log file location**: Default is `log/prolo-g.log` (excluded from git via `.gitignore`)
 
 ## Common Tasks
 

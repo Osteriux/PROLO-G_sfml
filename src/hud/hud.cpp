@@ -5,6 +5,7 @@
 #include "../game_object/static/interactible/lever.hpp"
 #include "../manager/game_manager.hpp"
 #include "../manager/game_event.hpp"
+#include "../utils/logger/logger.hpp"
 
 HUD::HUD(sf::Vector2u origin, sf::Vector2u size) // base dispo = 320 * 540
     : origin(origin), size(size),
@@ -20,12 +21,13 @@ HUD::HUD(sf::Vector2u origin, sf::Vector2u size) // base dispo = 320 * 540
       bombeB(grid.getCellPosition(5, 5), sf::Vector2f(32, 32), "assets/hud/BOMB.png"),
       detecteurB(grid.getCellPosition(5, 6), sf::Vector2f(32, 32), "assets/hud/DETECTOR.png")
 {
-    std::cout << "HUD Grid Total Size: " << grid.getTotalWidth() << "x" << grid.getTotalHeight() << std::endl;
-    std::cout << "Allocated HUD space : " << size.x << "x" << size.y << std::endl;
+    Logger::log("HUD Grid Total Size: " + std::to_string(grid.getTotalWidth()) + "x" + std::to_string(grid.getTotalHeight()), Logger::INFO);
+    Logger::log("Allocated HUD space : " + std::to_string(size.x) + "x" + std::to_string(size.y), Logger::INFO);
     if (!font.loadFromFile("assets/font/arial.ttf"))
     {
-        std::cerr << "Error loading font : assets/font/arial.ttf" << std::endl;
+        Logger::log("Error loading font : assets/font/arial.ttf", Logger::ERROR);
     }
+
     outline.setFillColor(sf::Color::Transparent);
     outline.setOutlineColor(sf::Color::White);
     outline.setOutlineThickness(2);
@@ -33,7 +35,7 @@ HUD::HUD(sf::Vector2u origin, sf::Vector2u size) // base dispo = 320 * 540
     outline.setSize(sf::Vector2f(size.x, size.y));
 
     heart.setSize(sf::Vector2f(32, 32));
-    heart.setPosition(sf::Vector2f(origin.x + 10, origin.y + 10));
+    // heart.setPosition(sf::Vector2f(origin.x + 10, origin.y + 10));
     heart.setFillColor(sf::Color::Red);
 
     mineT.setFont(font);
@@ -121,47 +123,47 @@ void HUD::onClic(sf::Vector2f mousePosition)
 
     if (leftArrow.isClicked(mousePosition))
     {
-        std::cout << "left" << std::endl;
+        Logger::log("left", Logger::INFO);
         event = HUDActionEvent(HUDActionEvent::ActionType::MOVE_LEFT);
     }
     else if (downArrow.isClicked(mousePosition))
     {
-        std::cout << "down" << std::endl;
+        Logger::log("down", Logger::INFO);
         event = HUDActionEvent(HUDActionEvent::ActionType::MOVE_DOWN);
     }
     else if (rightArrow.isClicked(mousePosition))
     {
-        std::cout << "right" << std::endl;
+        Logger::log("right", Logger::INFO);
         event = HUDActionEvent(HUDActionEvent::ActionType::MOVE_RIGHT);
     }
     else if (upArrow.isClicked(mousePosition))
     {
-        std::cout << "up" << std::endl;
+        Logger::log("up", Logger::INFO);
         event = HUDActionEvent(HUDActionEvent::ActionType::MOVE_UP);
     }
     else if (useRadar.isClicked(mousePosition))
     {
-        std::cout << "radar" << std::endl;
+        Logger::log("radar", Logger::INFO);
         event = HUDActionEvent(HUDActionEvent::ActionType::USE_RADAR);
     }
     else if (mineB.isClicked(mousePosition))
     {
-        std::cout << "mine" << std::endl;
+        Logger::log("mine", Logger::INFO);
         event = HUDActionEvent(HUDActionEvent::ActionType::USE_MINE);
     }
     else if (batterieB.isClicked(mousePosition))
     {
-        std::cout << "battery" << std::endl;
+        Logger::log("battery", Logger::INFO);
         event = HUDActionEvent(HUDActionEvent::ActionType::USE_BATTERY);
     }
     else if (bombeB.isClicked(mousePosition))
     {
-        std::cout << "bomb" << std::endl;
+        Logger::log("bomb", Logger::INFO);
         event = HUDActionEvent(HUDActionEvent::ActionType::USE_BOMB);
     }
     else if (detecteurB.isClicked(mousePosition))
     {
-        std::cout << "detector" << std::endl;
+        Logger::log("detector", Logger::INFO);
         event = HUDActionEvent(HUDActionEvent::ActionType::USE_DETECTOR);
     }
     else
@@ -170,13 +172,13 @@ void HUD::onClic(sf::Vector2f mousePosition)
         int clickedIndex = -1;
         if (pickupActions.handleClick(mousePosition, clickedIndex))
         {
-            std::cout << "pickup item " << clickedIndex << std::endl;
+            Logger::log("pickup item " + std::to_string(clickedIndex), Logger::INFO);
             event = HUDActionEvent(HUDActionEvent::ActionType::PICKUP_ITEM, clickedIndex);
         }
         // Check lever actions using container
         else if (buttonsActions.handleClick(mousePosition, clickedIndex))
         {
-            std::cout << "button lever " << clickedIndex << std::endl;
+            Logger::log("button lever " + std::to_string(clickedIndex), Logger::INFO);
             event = HUDActionEvent(HUDActionEvent::ActionType::INTERACT_LEVER, clickedIndex);
         }
     }

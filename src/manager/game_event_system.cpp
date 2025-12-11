@@ -1,6 +1,7 @@
 #include "game_event_system.hpp"
 #include <algorithm>
 #include <iostream>
+#include "../utils/logger/logger.hpp"
 
 // Initialize static instance pointer
 GameEventSystem *GameEventSystem::instance = nullptr;
@@ -9,6 +10,7 @@ void GameEventSystem::initialize()
 {
     if (instance != nullptr)
     {
+        Logger::log("GameEventSystem already initialized", Logger::ERROR);
         throw std::runtime_error("GameEventSystem already initialized");
     }
     instance = new GameEventSystem();
@@ -18,6 +20,7 @@ GameEventSystem &GameEventSystem::getInstance()
 {
     if (instance == nullptr)
     {
+        Logger::log("GameEventSystem not initialized. Call initialize() first.", Logger::ERROR);
         throw std::runtime_error("GameEventSystem not initialized. Call initialize() first.");
     }
     return *instance;
@@ -33,7 +36,7 @@ void GameEventSystem::subscribe(GameEvent::Type type, IEventListener *listener)
 {
     if (listener == nullptr)
     {
-        std::cerr << "Warning: Attempted to subscribe null listener" << std::endl;
+        Logger::log("Attempted to subscribe null listener", Logger::WARNING);
         return;
     }
 

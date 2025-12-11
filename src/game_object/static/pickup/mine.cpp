@@ -1,4 +1,5 @@
 #include "mine.hpp"
+#include "../../../utils/logger/logger.hpp"
 
 Mine::Mine(int x, int y)
     : Pickup(std::make_unique<MultiTexture>(Pickup::texturePath(Pickup::MINE), 2), x, y)
@@ -14,5 +15,5 @@ std::string Mine::getDescription() const
 
 void Mine::action(DynamicGameObject *user)
 {
-    std::cout << "Mine action" << std::endl;
+    Logger::log("Mine action", Logger::INFO);
 }

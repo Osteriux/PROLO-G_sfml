@@ -1,11 +1,12 @@
 #include "button_image.hpp"
+#include "../../utils/logger/logger.hpp"
 
 ButtonImage::ButtonImage(sf::Vector2f position, sf::Vector2f size, std::string texturePath, sf::Color backgroundColor)
     : ButtonBase(position, size, backgroundColor)
 {
     if (!texture.loadFromFile(texturePath))
     {
-        std::cerr << "Error loading texture : " << texturePath << std::endl;
+        Logger::log("Error loading texture : " + texturePath, Logger::ERROR);
     }
     sprite.setTexture(texture);
     sprite.setPosition(position);

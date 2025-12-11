@@ -1,4 +1,5 @@
 #include "direction.hpp"
+#include "../utils/logger/logger.hpp"
 
 std::string Direction::directionToString(Dir direction)
 {
@@ -15,6 +16,7 @@ std::string Direction::directionToString(Dir direction)
     case Dir::NONE:
         return "NONE";
     default:
+        Logger::log("Invalid direction", Logger::ERROR);
         throw std::invalid_argument("Invalid direction");
     }
 }
@@ -43,6 +45,7 @@ Direction::Dir Direction::stringToDirection(std::string direction)
     }
     else
     {
+        Logger::log("Invalid direction: " + direction, Logger::ERROR);
         throw std::invalid_argument("Invalid direction");
     }
 }
@@ -72,6 +75,7 @@ sf::Vector2i Direction::dirToVector(Dir direction)
     case Dir::NONE:
         return sf::Vector2i(0, 0);
     default:
+        Logger::log("Invalid direction", Logger::ERROR);
         throw std::invalid_argument("Invalid direction");
     }
 }

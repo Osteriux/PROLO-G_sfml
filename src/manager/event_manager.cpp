@@ -1,6 +1,7 @@
 #include "event_manager.hpp"
 #include "game_manager.hpp"
 #include "../map/case.hpp"
+#include "../utils/logger/logger.hpp"
 
 EventManager::EventManager()
 {
@@ -30,32 +31,32 @@ void EventManager::handleKeyboardPressed(sf::Event::KeyEvent event)
     {
     case sf::Keyboard::PageUp:
     case sf::Keyboard::Add:
-        std::cout << "Zoom in" << std::endl;
+        Logger::log("Zoom in", Logger::INFO);
         GameManager::getInstance().getMap()->scaleUp();
         break;
     case sf::Keyboard::PageDown:
     case sf::Keyboard::Subtract:
-        std::cout << "Zoom out" << std::endl;
+        Logger::log("Zoom out", Logger::INFO);
         GameManager::getInstance().getMap()->scaleDown();
         break;
     case sf::Keyboard::Up:
-        std::cout << "Map up" << std::endl;
+        Logger::log("Map up", Logger::INFO);
         GameManager::getInstance().getMap()->move(sf::Vector2f(0, -Case::SIZE));
         break;
     case sf::Keyboard::Down:
-        std::cout << "Map down" << std::endl;
+        Logger::log("Map down", Logger::INFO);
         GameManager::getInstance().getMap()->move(sf::Vector2f(0, Case::SIZE));
         break;
     case sf::Keyboard::Left:
-        std::cout << "Map left" << std::endl;
+        Logger::log("Map left", Logger::INFO);
         GameManager::getInstance().getMap()->move(sf::Vector2f(-Case::SIZE, 0));
         break;
     case sf::Keyboard::Right:
-        std::cout << "Map right" << std::endl;
+        Logger::log("Map right", Logger::INFO);
         GameManager::getInstance().getMap()->move(sf::Vector2f(Case::SIZE, 0));
         break;
     case sf::Keyboard::R:
-        std::cout << "Map reset" << std::endl;
+        Logger::log("Map reset", Logger::INFO);
         GameManager::getInstance().getMap()->reset();
         break;
     default:

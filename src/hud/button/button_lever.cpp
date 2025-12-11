@@ -1,4 +1,5 @@
 #include "button_lever.hpp"
+#include "../../utils/logger/logger.hpp"
 
 ButtonLever::ButtonLever(sf::Vector2f position, sf::Vector2f size, sf::Color backgroundColor, sf::Color outlineColor)
     : ButtonBase(position, size, backgroundColor)
@@ -23,8 +24,8 @@ bool ButtonLever::isClicked(sf::Vector2f mousePosition)
     {
         background.setPosition(position);
     }
-    std::cout << "ButtonLever isClicked: " << clicked << std::endl;
-    std::cout << "Background position: (" << background.getPosition().x << ", " << background.getPosition().y << ")" << std::endl;
+    Logger::log("ButtonLever isClicked: " + std::string(clicked ? "true" : "false"), Logger::INFO);
+    Logger::log("Background position: (" + std::to_string(background.getPosition().x) + ", " + std::to_string(background.getPosition().y) + ")", Logger::DEBUG);
     return clicked;
 }
 

@@ -1,21 +1,27 @@
 #include "color_generator.hpp"
+#include "../logger/logger.hpp"
 
 sf::Color ColorGenerator::hexToColor(const std::string &hex)
 {
     unsigned int r, g, b;
-    if (sscanf(hex.c_str(), "#%02x%02x%02x", &r, &g, &b) == 3) {
+    if (sscanf(hex.c_str(), "#%02x%02x%02x", &r, &g, &b) == 3)
+    {
         return sf::Color(r, g, b);
     }
+    Logger::log("Invalid hex color string: " + hex, Logger::ERROR);
     throw std::invalid_argument("Invalid hex color string");
 }
 
 std::vector<sf::Color> ColorGenerator::generateColors(int num)
 {
-    if(num > COLORS.size()) {
+    if (num > COLORS.size())
+    {
+        Logger::log("Number of colors requested is greater than the number of colors available", Logger::ERROR);
         throw std::invalid_argument("Number of colors requested is greater than the number of colors available");
     }
     std::vector<sf::Color> colors = std::vector<sf::Color>();
-    for(int i = 0; i < num; i++) {
+    for (int i = 0; i < num; i++)
+    {
         colors.push_back(hexToColor(COLORS[i]));
     }
     return colors;

@@ -41,5 +41,4 @@ public:
     void update(float dt);
     void draw(sf::RenderWindow &window);
     ~Map() = default;
-    void debug();
 };

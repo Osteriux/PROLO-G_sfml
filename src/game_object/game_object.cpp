@@ -2,6 +2,7 @@
 #include "../map/map.hpp"
 #include "../map/case.hpp"
 #include "game_object.hpp"
+#include "../utils/logger/logger.hpp"
 
 GameObject::GameObject(std::unique_ptr<MultiTexture> animation, int x, int y)
 {
@@ -22,6 +23,7 @@ void GameObject::setSpritePosition(sf::Vector2f position)
 {
     if (animation == nullptr)
     {
+        Logger::log("GameObject::setSpritePosition: animation is nullptr", Logger::ERROR);
         throw std::runtime_error("GameObject::setSpritePosition: animation is nullptr");
     }
     animation->setPosition(position);
@@ -31,7 +33,7 @@ void GameObject::setSpriteScale(sf::Vector2f scale)
 {
     if (!animation)
     {
-        std::cerr << "GameObject::setSpritePosition: animation is nullptr" << std::endl;
+        Logger::log("GameObject::setSpritePosition: animation is nullptr", Logger::ERROR);
     }
     animation->setScale(scale);
 }

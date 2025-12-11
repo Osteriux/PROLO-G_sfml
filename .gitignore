@@ -18,3 +18,4 @@ build
 doc
 *.zip
 releases
+log

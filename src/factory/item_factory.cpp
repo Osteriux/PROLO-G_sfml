@@ -3,10 +3,11 @@
 #include "../game_object/static/pickup/battery.hpp"
 #include "../game_object/static/pickup/bomb.hpp"
 #include "../game_object/static/pickup/detector.hpp"
+#include "../utils/logger/logger.hpp"
 
 std::unique_ptr<Pickup> ItemFactory::createPickup(int type, int x, int y)
 {
-    std::cout << "Creating pickup " << type << " at : " << x << "," << y << std::endl;
+    Logger::log("Creating pickup " + std::to_string(type) + " at : " + std::to_string(x) + "," + std::to_string(y), Logger::INFO);
     Pickup::PickupType pickupType = Pickup::idToPickupType(type);
     switch (pickupType)
     {
@@ -19,6 +20,7 @@ std::unique_ptr<Pickup> ItemFactory::createPickup(int type, int x, int y)
     case Pickup::PickupType::DETECTOR:
         return std::make_unique<Detector>(x, y);
     default:
+        Logger::log("Invalid pickup type: " + std::to_string(type), Logger::ERROR);
         throw std::invalid_argument("Invalid pickup type");
     }
 }

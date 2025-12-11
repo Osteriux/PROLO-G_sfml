@@ -1,5 +1,6 @@
-#include "../game_object/game_object.hpp"
 #include "door.hpp"
+#include "../game_object/game_object.hpp"
+#include "../utils/logger/logger.hpp"
 
 Door::Door(sf::Color color, Direction::Dir dir, sf::Vector2f position)
     : ouverte(false), dir(dir), color(color), bgOffset(0, 0), texture(texturePath(dir), 2)
@@ -72,6 +73,7 @@ sf::RectangleShape Door::createColorRect(Direction::Dir dir, sf::Vector2f positi
         size = sf::Vector2f(4, 8);
         break;
     default:
+        Logger::log("Invalid direction", Logger::ERROR);
         throw std::invalid_argument("Invalid direction");
     }
     sf::RectangleShape r(size);
@@ -91,6 +93,7 @@ sf::RectangleShape Door::createColorRect(Direction::Dir dir, sf::Vector2f positi
         offset = sf::Vector2f(28, 12);
         break;
     default:
+        Logger::log("Invalid direction", Logger::ERROR);
         throw std::invalid_argument("Invalid direction");
     }
     bgOffset = offset;

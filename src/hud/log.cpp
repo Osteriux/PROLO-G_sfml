@@ -2,13 +2,14 @@
 #include "../manager/game_event.hpp"
 #include "../game_object/static/pickup/pickup.hpp"
 #include "../map/direction.hpp"
+#include "../utils/logger/logger.hpp"
 
 Log::Log(int maxMessages, sf::Vector2u origin, sf::Vector2u size)
     : maxMessages(maxMessages), origin(origin), rect(sf::FloatRect(origin.x, origin.y, size.x, size.y))
 {
     if (!font.loadFromFile("assets/font/arial.ttf"))
     {
-        std::cerr << "Error loading assets/font/arial.ttf" << std::endl;
+        Logger::log("Error loading font : assets/font/arial.ttf", Logger::ERROR);
     }
     outline.setFillColor(sf::Color::Transparent);
     outline.setOutlineColor(sf::Color::White);

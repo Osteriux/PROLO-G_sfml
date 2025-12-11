@@ -2,6 +2,7 @@
 #include "game_event.hpp"
 #include "../game_object/static/interactible/interactible.hpp"
 #include "../game_object/static/interactible/lever.hpp"
+#include "../utils/logger/logger.hpp"
 
 // Initialize static instance pointer
 GameManager *GameManager::instance = nullptr;
@@ -26,6 +27,7 @@ void GameManager::initialize(sf::Vector2u windowSize, std::string filePath)
 {
     if (instance != nullptr)
     {
+        Logger::log("GameManager already initialized", Logger::ERROR);
         throw std::runtime_error("GameManager already initialized");
     }
     instance = new GameManager(windowSize, filePath);
@@ -73,6 +75,7 @@ GameManager &GameManager::getInstance()
 {
     if (instance == nullptr)
     {
+        Logger::log("GameManager not initialized. Call initialize() first.", Logger::ERROR);
         throw std::runtime_error("GameManager not initialized. Call initialize() first.");
     }
     return *instance;
@@ -186,14 +189,4 @@ void GameManager::onEvent(const GameEvent &event)
             break;
         }
     }
-}
-
-void GameManager::debug()
-{
-    std::cout << "GameManager getMap" << std::endl;
-    map->debug();
-    std::cout << "GameManager getMap end" << std::endl;
-    Map *c = map.get();
-    c->debug();
-    std::cout << "GameManager getMap end 2" << std::endl;
 }

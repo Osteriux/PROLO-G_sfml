@@ -2,12 +2,21 @@
 #include <SFML/System.hpp>
 #include "src/manager/game_manager.hpp"
 #include "src/manager/event_manager.hpp"
-#ifndef _RELEASE
+#include "src/utils/logger/logger.hpp"
+#ifdef _DEV_MODE
 #include "src/_devTool/debug_console.hpp"
-#endif // _RELEASE
+#endif // _DEV_MODE
 
 int main()
 {
+    // Initialize Logger
+    Logger::initialize(Logger::DEBUG, "./log/prolog.log");
+#ifdef _RELEASE
+    Logger::log("Game started, release mode : true", Logger::INFO);
+#else
+    Logger::log("Game started, release mode : false", Logger::INFO);
+#endif
+
     sf::Vector2u windowSize(960, 540);
     sf::RenderWindow window(sf::VideoMode(windowSize.x, windowSize.y), "PR0L0-G");
 
@@ -17,11 +26,11 @@ int main()
 
     sf::Clock clock;
 
-#ifndef _RELEASE
+#ifdef _DEV_MODE
     // Initialize debug console (F1 to toggle)
     DebugConsole debugConsole(sf::Vector2f(windowSize.x - 410, 10));
     debugConsole.loadFont("assets/font/arial.ttf");
-#endif // _RELEASE
+#endif // _DEV_MODE
 
     // on fait tourner le programme jusqu'à ce que la fenêtre soit fermée
     while (window.isOpen())
@@ -36,7 +45,7 @@ int main()
                 window.close();
             }
 
-#ifndef _RELEASE
+#ifdef _DEV_MODE
             // Debug console handles input first (F1 and number keys when visible)
             if (!debugConsole.handleInput(event))
             {
@@ -45,7 +54,7 @@ int main()
             }
 #else
             eventManager.handleEvents(event);
-#endif // _RELEASE
+#endif // _DEV_MODE
         }
 
         sf::Time deltaTime = clock.restart();
@@ -59,10 +68,10 @@ int main()
 
         GameManager::getInstance().update(dt);
 
-#ifndef _RELEASE
+#ifdef _DEV_MODE
         // Draw debug console overlay (if visible)
         debugConsole.draw(window);
-#endif // _RELEASE
+#endif // _DEV_MODE
 
         // fin de la frame courante, affichage de tout ce qu'on a dessiné
         window.display();
@@ -70,6 +79,9 @@ int main()
 
     // Clean up the singleton
     GameManager::destroy();
+
+    Logger::log("Game exited", Logger::INFO);
+    Logger::destroy();
 
     return 0;
 }

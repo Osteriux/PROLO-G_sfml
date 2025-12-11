@@ -1,6 +1,7 @@
+#include "pickup.hpp"
 #include "../../dynamic/player/player.hpp"
 #include "../../../manager/game_manager.hpp"
-#include "pickup.hpp"
+#include "../../../utils/logger/logger.hpp"
 
 Pickup::Pickup(std::unique_ptr<MultiTexture> tex, int x, int y)
     : StaticGameObject(std::move(tex), x, y)
@@ -35,6 +36,7 @@ std::string Pickup::pickupTypeToString(PickupType type)
     case PickupType::DETECTOR:
         return "DETECTOR";
     default:
+        Logger::log("Invalid pickup type", Logger::ERROR);
         throw std::invalid_argument("Invalid pickup type");
     }
 }
@@ -50,7 +52,8 @@ Pickup::PickupType Pickup::stringToPickupType(std::string type)
     else if (type == "DETECTOR")
         return PickupType::DETECTOR;
     else
-        throw std::invalid_argument("Invalid pickup type");
+        Logger::log("Invalid pickup type: " + type, Logger::ERROR);
+    throw std::invalid_argument("Invalid pickup type");
 }
 
 int Pickup::pickupTypeToId(PickupType type)
@@ -66,6 +69,7 @@ int Pickup::pickupTypeToId(PickupType type)
     case PickupType::DETECTOR:
         return 3;
     default:
+        Logger::log("Invalid pickup id", Logger::ERROR);
         throw std::invalid_argument("Invalid pickup id");
     }
 }
@@ -83,6 +87,7 @@ Pickup::PickupType Pickup::idToPickupType(int id)
     case 3:
         return PickupType::DETECTOR;
     default:
+        Logger::log("Invalid pickup id: " + std::to_string(id), Logger::ERROR);
         throw std::invalid_argument("Invalid pickup id");
     }
 }

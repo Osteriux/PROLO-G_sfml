@@ -1,11 +1,12 @@
 #include "multi_texture.hpp"
+#include "../utils/logger/logger.hpp"
 
 MultiTexture::MultiTexture(std::string texture_path, int lineCount, int columnCount, std::vector<int> columnsSize)
     : lineCount(lineCount), columnCount(columnCount), columnsSize(columnsSize)
 {
     if (!texture.loadFromFile(texture_path))
     {
-        std::cerr << "Error loading texture : " << texture_path << std::endl;
+        Logger::log("Error loading texture : " + texture_path, Logger::ERROR);
     }
     currLine = 0;
     currColumn = 0;
@@ -19,7 +20,7 @@ MultiTexture::MultiTexture(std::string texturePath, int nbImages)
 {
     if (!texture.loadFromFile(texturePath))
     {
-        std::cerr << "Error loading texture : " << texturePath << std::endl;
+        Logger::log("Error loading texture : " + texturePath, Logger::ERROR);
     }
     currLine = 0;
     currColumn = 0;
@@ -56,22 +57,26 @@ MultiTexture::MultiTexture(sf::Color color, int width, int height, sf::Vector2f 
     setTextureRect(rect);
 }
 
-sf::Vector2f MultiTexture::getSize() const{
+sf::Vector2f MultiTexture::getSize() const
+{
     return sf::Vector2f(rect.width, rect.height);
 }
 
-void MultiTexture::setLine(int line){
+void MultiTexture::setLine(int line)
+{
     currLine = line;
     rect.top = currLine * rect.height;
     setTextureRect(rect);
 }
 
-void MultiTexture::setColumn(int column){
+void MultiTexture::setColumn(int column)
+{
     currColumn = column;
     rect.left = currColumn * rect.width;
     setTextureRect(rect);
 }
 
-bool MultiTexture::update(float dt){
+bool MultiTexture::update(float dt)
+{
     return false;
 }
