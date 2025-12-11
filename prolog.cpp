@@ -8,9 +8,7 @@
 
 int main()
 {
-    sf::Vector2u baseSize(480, 270);
-    sf::Vector2u scale(2, 2);
-    sf::Vector2u windowSize = sf::Vector2u(baseSize.x * scale.x, baseSize.y * scale.y);
+    sf::Vector2u windowSize(960, 540);
     sf::RenderWindow window(sf::VideoMode(windowSize.x, windowSize.y), "PR0L0-G");
 
     // Initialize the GameManager singleton
