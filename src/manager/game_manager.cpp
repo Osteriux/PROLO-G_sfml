@@ -187,20 +187,12 @@ void GameManager::onEvent(const GameEvent &event)
         }
         case HUDActionEvent::ActionType::INTERACT_LEVER:
         {
-            int index = hudEvent.getIndex();
-            auto &interactibles = player->getCase()->getInteractibles();
-            int currentIndex = 0;
-            for (const auto &interactible : interactibles)
+            Lever *lever = hudEvent.getLever();
+            if (lever != nullptr)
             {
-                if (interactible->getType() == Interactible::InteractibleType::LEVER)
-                {
-                    if (currentIndex == index)
-                    {
-                        player->interactWithLever(static_cast<Lever *>(interactible.get()));
-                        break;
-                    }
-                    currentIndex++;
-                }
+                player->interactWithLever(lever);
+                // Refresh HUD buttons to reflect updated lever state
+                player->emitContextChanged();
             }
             break;
         }

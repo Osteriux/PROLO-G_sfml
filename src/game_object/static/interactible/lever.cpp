@@ -12,6 +12,12 @@ Lever::Lever(sf::Color color, int x, int y, int doorId, int nb)
 
 void Lever::interact(DynamicGameObject *user)
 {
+    if (currCase == nullptr)
+    {
+        Logger::log("Lever::interact: currCase is nullptr", Logger::ERROR);
+        return;
+    }
+
     activated = !activated;
     std::string message = "Lever at (" + std::to_string(currCase->getX()) + ", " + std::to_string(currCase->getY()) + ") ";
     if (activated)
@@ -34,6 +40,11 @@ void Lever::interact(DynamicGameObject *user)
 sf::Color Lever::getColor() const
 {
     return color;
+}
+
+bool Lever::isActivated() const
+{
+    return activated;
 }
 
 std::string Lever::getDescription() const

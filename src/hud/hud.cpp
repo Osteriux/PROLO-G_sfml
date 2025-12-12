@@ -9,7 +9,7 @@
 
 HUD::HUD(sf::Vector2u origin, sf::Vector2u size)
     : origin(origin), size(size),
-      playerHealth(0), availableLeversOnCase(0),
+      playerHealth(0),
       grid(sf::Vector2f(static_cast<float>(origin.x), static_cast<float>(origin.y)), 32, 32, sf::Vector2i(18, 15), sf::Vector2i(8, 7), 7, 13),
       leftArrow(grid.getCellPosition(0, 3), sf::Vector2f(32, 32), "assets/button/LEFT.png"),
       downArrow(grid.getCellPosition(1, 4), sf::Vector2f(32, 32), "assets/button/DOWN.png"),
@@ -179,7 +179,8 @@ void HUD::onClic(sf::Vector2f mousePosition)
         else if (buttonsActions.handleClick(mousePosition, clickedIndex))
         {
             Logger::log("button lever " + std::to_string(clickedIndex), Logger::INFO);
-            event = HUDActionEvent(HUDActionEvent::ActionType::INTERACT_LEVER, clickedIndex);
+            Lever* lever = buttonsActions[clickedIndex].getLever();
+            event = HUDActionEvent(HUDActionEvent::ActionType::INTERACT_LEVER, clickedIndex, lever);
         }
     }
 
@@ -243,7 +244,6 @@ void HUD::onEvent(const GameEvent &event)
     {
         const auto &ctxEvent = static_cast<const PlayerContextChangedEvent &>(event);
         availablePickupsOnCase = ctxEvent.getAvailablePickups();
-        availableLeversOnCase = ctxEvent.getLeverCount();
 
         // Update pickup actions from new context - container handles positioning
         pickupActions.clear();
@@ -259,14 +259,19 @@ void HUD::onEvent(const GameEvent &event)
 
         // Update lever buttons from new context - container handles positioning
         buttonsActions.clear();
-        for (int i = 0; i < availableLeversOnCase; i++)
+        Player* player = GameManager::getInstance().getPlayer();
+        auto &interactibles = player->getCase()->getInteractibles();
+        for (const auto &interactible : interactibles)
         {
-            buttonsActions.addButton(
-                ButtonLever(
-                    sf::Vector2f(0, 0), // Position managed by container
-                    sf::Vector2f(32, 32),
-                    sf::Color::White // Default color - would need more event data for actual colors
-                    ));
+            if (interactible->getType() == Interactible::InteractibleType::LEVER)
+            {
+                Lever* lever = static_cast<Lever*>(interactible.get());
+                buttonsActions.addButton(
+                    ButtonLever(
+                        sf::Vector2f(0, 0), // Position managed by container
+                        sf::Vector2f(32, 32),
+                        lever)); // Pass actual Lever pointer
+            }
         }
         break;
     }

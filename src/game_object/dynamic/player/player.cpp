@@ -8,7 +8,7 @@ Player::Player(int x, int y, int health)
 {
 }
 
-Inventory& Player::getInventory()
+Inventory &Player::getInventory()
 {
     return inventory;
 }
@@ -22,17 +22,17 @@ void Player::move(Direction::Dir direction)
 {
     int fromX = currCase->getX();
     int fromY = currCase->getY();
-    
+
     DynamicGameObject::move(direction);
-    
+
     int toX = currCase->getX();
     int toY = currCase->getY();
     bool success = (fromX != toX || fromY != toY);
-    
+
     // Emit move event
     PlayerMovedEvent event(direction, fromX, fromY, toX, toY, success);
     GameManager::getInstance().getEventSystem().dispatch(event);
-    
+
     // If move was successful, context changed (new case)
     if (success)
     {
@@ -49,20 +49,20 @@ bool Player::usePickup(Pickup::PickupType type)
         GameManager::getInstance().getEventSystem().dispatch(event);
         return false;
     }
-    
+
     // Remove from inventory
     inventory.removePickup(type);
-    
+
     // Execute pickup action
     // TODO: Implement actual pickup effects (mine placement, radar use, etc.)
-    
+
     // Emit success event
     ItemUsedEvent event(type, true);
     GameManager::getInstance().getEventSystem().dispatch(event);
-    
+
     // Emit inventory changed
     emitInventoryChanged();
-    
+
     return true;
 }
 
@@ -71,10 +71,10 @@ void Player::takeDamage(int damage, const std::string &source)
     health -= damage;
     if (health < 0)
         health = 0;
-    
+
     PlayerDamagedEvent event(damage, health, source);
     GameManager::getInstance().getEventSystem().dispatch(event);
-    
+
     if (health <= 0)
     {
         // TODO: Handle player death
@@ -86,7 +86,7 @@ void Player::heal(int amount)
 {
     health += amount;
     // TODO: Add max health cap if needed
-    
+
     PlayerHealedEvent event(amount, health);
     GameManager::getInstance().getEventSystem().dispatch(event);
 }
@@ -106,8 +106,7 @@ void Player::emitInventoryChanged()
         inventory.getQuantity(Pickup::PickupType::MINE),
         inventory.getQuantity(Pickup::PickupType::BATTERY),
         inventory.getQuantity(Pickup::PickupType::BOMB),
-        inventory.getQuantity(Pickup::PickupType::DETECTOR)
-    );
+        inventory.getQuantity(Pickup::PickupType::DETECTOR));
     GameManager::getInstance().getEventSystem().dispatch(event);
 }
 
@@ -118,21 +117,10 @@ void Player::emitContextChanged()
     {
         availablePickups.push_back(pickup->getType());
     }
-    
-    int leverCount = 0;
-    for (const auto &interactible : currCase->getInteractibles())
-    {
-        if (interactible->getType() == Interactible::InteractibleType::LEVER)
-        {
-            leverCount++;
-        }
-    }
-    
+
     PlayerContextChangedEvent event(
         currCase->getX(),
         currCase->getY(),
-        availablePickups,
-        leverCount
-    );
+        availablePickups);
     GameManager::getInstance().getEventSystem().dispatch(event);
 }

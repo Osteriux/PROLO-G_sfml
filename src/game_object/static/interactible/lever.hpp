@@ -13,6 +13,7 @@ public:
     Lever(sf::Color color, int x, int y, int doorId, int nb);
     std::string getDescription() const override;
     sf::Color getColor() const;
+    bool isActivated() const;
     void interact(DynamicGameObject *user) override;
     ~Lever() = default;
 };

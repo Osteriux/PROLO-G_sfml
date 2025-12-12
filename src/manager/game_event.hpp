@@ -111,17 +111,14 @@ class PlayerContextChangedEvent : public GameEvent
 private:
     int caseX, caseY;
     std::vector<Pickup::PickupType> availablePickups;
-    int leverCount;
 
 public:
-    PlayerContextChangedEvent(int x, int y, const std::vector<Pickup::PickupType> &pickups, int levers)
-        : caseX(x), caseY(y), availablePickups(pickups), leverCount(levers) {}
-
+    PlayerContextChangedEvent(int x, int y, const std::vector<Pickup::PickupType> &pickups)
+        : caseX(x), caseY(y), availablePickups(pickups) {}
     Type getType() const override { return Type::PLAYER_CONTEXT_CHANGED; }
     int getCaseX() const { return caseX; }
     int getCaseY() const { return caseY; }
     const std::vector<Pickup::PickupType> &getAvailablePickups() const { return availablePickups; }
-    int getLeverCount() const { return leverCount; }
 };
 
 // Item events
@@ -221,12 +218,14 @@ public:
 private:
     ActionType action;
     int index; // For pickups/levers: which one (by index)
+    class Lever* lever; // Direct pointer to lever (for INTERACT_LEVER action)
 
 public:
-    HUDActionEvent(ActionType act, int idx = -1)
-        : action(act), index(idx) {}
+    HUDActionEvent(ActionType act, int idx = -1, class Lever* leverPtr = nullptr)
+        : action(act), index(idx), lever(leverPtr) {}
 
     Type getType() const override { return Type::HUD_ACTION; }
     ActionType getAction() const { return action; }
     int getIndex() const { return index; }
+    class Lever* getLever() const { return lever; }
 };

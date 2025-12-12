@@ -21,7 +21,6 @@ private:
     // HUD State (replaces direct Player access)
     int playerHealth;
     std::vector<Pickup::PickupType> availablePickupsOnCase;
-    int availableLeversOnCase;
 
     sf::RectangleShape heart;
 

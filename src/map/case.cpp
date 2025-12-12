@@ -112,6 +112,7 @@ void Case::setEntity(std::unique_ptr<DynamicGameObject> entity)
 
 void Case::addPickup(std::unique_ptr<Pickup> pickup)
 {
+    pickup->setCase(this);
     pickup->setSpriteScale(this->getScale());
     pickup->setSpritePosition(position);
     pickups.push_back(std::move(pickup));
@@ -129,6 +130,7 @@ const std::vector<std::unique_ptr<Pickup>> &Case::getPickups() const
 
 void Case::addInteractible(std::unique_ptr<Interactible> interactible)
 {
+    interactible->setCase(this);
     interactible->setSpriteScale(this->getScale());
     interactible->setSpritePosition(position);
     interactibles.push_back(std::move(interactible));

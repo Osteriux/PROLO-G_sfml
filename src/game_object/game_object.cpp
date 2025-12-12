@@ -5,6 +5,7 @@
 #include "../utils/logger/logger.hpp"
 
 GameObject::GameObject(std::unique_ptr<MultiTexture> animation, int x, int y)
+    : currCase(nullptr)
 {
     this->animation = std::move(animation);
 }
