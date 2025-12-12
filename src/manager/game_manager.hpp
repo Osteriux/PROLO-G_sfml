@@ -7,11 +7,12 @@
 #include "../utils/fileReader/level_file_handeler.hpp"
 #include "../map/map.hpp"
 #include "game_event_system.hpp"
+#include "viewport_manager.hpp"
 
 class GameManager : public IEventListener
 {
 private:
-    sf::Vector2u windowSize;
+    std::unique_ptr<ViewportManager> viewportManager;
     std::unique_ptr<Map> map;
     std::unique_ptr<HUD> hud;
     std::unique_ptr<Log> log;
@@ -28,10 +29,12 @@ public:
     static GameManager &getInstance();
     static void destroy();
     GameEventSystem &getEventSystem();
+    ViewportManager &getViewportManager();
     Player *getPlayer();
     Map *getMap();
     HUD &getHUD();
     void addLogMessage(std::string message);
+    void onWindowResized(sf::Vector2u newSize);
     void update(float dt);
     void draw(sf::RenderWindow &window);
     void onEvent(const GameEvent &event) override;

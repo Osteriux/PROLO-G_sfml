@@ -24,6 +24,8 @@ int main()
     GameManager::initialize(windowSize, "assets/level/test3.txt");
     EventManager eventManager;
 
+    window.setView(GameManager::getInstance().getViewportManager().getGameView());
+
     sf::Clock clock;
 
 #ifdef _DEV_MODE
@@ -43,6 +45,13 @@ int main()
             if (event.type == sf::Event::Closed)
             {
                 window.close();
+            }
+            // Handle window resize
+            else if (event.type == sf::Event::Resized)
+            {
+                GameManager::getInstance().onWindowResized(sf::Vector2u(event.size.width, event.size.height));
+                // Update the view when window is resized
+                window.setView(GameManager::getInstance().getViewportManager().getGameView());
             }
 
 #ifdef _DEV_MODE

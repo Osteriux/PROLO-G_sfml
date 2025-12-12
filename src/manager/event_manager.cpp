@@ -75,7 +75,13 @@ void EventManager::handleKeyboardReleased(sf::Event::KeyEvent event)
 
 void EventManager::handleMousePressed(sf::Event::MouseButtonEvent event)
 {
-    GameManager::getInstance().getHUD().onClic(sf::Vector2f(event.x, event.y));
+    // Convert window coordinates to design resolution coordinates
+    // accounting for scaling and letterboxing
+    sf::Vector2f designCoords = GameManager::getInstance().getViewportManager().windowToDesignCoordinates(
+        sf::Vector2f(static_cast<float>(event.x), static_cast<float>(event.y))
+    );
+    
+    GameManager::getInstance().getHUD().onClic(designCoords);
     switch (event.button)
     {
     default:

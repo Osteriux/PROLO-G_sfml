@@ -27,7 +27,7 @@ Logger::Logger(Level level, std::string filePath) : level(level), logFile(nullpt
             {
                 std::cerr << "Logger: exception while creating directories: " << e.what() << std::endl;
             }
-            fileStream = std::make_unique<std::ofstream>(filePath, std::ios::out | std::ios::app);
+            fileStream = std::make_unique<std::ofstream>(filePath, std::ios::out | std::ios::trunc);
         }
         if (!fileStream->is_open())
         {

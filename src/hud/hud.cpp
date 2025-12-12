@@ -7,19 +7,19 @@
 #include "../manager/game_event.hpp"
 #include "../utils/logger/logger.hpp"
 
-HUD::HUD(sf::Vector2u origin, sf::Vector2u size) // base dispo = 320 * 540
+HUD::HUD(sf::Vector2u origin, sf::Vector2u size)
     : origin(origin), size(size),
       playerHealth(0), availableLeversOnCase(0),
-      grid(sf::Vector2f(static_cast<float>(origin.x + 1), static_cast<float>(origin.y + 1)), 32, 32, sf::Vector2i(12, 11), sf::Vector2i(5, 2), 8, 15),
-      leftArrow(grid.getCellPosition(1, 4), sf::Vector2f(32, 32), "assets/button/LEFT.png"),
-      downArrow(grid.getCellPosition(2, 5), sf::Vector2f(32, 32), "assets/button/DOWN.png"),
-      rightArrow(grid.getCellPosition(3, 4), sf::Vector2f(32, 32), "assets/button/RIGHT.png"),
-      upArrow(grid.getCellPosition(2, 3), sf::Vector2f(32, 32), "assets/button/UP.png"),
-      useRadar(grid.getCellPosition(2, 4), sf::Vector2f(32, 32), "assets/button/RADAR.png"),
-      mineB(grid.getCellPosition(5, 3), sf::Vector2f(32, 32), "assets/hud/MINE.png"),
-      batterieB(grid.getCellPosition(5, 4), sf::Vector2f(32, 32), "assets/hud/BATTERY.png"),
-      bombeB(grid.getCellPosition(5, 5), sf::Vector2f(32, 32), "assets/hud/BOMB.png"),
-      detecteurB(grid.getCellPosition(5, 6), sf::Vector2f(32, 32), "assets/hud/DETECTOR.png")
+      grid(sf::Vector2f(static_cast<float>(origin.x), static_cast<float>(origin.y)), 32, 32, sf::Vector2i(18, 15), sf::Vector2i(8, 7), 7, 13),
+      leftArrow(grid.getCellPosition(0, 3), sf::Vector2f(32, 32), "assets/button/LEFT.png"),
+      downArrow(grid.getCellPosition(1, 4), sf::Vector2f(32, 32), "assets/button/DOWN.png"),
+      rightArrow(grid.getCellPosition(2, 3), sf::Vector2f(32, 32), "assets/button/RIGHT.png"),
+      upArrow(grid.getCellPosition(1, 2), sf::Vector2f(32, 32), "assets/button/UP.png"),
+      useRadar(grid.getCellPosition(1, 3), sf::Vector2f(32, 32), "assets/button/RADAR.png"),
+      mineB(grid.getCellPosition(4, 2), sf::Vector2f(32, 32), "assets/hud/MINE.png"),
+      batterieB(grid.getCellPosition(4, 3), sf::Vector2f(32, 32), "assets/hud/BATTERY.png"),
+      bombeB(grid.getCellPosition(4, 4), sf::Vector2f(32, 32), "assets/hud/BOMB.png"),
+      detecteurB(grid.getCellPosition(4, 5), sf::Vector2f(32, 32), "assets/hud/DETECTOR.png")
 {
     Logger::log("HUD Grid Total Size: " + std::to_string(grid.getTotalWidth()) + "x" + std::to_string(grid.getTotalHeight()), Logger::INFO);
     Logger::log("Allocated HUD space : " + std::to_string(size.x) + "x" + std::to_string(size.y), Logger::INFO);
@@ -41,47 +41,47 @@ HUD::HUD(sf::Vector2u origin, sf::Vector2u size) // base dispo = 320 * 540
     mineT.setFont(font);
     mineT.setCharacterSize(20);
     mineT.setFillColor(sf::Color::White);
-    mineT.setPosition(grid.getCellPosition(6, 3) + sf::Vector2f(8, 10));
+    mineT.setPosition(grid.getCellPosition(5, 2) + sf::Vector2f(8, 10));
     mineT.setString("0");
 
     batterieT.setFont(font);
     batterieT.setCharacterSize(20);
     batterieT.setFillColor(sf::Color::White);
-    batterieT.setPosition(grid.getCellPosition(6, 4) + sf::Vector2f(8, 10));
+    batterieT.setPosition(grid.getCellPosition(5, 3) + sf::Vector2f(8, 10));
     batterieT.setString("0");
 
     bombeT.setFont(font);
     bombeT.setCharacterSize(20);
     bombeT.setFillColor(sf::Color::White);
-    bombeT.setPosition(grid.getCellPosition(6, 5) + sf::Vector2f(8, 10));
+    bombeT.setPosition(grid.getCellPosition(5, 4) + sf::Vector2f(8, 10));
     bombeT.setString("0");
 
     detecteurT.setFont(font);
     detecteurT.setCharacterSize(20);
     detecteurT.setFillColor(sf::Color::White);
-    detecteurT.setPosition(grid.getCellPosition(6, 6) + sf::Vector2f(8, 10));
+    detecteurT.setPosition(grid.getCellPosition(5, 5) + sf::Vector2f(8, 10));
     detecteurT.setString("0");
 
     ramasserText.setFont(font);
     ramasserText.setCharacterSize(20);
     ramasserText.setFillColor(sf::Color::White);
-    ramasserText.setPosition(grid.getCellPosition(0, 7));
+    ramasserText.setPosition(grid.getCellPosition(0, 6));
     ramasserText.setString("Pick up:");
 
     interagireText.setFont(font);
     interagireText.setCharacterSize(24);
     interagireText.setFillColor(sf::Color::White);
-    interagireText.setPosition(grid.getCellPosition(0, 9));
+    interagireText.setPosition(grid.getCellPosition(0, 8));
     interagireText.setString("Interact:");
 
     buttonsText.setFont(font);
     buttonsText.setCharacterSize(24);
     buttonsText.setFillColor(sf::Color::White);
-    buttonsText.setPosition(grid.getCellPosition(0, 12));
+    buttonsText.setPosition(grid.getCellPosition(0, 10));
     buttonsText.setString("Buttons: ON/OFF");
 
     // Configure dynamic containers using grid regions
-    sf::FloatRect pickupRegion = grid.getRegion(0, 8, 8, 1);
+    sf::FloatRect pickupRegion = grid.getRegion(0, 7, 7, 1);
     pickupActions.configure(
         sf::Vector2f(pickupRegion.left, pickupRegion.top),
         sf::Vector2f(pickupRegion.width, pickupRegion.height),
@@ -89,7 +89,7 @@ HUD::HUD(sf::Vector2u origin, sf::Vector2u size) // base dispo = 320 * 540
         8,
         LayoutMode::HORIZONTAL_LIST);
 
-    sf::FloatRect interactRegion = grid.getRegion(0, 10, 8, 2);
+    sf::FloatRect interactRegion = grid.getRegion(0, 9, 7, 1);
     interactActions.configure(
         sf::Vector2f(interactRegion.left, interactRegion.top),
         sf::Vector2f(interactRegion.width, interactRegion.height),
@@ -97,7 +97,7 @@ HUD::HUD(sf::Vector2u origin, sf::Vector2u size) // base dispo = 320 * 540
         8,
         LayoutMode::HORIZONTAL_LIST);
 
-    sf::FloatRect leverRegion = grid.getRegion(0, 13, 8, 2);
+    sf::FloatRect leverRegion = grid.getRegion(0, 11, 7, 2);
     buttonsActions.configure(
         sf::Vector2f(leverRegion.left, leverRegion.top),
         sf::Vector2f(leverRegion.width, leverRegion.height),
@@ -196,7 +196,7 @@ void HUD::draw(sf::RenderWindow &window)
     window.draw(outline);
     for (int h = 0; h < playerHealth; h++)
     {
-        heart.setPosition(grid.getCellPosition(h + 1, 1) + sf::Vector2f(4, 4));
+        heart.setPosition(grid.getCellPosition(h + 1, 0) + sf::Vector2f(4, 4));
         window.draw(heart);
     }
     leftArrow.draw(window);
