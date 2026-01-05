@@ -30,6 +30,7 @@ private:
 
 public:
     Map(int lineCount, int columnCount, sf::Vector2f origin, sf::Vector2u regionSize, LevelFileData data);
+    void init();
     void populate(LevelFileData data);
     Case *getCase(int x, int y);
     std::map<std::pair<int, int>, std::map<Direction::Dir, bool>> getAdjacents();

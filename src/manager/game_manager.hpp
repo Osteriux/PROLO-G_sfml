@@ -26,6 +26,7 @@ private:
 
 public:
     static void initialize(sf::Vector2u windowSize, std::string filePath);
+    void init();
     static GameManager &getInstance();
     static void destroy();
     GameEventSystem &getEventSystem();

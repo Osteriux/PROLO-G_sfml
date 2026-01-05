@@ -29,6 +29,11 @@ GameManager::GameManager(sf::Vector2u windowSize, std::string filePath)
     log = std::make_unique<Log>(50, sf::Vector2u((DESIGN_RES.x / 3) + 5, (DESIGN_RES.y * 2 / 3)), sf::Vector2u((DESIGN_RES.x * 2 / 3) - 10, (DESIGN_RES.y / 3) - 5));
 }
 
+void GameManager::init()
+{
+    throw std::runtime_error("GameManager::init should not be called directly. Use GameManager::initialize instead.");
+}
+
 void GameManager::initialize(sf::Vector2u windowSize, std::string filePath)
 {
     if (instance != nullptr)
@@ -41,6 +46,7 @@ void GameManager::initialize(sf::Vector2u windowSize, std::string filePath)
     // Now that GameManager instance exists, init components that need event system
     instance->hud->init();
     instance->log->init();
+    instance->map->init();
 
     // Subscribe GameManager to HUD actions
     instance->getEventSystem().subscribe(GameEvent::Type::HUD_ACTION, instance);

@@ -50,7 +50,7 @@ private:
 
 public:
     HUD(sf::Vector2u origin, sf::Vector2u size);
-    void init(); // Subscribe to events after GameManager is ready
+    void init() override;
     void onClic(sf::Vector2f mousePosition);
     void update(float dt);
     void draw(sf::RenderWindow &window);

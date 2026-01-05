@@ -10,6 +10,7 @@ class IEventListener
 {
 public:
     virtual ~IEventListener() = default;
+    virtual void init() = 0;
     virtual void onEvent(const GameEvent &event) = 0;
 };
 

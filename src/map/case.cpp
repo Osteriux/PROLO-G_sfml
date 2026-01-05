@@ -3,12 +3,12 @@
 #include "../game_object/static/pickup/pickup.hpp"
 #include "../game_object/static/interactible/interactible.hpp"
 
-Case::Case(int x, int y, int room, sf::Vector2f position, std::vector<Direction::Dir> passages, std::map<Direction::Dir, sf::Color> doors)
+Case::Case(int x, int y, int room, sf::Vector2f position, std::vector<Direction::Dir> passages, std::map<Direction::Dir, std::tuple<int, sf::Color>> doors)
     : x(x), y(y), room(room), position(position), passages(passages)
 {
     for (auto &door : doors)
     {
-        this->doors[door.first] = std::make_unique<Door>(door.second, door.first, position);
+        this->doors[door.first] = std::make_unique<Door>(std::get<1>(door.second), std::get<0>(door.second), door.first, position);
     }
     this->texture.loadFromFile(texturePath(passages, doors));
     this->setTexture(texture);
@@ -16,6 +16,14 @@ Case::Case(int x, int y, int room, sf::Vector2f position, std::vector<Direction:
     this->pickups = std::move(pickups);
     this->interactibles = std::move(interactibles);
     this->setPosition(position);
+}
+
+void Case::init()
+{
+    for (auto &door : doors)
+    {
+        door.second->init();
+    }
 }
 
 int Case::getRoom()
@@ -184,7 +192,7 @@ void Case::draw(sf::RenderTarget &target)
     }
 }
 
-std::string Case::texturePath(std::vector<Direction::Dir> passages, std::map<Direction::Dir, sf::Color> doors)
+std::string Case::texturePath(std::vector<Direction::Dir> passages, std::map<Direction::Dir, std::tuple<int, sf::Color>> doors)
 {
     std::string path = "assets/case/";
     for (auto &door : doors)

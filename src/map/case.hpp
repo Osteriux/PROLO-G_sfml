@@ -23,11 +23,12 @@ private:
     sf::Vector2f position;
     int x, y;
     int room;
-    std::string texturePath(std::vector<Direction::Dir> passages, std::map<Direction::Dir, sf::Color> doors);
+    std::string texturePath(std::vector<Direction::Dir> passages, std::map<Direction::Dir, std::tuple<int, sf::Color>> doors);
 
 public:
     static const int SIZE = 32;
-    Case(int x, int y, int room, sf::Vector2f position, std::vector<Direction::Dir> passages, std::map<Direction::Dir, sf::Color> doors);
+    Case(int x, int y, int room, sf::Vector2f position, std::vector<Direction::Dir> passages, std::map<Direction::Dir, std::tuple<int, sf::Color>> doors);
+    void init();
     int getRoom();
     int getX();
     int getY();

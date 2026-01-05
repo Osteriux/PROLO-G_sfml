@@ -19,14 +19,14 @@ Map::Map(int lineCount, int columnCount, sf::Vector2f origin, sf::Vector2u regio
             std::tuple<int, std::vector<int>, std::vector<std::tuple<int, int>>> cdata = levelData.casesData[std::make_pair(i, j)];
 
             std::vector<Direction::Dir> neighbors;
-            std::map<Direction::Dir, sf::Color> doors;
+            std::map<Direction::Dir, std::tuple<int, sf::Color>> doors;
             for (auto v : std::get<1>(cdata))
             {
                 neighbors.push_back(Direction::intToDir(v));
             }
             for (auto p : std::get<2>(cdata))
             {
-                doors[Direction::intToDir(std::get<0>(p))] = doorColors[std::get<1>(p)];
+                doors[Direction::intToDir(std::get<0>(p))] = std::make_tuple(std::get<1>(p), doorColors[std::get<1>(p)]);
             }
             Logger::log("Creating case : " + std::to_string(i) + " " + std::to_string(j) + " " + std::to_string(std::get<0>(cdata)), Logger::INFO);
             cases[i][j] = std::make_unique<Case>(i, j, std::get<0>(cdata), origin + sf::Vector2f(j * Case::SIZE, i * Case::SIZE), neighbors, doors);
@@ -45,6 +45,17 @@ Map::Map(int lineCount, int columnCount, sf::Vector2f origin, sf::Vector2u regio
     outline.setSize(sf::Vector2f(regionSize.x, regionSize.y));
     Logger::log("Map created", Logger::INFO);
     Logger::log("Map size : " + std::to_string(this->lineCount) + " " + std::to_string(this->columnCount), Logger::INFO);
+}
+
+void Map::init()
+{
+    for (int i = 0; i < lineCount; i++)
+    {
+        for (int j = 0; j < columnCount; j++)
+        {
+            cases[i][j]->init();
+        }
+    }
 }
 
 void Map::populate(LevelFileData levelData)

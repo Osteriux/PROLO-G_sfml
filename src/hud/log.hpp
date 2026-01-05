@@ -13,9 +13,10 @@ private:
     sf::Vector2u origin;
     sf::Font font;
     sf::FloatRect rect;
+
 public:
     Log(int maxMessages, sf::Vector2u origin, sf::Vector2u size);
-    void init();  // Subscribe to events after GameManager is ready
+    void init() override;
     void scrollUp();
     void scrollDown();
     void addMessage(std::string message);
